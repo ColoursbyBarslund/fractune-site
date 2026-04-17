@@ -1,0 +1,357 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Fractune — Fraktal Fluensanalyse">
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Fractune</a>
+      <div class="nav-links">
+        <a href="#features">Funktioner</a>
+        <a href="#privacy">Privatliv</a>
+        <a href="https://sites.fractune.dk">Kort</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title">
+        Forstaa bygningers<br />
+        <span class="hero-accent">fraktale fluens</span>
+      </h1>
+      <p class="hero-subtitle">
+        Fractune analyserer arkitektonisk kompleksitet ved hjaelp af fraktal
+        geometri. Scan en bygning, faa en D-vaerdi, og bidrag til et aabent
+        datasaet.
+      </p>
+      <div class="hero-cta">
+        <a
+          href="https://apps.apple.com/app/fractune/idXXXXXXXXXX"
+          class="btn btn-primary"
+        >
+          Hent paa App Store
+        </a>
+        <a href="#features" class="btn btn-secondary">Laes mere</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="features">
+    <div class="section-inner">
+      <h2 class="section-title">Funktioner</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">&#x1F4D0;</div>
+          <h3>Fraktal Analyse</h3>
+          <p>
+            Brug box-counting metoden til at beregne den fraktale dimension
+            (D-vaerdien) af enhver bygningsfacade direkte fra dit kamera.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">&#x1F5FA;</div>
+          <h3>Aabent Kortdata</h3>
+          <p>
+            Alle analyser bidrager til et offentligt datasaet. Udforsk
+            bygningsdata paa <a href="https://sites.fractune.dk">sites.fractune.dk</a>.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">&#x1F512;</div>
+          <h3>Privatliv Foerst</h3>
+          <p>
+            Ingen personlige data opsamles. Bidrag er anonyme og valideres
+            via Apples Device Attestation.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" aria-hidden="true">&#x26A1;</div>
+          <h3>On-Device</h3>
+          <p>
+            Al billedbehandling sker lokalt paa din enhed. Kun resultater og
+            metadata uploades — aldrig billeder.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section id="privacy" class="privacy">
+    <div class="section-inner">
+      <h2 class="section-title">Privatliv &amp; Datasletning</h2>
+      <div class="privacy-content">
+        <p>
+          Fractune respekterer dit privatliv. Vi indsamler ingen personligt
+          identificerbare oplysninger. Alle bidrag til det offentlige datasaet
+          er anonyme og knyttes udelukkende til et enhedsgenereret
+          contributor-ID.
+        </p>
+        <p>
+          Du har til enhver tid ret til at anmode om sletning af dine bidrag.
+          Kontakt os paa <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a>
+          med dit contributor-ID, og vi sletter alle tilknyttede data inden for
+          30 dage.
+        </p>
+        <p>
+          For mere information, se vores <a href="/privacy">privatlivspolitik</a>
+          og <a href="/terms">vilkaar for brug</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="/privacy">Privatlivspolitik</a>
+        <a href="/terms">Vilkaar</a>
+        <a href="/support">Support</a>
+        <a href="https://sites.fractune.dk">Sites</a>
+      </div>
+      <p class="footer-copy">&copy; {new Date().getFullYear()} Fractune. Alle rettigheder forbeholdes.</p>
+    </div>
+  </footer>
+</BaseLayout>
+
+<style>
+  /* Nav */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  .nav-links a {
+    color: var(--color-text-secondary);
+  }
+
+  .nav-links a:hover {
+    color: var(--color-text);
+  }
+
+  /* Hero */
+  .hero {
+    padding: 10rem 2rem 6rem;
+    text-align: center;
+  }
+
+  .hero-inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-accent {
+    background: linear-gradient(135deg, #0071e3, #5856d6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.75rem;
+    border-radius: 980px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all var(--transition);
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--color-accent);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-secondary:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-accent-hover);
+  }
+
+  /* Sections */
+  .section-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  /* Features */
+  .features {
+    padding: 6rem 0;
+    background: var(--color-bg-secondary);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+
+  .feature-card {
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .feature-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-card p {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  /* Privacy */
+  .privacy {
+    padding: 6rem 0;
+  }
+
+  .privacy-content {
+    max-width: 680px;
+    margin: 0 auto;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .privacy-content p {
+    margin-bottom: 1.25rem;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 3rem 0;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+  }
+
+  .footer-links a {
+    color: var(--color-text-secondary);
+  }
+
+  .footer-copy {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 600px) {
+    .hero {
+      padding: 8rem 1.25rem 4rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.0625rem;
+    }
+
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-links {
+      gap: 1rem;
+    }
+  }
+</style>

@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Vilkaar for brug — Fractune">
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Fractune</a>
+    </div>
+  </nav>
+
+  <main class="page">
+    <div class="page-inner">
+      <h1>Vilkaar for brug</h1>
+      <p class="last-updated">Sidst opdateret: 17. april 2026</p>
+
+      <h2>Acceptering</h2>
+      <p>
+        Ved at bruge Fractune-appen eller besaege fractune.dk accepterer du
+        disse vilkaar. Hvis du ikke er enig, bedes du undlade at bruge
+        tjenesten.
+      </p>
+
+      <h2>Tjenestens formaal</h2>
+      <p>
+        Fractune er et vaerktoej til fraktal fluensanalyse af bygningsfacader.
+        Appen beregner en fraktal dimension (D-vaerdi) baseret paa
+        box-counting metoden og bidrager resultater til et offentligt datasaet.
+      </p>
+
+      <h2>Bidrag til datasaettet</h2>
+      <p>
+        Naar du analyserer en bygning, accepterer du at resultatet offentliggoeres
+        i det faelles datasaet. Du bevarer ikke ophavsret til individuelle
+        analyseresultater, da de er faktuelle maalinger.
+      </p>
+
+      <h2>Acceptabel brug</h2>
+      <p>
+        Du maa ikke bruge Fractune til at sende falske eller manipulerede data,
+        overbelaste API'et, eller forsaege at identificere andre bidragydere.
+        Misbrug kan resultere i blokering af dit contributor-ID.
+      </p>
+
+      <h2>Ansvarsfraskrivelse</h2>
+      <p>
+        Fractune leveres "som den er" uden garanti for noejagtighed af
+        analyseresultater. D-vaerdier er approksimationer og boer ikke bruges
+        som eneste grundlag for professionelle eller videnskabelige beslutninger.
+      </p>
+
+      <h2>Aendringer</h2>
+      <p>
+        Vi kan opdatere disse vilkaar. Vaesentlige aendringer annonceres i appen.
+        Fortsat brug efter aendring betragtes som accept af de nye vilkaar.
+      </p>
+
+      <h2>Kontakt</h2>
+      <p>
+        Spoergsmaal? Kontakt os paa
+        <a href="mailto:support@fractune.dk">support@fractune.dk</a>.
+      </p>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .nav { border-bottom: 1px solid var(--color-border); }
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+  }
+  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); }
+  .page { padding: 4rem 0; }
+  .page-inner { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
+  h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .last-updated { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 2.5rem; }
+  h2 { font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
+  p { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; }
+</style>

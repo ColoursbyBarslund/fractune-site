@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Support — Fractune">
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Fractune</a>
+    </div>
+  </nav>
+
+  <main class="page">
+    <div class="page-inner">
+      <h1>Support</h1>
+      <p class="subtitle">Vi hjaelper gerne. Her er de mest almindelige spoergsmaal.</p>
+
+      <h2>Hvad er en D-vaerdi?</h2>
+      <p>
+        D-vaerdien er den fraktale dimension beregnet via box-counting metoden.
+        En vaerdi taet paa 1.0 indikerer enkel geometri (f.eks. en glat
+        betonvaeg), mens vaerdier naermere 2.0 viser hoej kompleksitet
+        (f.eks. ornamenterede facader).
+      </p>
+
+      <h2>Hvordan analyserer jeg en bygning?</h2>
+      <p>
+        Aaben Fractune, ret kameraet mod en bygningsfacade, og tryk paa
+        analyseknappen. Soerg for at facaden er jaevnt belyst og fylder det
+        meste af skaermen for bedste resultat.
+      </p>
+
+      <h2>Kan jeg slette mine data?</h2>
+      <p>
+        Ja. Send en mail til <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a>
+        med dit contributor-ID (under Indstillinger i appen). Vi sletter
+        alle dine bidrag inden for 30 dage.
+      </p>
+
+      <h2>Appen virker ikke — hvad goer jeg?</h2>
+      <p>
+        Proev at genstarte appen og sikre at du har den nyeste version fra
+        App Store. Hvis problemet fortsaetter, kontakt os paa
+        <a href="mailto:support@fractune.dk">support@fractune.dk</a> med en
+        beskrivelse og din iOS-version.
+      </p>
+
+      <h2>Kontakt</h2>
+      <p>
+        <a href="mailto:support@fractune.dk">support@fractune.dk</a>
+      </p>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .nav { border-bottom: 1px solid var(--color-border); }
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+  }
+  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); }
+  .page { padding: 4rem 0; }
+  .page-inner { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
+  h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .subtitle { color: var(--color-text-secondary); font-size: 1.0625rem; margin-bottom: 2.5rem; }
+  h2 { font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
+  p { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; }
+</style>
