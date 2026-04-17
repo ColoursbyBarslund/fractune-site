@@ -47,23 +47,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         },
       });
 
-      // Wait for MapKit to be fully initialized before creating map
-      mapkit.addEventListener('configuration-change', function (event) {
-        if (event.status === 'Initialized') {
-          var map = new mapkit.Map('map-container', {
-            center: new mapkit.Coordinate(55.6761, 12.5683),
-            region: new mapkit.CoordinateRegion(
-              new mapkit.Coordinate(55.6761, 12.5683),
-              new mapkit.CoordinateSpan(0.5, 0.5)
-            ),
-            showsCompass: mapkit.FeatureVisibility.Adaptive,
-            showsScale: mapkit.FeatureVisibility.Adaptive,
-            colorScheme: mapkit.Map.ColorSchemes.Light,
-          });
-
-          loadSites(map);
-        }
+      var map = new mapkit.Map('map-container', {
+        center: new mapkit.Coordinate(55.6761, 12.5683),
+        region: new mapkit.CoordinateRegion(
+          new mapkit.Coordinate(55.6761, 12.5683),
+          new mapkit.CoordinateSpan(0.5, 0.5)
+        ),
+        showsCompass: mapkit.FeatureVisibility.Adaptive,
+        showsScale: mapkit.FeatureVisibility.Adaptive,
+        colorScheme: mapkit.Map.ColorSchemes.Light,
       });
+
+      // Wait a moment for MapKit auth to complete, then load markers
+      setTimeout(function () { loadSites(map); }, 2000);
     }
 
     async function loadSites(map) {
