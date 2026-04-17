@@ -41,8 +41,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
       mapkit.init({
         authorizationCallback: function (done) {
-          // In production: fetch('/api/mapkit-token').then(r => r.text()).then(done);
-          done('YOUR_MAPKIT_JS_TOKEN');
+          fetch('/api/mapkit-token')
+            .then(function (r) { return r.text(); })
+            .then(done);
         },
       });
 
