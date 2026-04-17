@@ -3,8 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Fractune Sites — Kortvisning"
-  description="Udforsk bygninger analyseret med Fractune. Se fraktale fluensvaerdier (D-vaerdier) paa et interaktivt kort."
+  title="Fractune Sites — Map"
+  description="Explore buildings analysed with Fractune. View fractal fluence values (D-values) on an interactive map."
 >
   <div class="map-page">
     <header class="map-header">
@@ -13,18 +13,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     </header>
     <div id="map-container"></div>
     <div id="map-legend" class="map-legend">
-      <h3>D-vaerdi skala</h3>
+      <h3>D-value scale</h3>
       <div class="legend-scale">
         <span class="legend-low">1.0</span>
         <div class="legend-gradient"></div>
         <span class="legend-high">2.0</span>
       </div>
-      <p class="legend-desc">Lavere = enklere geometri &middot; Hoejere = mere kompleks</p>
+      <p class="legend-desc">Lower = simpler geometry &middot; Higher = more complex</p>
     </div>
     <div id="site-detail" class="site-detail hidden">
-      <button id="close-detail" class="close-btn" aria-label="Luk">&times;</button>
+      <button id="close-detail" class="close-btn" aria-label="Close">&times;</button>
       <h3 id="detail-title"></h3>
-      <p class="detail-d-value">D-vaerdi: <strong id="detail-d"></strong></p>
+      <p class="detail-d-value">D-value: <strong id="detail-d"></strong></p>
       <p id="detail-address" class="detail-address"></p>
       <p id="detail-date" class="detail-date"></p>
     </div>
@@ -46,7 +46,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         },
       });
 
-      const map = new mapkit.Map('map-container', {
+      var map = new mapkit.Map('map-container', {
         center: new mapkit.Coordinate(55.6761, 12.5683),
         region: new mapkit.CoordinateRegion(
           new mapkit.Coordinate(55.6761, 12.5683),
@@ -62,19 +62,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     async function loadSites(map) {
       try {
-        const res = await fetch('/api/sites');
+        var res = await fetch('/api/sites');
         if (!res.ok) throw new Error('Failed to fetch sites');
-        const data = await res.json();
+        var data = await res.json();
 
         if (!data.sites || data.sites.length === 0) return;
 
-        const annotations = data.sites.map(function (site) {
+        var annotations = data.sites.map(function (site) {
           var coord = new mapkit.Coordinate(site.latitude, site.longitude);
           var color = dValueToColor(site.dValue);
 
           var annotation = new mapkit.MarkerAnnotation(coord, {
             color: color,
-            title: site.name || 'Bygning',
+            title: site.name || 'Building',
             subtitle: 'D = ' + site.dValue.toFixed(3),
             glyphText: site.dValue.toFixed(1),
           });
@@ -101,19 +101,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     function dValueToColor(d) {
       var t = Math.max(0, Math.min(1, (d - 1.0) / 1.0));
-      var r = Math.round(0 + t * 255);
-      var g = Math.round(113 - t * 113);
-      var b = Math.round(227 - t * 127);
+      var r = Math.round(18 + t * 200);
+      var g = Math.round(40 + t * 60);
+      var b = Math.round(62 + t * 80);
       return 'rgb(' + r + ', ' + g + ', ' + b + ')';
     }
 
     function showDetail(site) {
       var panel = document.getElementById('site-detail');
-      document.getElementById('detail-title').textContent = site.name || 'Bygning';
+      document.getElementById('detail-title').textContent = site.name || 'Building';
       document.getElementById('detail-d').textContent = site.dValue.toFixed(4);
       document.getElementById('detail-address').textContent = site.address || '';
       document.getElementById('detail-date').textContent = site.analyzedAt
-        ? 'Analyseret: ' + new Date(site.analyzedAt).toLocaleDateString('da-DK')
+        ? 'Analysed: ' + new Date(site.analyzedAt).toLocaleDateString('en-GB')
         : '';
       panel.classList.remove('hidden');
     }
@@ -205,7 +205,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     flex: 1;
     height: 8px;
     border-radius: 4px;
-    background: linear-gradient(to right, #0071e3, #5856d6, #ff3b30);
+    background: linear-gradient(to right, #12283E, #2a5a8a, #4a8aba);
     min-width: 100px;
   }
 

@@ -1,17 +1,41 @@
-/* Fractune — Apple-inspired minimal design system */
+/* Fractune — Design system */
+
+@font-face {
+  font-family: 'Myriad Pro';
+  src: url('/fonts/myriadpro-light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Myriad Pro';
+  src: url('/fonts/myriadpro-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Myriad Pro';
+  src: url('/fonts/myriadpro-semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --color-bg: #ffffff;
   --color-bg-secondary: #f5f5f7;
   --color-text: #1d1d1f;
   --color-text-secondary: #6e6e73;
-  --color-accent: #0071e3;
-  --color-accent-hover: #0077ed;
+  --color-accent: #12283E;
+  --color-accent-hover: #1a3a57;
   --color-border: #d2d2d7;
   --color-success: #34c759;
   --color-danger: #ff3b30;
 
-  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+  --font-sans: 'Myriad Pro', -apple-system, BlinkMacSystemFont,
     'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: 'SF Mono', SFMono-Regular, ui-monospace, 'DejaVu Sans Mono',
     Menlo, Consolas, monospace;

@@ -2,15 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Fractune — Fraktal Fluensanalyse">
+<BaseLayout title="Fractune — Fractal Fluence Analysis">
   <!-- Navigation -->
   <nav class="nav">
     <div class="nav-inner">
       <a href="/" class="nav-logo">Fractune</a>
       <div class="nav-links">
-        <a href="#features">Funktioner</a>
-        <a href="#privacy">Privatliv</a>
-        <a href="https://sites.fractune.dk">Kort</a>
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="https://sites.fractune.dk">Map</a>
       </div>
     </div>
   </nav>
@@ -19,22 +19,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="hero">
     <div class="hero-inner">
       <h1 class="hero-title">
-        Forstaa bygningers<br />
-        <span class="hero-accent">fraktale fluens</span>
+        Understand the<br />
+        <span class="hero-accent">fractal fluence</span><br />
+        of buildings
       </h1>
       <p class="hero-subtitle">
-        Fractune analyserer arkitektonisk kompleksitet ved hjaelp af fraktal
-        geometri. Scan en bygning, faa en D-vaerdi, og bidrag til et aabent
-        datasaet.
+        Fractune analyses architectural complexity using fractal geometry.
+        Scan a building, get a D-value, and contribute to an open dataset.
       </p>
       <div class="hero-cta">
         <a
           href="https://apps.apple.com/app/fractune/idXXXXXXXXXX"
           class="btn btn-primary"
         >
-          Hent paa App Store
+          Download on the App Store
         </a>
-        <a href="#features" class="btn btn-secondary">Laes mere</a>
+        <a href="#features" class="btn btn-secondary">Learn more</a>
       </div>
     </div>
   </section>
@@ -42,38 +42,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Features -->
   <section id="features" class="features">
     <div class="section-inner">
-      <h2 class="section-title">Funktioner</h2>
+      <h2 class="section-title">Features</h2>
       <div class="feature-grid">
         <div class="feature-card">
           <div class="feature-icon" aria-hidden="true">&#x1F4D0;</div>
-          <h3>Fraktal Analyse</h3>
+          <h3>Fractal Analysis</h3>
           <p>
-            Brug box-counting metoden til at beregne den fraktale dimension
-            (D-vaerdien) af enhver bygningsfacade direkte fra dit kamera.
+            Use the box-counting method to calculate the fractal dimension
+            (D-value) of any building facade directly from your camera.
           </p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" aria-hidden="true">&#x1F5FA;</div>
-          <h3>Aabent Kortdata</h3>
+          <h3>Open Map Data</h3>
           <p>
-            Alle analyser bidrager til et offentligt datasaet. Udforsk
-            bygningsdata paa <a href="https://sites.fractune.dk">sites.fractune.dk</a>.
+            Every analysis contributes to a public dataset. Explore building
+            data at <a href="https://sites.fractune.dk">sites.fractune.dk</a>.
           </p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" aria-hidden="true">&#x1F512;</div>
-          <h3>Privatliv Foerst</h3>
+          <h3>Privacy First</h3>
           <p>
-            Ingen personlige data opsamles. Bidrag er anonyme og valideres
-            via Apples Device Attestation.
+            No personal data is collected. Contributions are anonymous and
+            validated via Apple's Device Attestation.
           </p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" aria-hidden="true">&#x26A1;</div>
           <h3>On-Device</h3>
           <p>
-            Al billedbehandling sker lokalt paa din enhed. Kun resultater og
-            metadata uploades — aldrig billeder.
+            All image processing happens locally on your device. Only results
+            and metadata are uploaded — never images.
           </p>
         </div>
       </div>
@@ -83,23 +83,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Privacy -->
   <section id="privacy" class="privacy">
     <div class="section-inner">
-      <h2 class="section-title">Privatliv &amp; Datasletning</h2>
+      <h2 class="section-title">Privacy &amp; Data Erasure</h2>
       <div class="privacy-content">
         <p>
-          Fractune respekterer dit privatliv. Vi indsamler ingen personligt
-          identificerbare oplysninger. Alle bidrag til det offentlige datasaet
-          er anonyme og knyttes udelukkende til et enhedsgenereret
-          contributor-ID.
+          Fractune respects your privacy. We do not collect any personally
+          identifiable information. All contributions to the public dataset
+          are anonymous and linked solely to a device-generated contributor ID.
         </p>
         <p>
-          Du har til enhver tid ret til at anmode om sletning af dine bidrag.
-          Kontakt os paa <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a>
-          med dit contributor-ID, og vi sletter alle tilknyttede data inden for
-          30 dage.
+          You have the right to request deletion of your contributions at any
+          time. Contact us at <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a>
+          with your contributor ID, and we will remove all associated data
+          within 30 days.
         </p>
         <p>
-          For mere information, se vores <a href="/privacy">privatlivspolitik</a>
-          og <a href="/terms">vilkaar for brug</a>.
+          For more information, see our <a href="/privacy">privacy policy</a>
+          and <a href="/terms">terms of use</a>.
         </p>
       </div>
     </div>
@@ -109,12 +108,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-links">
-        <a href="/privacy">Privatlivspolitik</a>
-        <a href="/terms">Vilkaar</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms</a>
         <a href="/support">Support</a>
         <a href="https://sites.fractune.dk">Sites</a>
       </div>
-      <p class="footer-copy">&copy; {new Date().getFullYear()} Fractune. Alle rettigheder forbeholdes.</p>
+      <p class="footer-copy">&copy; {new Date().getFullYear()} Fractune. All rights reserved.</p>
     </div>
   </footer>
 </BaseLayout>
@@ -184,7 +183,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .hero-accent {
-    background: linear-gradient(135deg, #0071e3, #5856d6);
+    background: linear-gradient(135deg, #12283E, #2a5a8a);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
