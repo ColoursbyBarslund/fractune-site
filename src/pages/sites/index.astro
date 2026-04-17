@@ -47,18 +47,23 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         },
       });
 
-      var map = new mapkit.Map('map-container', {
-        center: new mapkit.Coordinate(55.6761, 12.5683),
-        region: new mapkit.CoordinateRegion(
-          new mapkit.Coordinate(55.6761, 12.5683),
-          new mapkit.CoordinateSpan(0.5, 0.5)
-        ),
-        showsCompass: mapkit.FeatureVisibility.Adaptive,
-        showsScale: mapkit.FeatureVisibility.Adaptive,
-        colorScheme: mapkit.Map.ColorSchemes.Light,
-      });
+      // Wait for MapKit to be fully initialized before creating map
+      mapkit.addEventListener('configuration-change', function (event) {
+        if (event.status === 'Initialized') {
+          var map = new mapkit.Map('map-container', {
+            center: new mapkit.Coordinate(55.6761, 12.5683),
+            region: new mapkit.CoordinateRegion(
+              new mapkit.Coordinate(55.6761, 12.5683),
+              new mapkit.CoordinateSpan(0.5, 0.5)
+            ),
+            showsCompass: mapkit.FeatureVisibility.Adaptive,
+            showsScale: mapkit.FeatureVisibility.Adaptive,
+            colorScheme: mapkit.Map.ColorSchemes.Light,
+          });
 
-      loadSites(map);
+          loadSites(map);
+        }
+      });
     }
 
     async function loadSites(map) {
