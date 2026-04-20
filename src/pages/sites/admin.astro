@@ -87,14 +87,23 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     var dragAnnotation = null;
 
     // ─── Login ───
-    // Restore session from sessionStorage
-    (function() {
+    // Restore session from sessionStorage — validate token first
+    (async function() {
       var saved = sessionStorage.getItem('fractune_admin_token');
       if (saved) {
-        adminToken = saved;
-        document.getElementById('login-overlay').style.display = 'none';
-        document.getElementById('admin-header').style.display = '';
-        initMap();
+        // Quick validation: try fetching sites with admin param
+        try {
+          var res = await fetch('/api/sites?includeHidden=true');
+          if (res.ok) {
+            adminToken = saved;
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('admin-header').style.display = '';
+            initMap();
+            return;
+          }
+        } catch (e) {}
+        // Token invalid or expired — clear and show login
+        sessionStorage.removeItem('fractune_admin_token');
       }
     })();
 
@@ -107,26 +116,37 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       var email = document.getElementById('email-input').value.trim();
       var pw = document.getElementById('password-input').value;
       var code = document.getElementById('totp-input').value.trim();
+      var errorEl = document.getElementById('login-error');
+
       if (!email || !pw || !code) {
-        document.getElementById('login-error').textContent = 'All fields required';
+        errorEl.textContent = 'All fields required';
         return;
       }
+
       document.getElementById('login-btn').textContent = 'Verifying...';
-      var res = await fetch('/api/admin/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, password: pw, code: code }),
-      });
-      var data = await res.json();
-      document.getElementById('login-btn').textContent = 'Log in';
-      if (data.token) {
-        adminToken = data.token;
-        sessionStorage.setItem('fractune_admin_token', data.token);
-        document.getElementById('login-overlay').style.display = 'none';
-        document.getElementById('admin-header').style.display = '';
-        initMap();
-      } else {
-        document.getElementById('login-error').textContent = data.error || 'Invalid credentials';
+      errorEl.textContent = '';
+
+      try {
+        var res = await fetch('/api/admin/auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, password: pw, code: code }),
+        });
+        var data = await res.json();
+        document.getElementById('login-btn').textContent = 'Log in';
+
+        if (data.token) {
+          adminToken = data.token;
+          sessionStorage.setItem('fractune_admin_token', data.token);
+          document.getElementById('login-overlay').style.display = 'none';
+          document.getElementById('admin-header').style.display = '';
+          initMap();
+        } else {
+          errorEl.textContent = data.error || 'Invalid credentials';
+        }
+      } catch (err) {
+        document.getElementById('login-btn').textContent = 'Log in';
+        errorEl.textContent = 'Connection error: ' + err.message;
       }
     }
 
@@ -279,8 +299,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     function showContextMenu(e, site) {
       contextSite = site;
       var menu = document.getElementById('context-menu');
-      menu.querySelector('[data-action="hide"]').style.display = site.hidden ? 'none' : '';
-      menu.querySelector('[data-action="unhide"]').style.display = site.hidden ? '' : 'none';
       menu.style.left = (e.clientX || e.pageX) + 'px';
       menu.style.top = (e.clientY || e.pageY) + 'px';
       menu.classList.remove('hidden');
@@ -306,15 +324,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     function handleContextAction(action, site) {
       switch (action) {
-        case 'viewcontributor':
-            applyFilters();
-            document.getElementById('site-detail').classList.add('hidden');
-            showToast('Record deleted');
-          });
-          break;
-        case 'edit':
-          openEditModal(site);
-          break;
         case 'viewcontributor':
           if (site.contributorID) {
             document.getElementById('search-input').value = site.contributorID.substring(0, 8);
