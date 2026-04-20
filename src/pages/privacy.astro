@@ -5,55 +5,120 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout title="Privacy Policy — Fractune">
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/" class="nav-logo">Fractune</a>
+      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
     </div>
   </nav>
 
   <main class="page">
     <div class="page-inner">
       <h1>Privacy Policy</h1>
-      <p class="last-updated">Last updated: 17 April 2026</p>
+      <p class="last-updated">Version 1.0 — April 2026</p>
 
-      <h2>Data Collection</h2>
+      <h2>1. Data Controller</h2>
       <p>
-        Fractune does not collect any personally identifiable information. The
-        app generates an anonymous contributor ID locally on your device, used
-        solely to associate your contributions with the public dataset.
+        Fractune is operated by Colours by Barslund (Anders Barslund), Abildgaardsvej 51,
+        2830 Virum, Denmark. Phone: (+45) 60 63 40 24. For privacy inquiries, contact
+        <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a>.
       </p>
 
-      <h2>Analysis and Image Processing</h2>
+      <h2>2. Data We Collect</h2>
       <p>
-        All image processing takes place locally on your device. Images are
-        never uploaded to our servers. Only analysis results (D-value),
-        coordinates, and metadata are sent to the public dataset.
+        Fractune collects three categories of data:
       </p>
 
-      <h2>Public Dataset</h2>
+      <h3>a. Analysis Data</h3>
       <p>
-        When you analyse a building, you contribute to a publicly accessible
-        dataset via Apple CloudKit. The dataset contains: building name,
-        location (coordinates), D-value, and time of analysis. No personal
-        data is included.
+        When you analyse a building, the app collects the following data points and
+        submits them to the public dataset: D-value (fractal dimension), stability score,
+        lacunarity, multi-scale profile, building selection mode, camera metadata (focal
+        length, heading, pitch), and mask data. This data is anonymised and cannot be
+        linked to you personally. All image processing takes place locally on your
+        device — images are never uploaded to our servers.
       </p>
 
-      <h2>Data Erasure</h2>
+      <h3>b. Location Data (Optional)</h3>
       <p>
-        You may request deletion of all your contributions at any time. Send
-        an email to <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a>
-        with your contributor ID (found in the app under Settings). We will
-        delete all associated data within 30 days.
+        GPS coordinates (latitude and longitude) and camera heading are collected only
+        when you explicitly enable "Del position og retning" (Share position and
+        direction) in the app. This data is attached to your analysis and published as
+        part of the public dataset. You may disable location sharing at any time in the
+        app settings.
       </p>
 
-      <h2>Third-Party Services</h2>
+      <h3>c. Communications</h3>
       <p>
-        Fractune uses Apple CloudKit for data storage and Apple MapKit JS
-        for map display. These services are subject to Apple's
-        <a href="https://www.apple.com/legal/privacy/" rel="noopener">privacy policy</a>.
+        If you contact us via email, we collect the information you provide, including
+        your name and email address. This data is used solely to respond to your inquiry.
       </p>
 
-      <h2>Contact</h2>
+      <h2>3. How We Use Data</h2>
+      <p>We use the collected data for the following purposes:</p>
+      <ol>
+        <li>To improve the accuracy and reliability of the fractal analysis algorithms.</li>
+        <li>To build and maintain the public fractal fluence map at <a href="https://sites.fractune.dk">sites.fractune.dk</a>.</li>
+        <li>To support scientific research into the relationship between fractal geometry and architectural perception.</li>
+      </ol>
+
+      <h2>4. Data Retention</h2>
+      <ol>
+        <li><strong>Analysis data</strong> is retained indefinitely as part of the public dataset.</li>
+        <li><strong>Support inquiries</strong> are retained for 3 months after resolution, then deleted.</li>
+        <li><strong>Contributor ID</strong> — you may request deletion of your contributor ID and all associated contributions at any time. We will process your request within 30 days.</li>
+      </ol>
+
+      <h2>5. Third-Party Services</h2>
+      <p>Fractune relies on the following third-party services:</p>
+      <ol>
+        <li><strong>Apple CloudKit</strong> — used to store and synchronise the public dataset. Subject to <a href="https://www.apple.com/legal/privacy/" rel="noopener">Apple's privacy policy</a>.</li>
+        <li><strong>Apple MapKit JS</strong> — used to display the map at sites.fractune.dk. Subject to <a href="https://www.apple.com/legal/privacy/" rel="noopener">Apple's privacy policy</a>.</li>
+      </ol>
       <p>
-        Questions about privacy? Contact us at
+        We may share anonymised and aggregated analysis data with academic researchers
+        for the purpose of scientific study.
+      </p>
+
+      <h2>6. Data Sharing</h2>
+      <p>
+        Anonymised analysis data is public by design. By contributing to the dataset,
+        you acknowledge that your analysis results will be publicly accessible. We may
+        share aggregated statistics with architecture researchers, urban planners, and
+        academic institutions. We will never sell personal data to third parties.
+      </p>
+
+      <h2>7. Your Rights</h2>
+      <p>
+        Under applicable data protection law (including the GDPR), you have the right to:
+      </p>
+      <ol>
+        <li>Access the data we hold about you.</li>
+        <li>Request correction of inaccurate data.</li>
+        <li>Request deletion of your data (including your contributor ID and all associated contributions).</li>
+        <li>Request restriction of processing.</li>
+        <li>Lodge a complaint with the Danish Data Protection Agency (Datatilsynet) at <a href="https://www.datatilsynet.dk" rel="noopener">datatilsynet.dk</a>.</li>
+      </ol>
+      <p>
+        To exercise any of these rights, contact us at
+        <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a> with your
+        contributor ID (found under Settings in the app).
+      </p>
+
+      <h2>8. Children</h2>
+      <p>
+        Fractune is not directed at children under the age of 13. We do not knowingly
+        collect personal data from children. If you believe a child has provided us with
+        personal data, please contact us so we can take appropriate action.
+      </p>
+
+      <h2>9. Changes to This Policy</h2>
+      <p>
+        We may update this privacy policy from time to time. Significant changes will be
+        announced in the app. The "Version" date at the top of this page indicates when
+        this policy was last revised.
+      </p>
+
+      <h2>10. Contact</h2>
+      <p>
+        For all privacy-related questions, contact us at
         <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a>.
       </p>
     </div>
@@ -70,11 +135,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     align-items: center;
   }
-  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); }
+  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 0.375rem; }
+  .nav-logo-icon { height: 1.0em; width: auto; vertical-align: middle; transform: translateY(-1px); }
   .page { padding: 4rem 0; }
   .page-inner { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
   h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
   .last-updated { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 2.5rem; }
   h2 { font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
+  h3 { font-size: 1.0625rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; }
   p { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; }
+  ol { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; padding-left: 1.5rem; }
+  li { margin-bottom: 0.5rem; }
 </style>

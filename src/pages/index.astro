@@ -2,15 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Fractune — Fractal Fluence Analysis">
+<BaseLayout title="Fractune — Measure what buildings make you feel">
   <!-- Navigation -->
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/" class="nav-logo">Fractune</a>
+      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
       <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#privacy">Privacy</a>
         <a href="https://sites.fractune.dk">Map</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/support">Support</a>
       </div>
     </div>
   </nav>
@@ -19,14 +19,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="hero">
     <div class="hero-inner">
       <h1 class="hero-title">
-        Understand the<br />
-        <span class="hero-accent">fractal fluence</span><br />
-        of buildings
+        Some buildings<br />
+        <span class="hero-accent">feel right.</span>
       </h1>
-      <p class="hero-subtitle">
-        Fractune analyses architectural complexity using fractal geometry.
-        Scan a building, get a D-value, and contribute to an open dataset.
-      </p>
+      <p class="hero-subtitle">Now you can measure why.</p>
       <div class="hero-cta">
         <a
           href="https://apps.apple.com/app/fractune/idXXXXXXXXXX"
@@ -34,73 +30,74 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         >
           Download on the App Store
         </a>
-        <a href="#features" class="btn btn-secondary">Learn more</a>
       </div>
     </div>
   </section>
 
-  <!-- Features -->
-  <section id="features" class="features">
-    <div class="section-inner">
-      <h2 class="section-title">Features</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">&#x1F4D0;</div>
-          <h3>Fractal Analysis</h3>
-          <p>
-            Use the box-counting method to calculate the fractal dimension
-            (D-value) of any building facade directly from your camera.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">&#x1F5FA;</div>
-          <h3>Open Map Data</h3>
-          <p>
-            Every analysis contributes to a public dataset. Explore building
-            data at <a href="https://sites.fractune.dk">sites.fractune.dk</a>.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">&#x1F512;</div>
-          <h3>Privacy First</h3>
-          <p>
-            No personal data is collected. Contributions are anonymous and
-            validated via Apple's Device Attestation.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon" aria-hidden="true">&#x26A1;</div>
-          <h3>On-Device</h3>
-          <p>
-            All image processing happens locally on your device. Only results
-            and metadata are uploaded — never images.
-          </p>
-        </div>
+  <!-- What it does -->
+  <section class="explain">
+    <div class="explain-image-wrap">
+      <img src="/varde-lethgori.jpg" alt="Varde Teater & Musikhus — layered red timber facades with varying rhythms" class="explain-image" />
+    </div>
+    <div class="explain-inner">
+      <h2 class="explain-title">Every facade has a fractal fingerprint.<br />Fractune reads it.</h2>
+      <p class="explain-body">
+        Point your camera at any building. Fractune calculates its fractal
+        dimension &mdash; a single number that captures the complexity your
+        eye already senses. Research shows we prefer buildings around
+        D&nbsp;=&nbsp;1.3&ndash;1.5, the same range found in trees, coastlines,
+        and the architecture we have loved for centuries.
+      </p>
+      <p class="explain-credit">Varde Teater &amp; Musikhus &middot; <a href="https://lethgori.dk" rel="noopener" target="_blank">Leth &amp; Gori</a></p>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section class="map-section">
+    <div class="map-section-inner">
+      <h2 class="map-section-title">A growing map of architectural complexity.</h2>
+      <p class="map-section-body">
+        Every scan adds to a shared, open dataset. Explore how buildings
+        compare across neighbourhoods, cities, and styles.
+      </p>
+      <a href="https://sites.fractune.dk" class="btn btn-secondary">Explore the map</a>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how">
+    <div class="how-inner">
+      <div class="how-step">
+        <span class="how-number">1</span>
+        <h3>Point</h3>
+        <p>Frame the facade in your camera.</p>
+      </div>
+      <div class="how-step">
+        <span class="how-number">2</span>
+        <h3>Scan</h3>
+        <p>Fractune analyses on-device. Your photos never leave your phone.</p>
+      </div>
+      <div class="how-step">
+        <span class="how-number">3</span>
+        <h3>Understand</h3>
+        <p>Get the D-value &mdash; and see where it sits on the fluence scale.</p>
       </div>
     </div>
   </section>
 
-  <!-- Privacy -->
-  <section id="privacy" class="privacy">
-    <div class="section-inner">
-      <h2 class="section-title">Privacy &amp; Data Erasure</h2>
-      <div class="privacy-content">
-        <p>
-          Fractune respects your privacy. We do not collect any personally
-          identifiable information. All contributions to the public dataset
-          are anonymous and linked solely to a device-generated contributor ID.
-        </p>
-        <p>
-          You have the right to request deletion of your contributions at any
-          time. Contact us at <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a>
-          with your contributor ID, and we will remove all associated data
-          within 30 days.
-        </p>
-        <p>
-          For more information, see our <a href="/privacy">privacy policy</a>
-          and <a href="/terms">terms of use</a>.
-        </p>
-      </div>
+  <!-- Science -->
+  <section class="science">
+    <div class="science-inner">
+      <h2 class="science-title">Built on decades of research.</h2>
+      <p class="science-body">
+        Fractal fluence draws on the work of physicist Richard Taylor, who
+        discovered that humans respond measurably to fractal patterns in
+        art and architecture. Fractune builds on methods established by
+        Ostwald &amp; Vaughan across 85 canonical buildings, and connects
+        to the broader theory of predictive processing in environmental
+        psychology.
+      </p>
+      <a href="/science" class="btn btn-secondary" style="margin-top: 2rem;">The science</a>
     </div>
   </section>
 
@@ -108,12 +105,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-links">
-        <a href="/privacy">Privacy Policy</a>
+        <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
+        <a href="/license">Dataset Licence</a>
         <a href="/support">Support</a>
-        <a href="https://sites.fractune.dk">Sites</a>
+        <a href="https://sites.fractune.dk">Map</a>
       </div>
-      <p class="footer-copy">&copy; {new Date().getFullYear()} Fractune. All rights reserved.</p>
+      <p class="footer-copy">&copy; {new Date().getFullYear()} Fractune &middot; Colours by Barslund</p>
     </div>
   </footer>
 </BaseLayout>
@@ -147,6 +145,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-weight: 600;
     color: var(--color-text);
     letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .nav-logo-icon {
+    height: 1.0em;
+    width: auto;
+    vertical-align: middle;
+    transform: translateY(-1px);
   }
 
   .nav-links {
@@ -165,7 +173,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   /* Hero */
   .hero {
-    padding: 10rem 2rem 6rem;
+    padding: 12rem 2rem 6rem;
     text-align: center;
   }
 
@@ -175,11 +183,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .hero-title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2.8rem, 7vw, 4.5rem);
     font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    margin-bottom: 1.5rem;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    margin-bottom: 1rem;
   }
 
   .hero-accent {
@@ -190,27 +198,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .hero-subtitle {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+    font-weight: 300;
     color: var(--color-text-secondary);
-    line-height: 1.6;
+    line-height: 1.4;
     margin-bottom: 2.5rem;
-    max-width: 560px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .hero-cta {
     display: flex;
-    gap: 1rem;
     justify-content: center;
-    flex-wrap: wrap;
   }
 
   /* Buttons */
   .btn {
     display: inline-flex;
     align-items: center;
-    padding: 0.75rem 1.75rem;
+    padding: 0.875rem 2rem;
     border-radius: 980px;
     font-size: 1rem;
     font-weight: 500;
@@ -238,72 +242,149 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--color-accent-hover);
   }
 
-  /* Sections */
-  .section-inner {
-    max-width: var(--max-width);
+  /* Explain */
+  .explain {
+    padding: 0 0 6rem;
+    text-align: center;
+    background: var(--color-bg-secondary);
+  }
+
+  .explain-image-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    overflow: hidden;
+    margin-bottom: 3rem;
+  }
+
+  .explain-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+  }
+
+  .explain-inner {
+    max-width: 640px;
     margin: 0 auto;
     padding: 0 2rem;
   }
 
-  .section-title {
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  /* Features */
-  .features {
-    padding: 6rem 0;
-    background: var(--color-bg-secondary);
-  }
-
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 2rem;
-  }
-
-  .feature-card {
-    background: var(--color-bg);
-    border-radius: var(--radius);
-    padding: 2rem;
-    text-align: center;
-  }
-
-  .feature-icon {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  .feature-card h3 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .feature-card p {
-    font-size: 0.9375rem;
+  .explain-credit {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
     color: var(--color-text-secondary);
-    line-height: 1.5;
+    opacity: 0.7;
   }
 
-  /* Privacy */
-  .privacy {
-    padding: 6rem 0;
+  .explain-credit a {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
   }
 
-  .privacy-content {
-    max-width: 680px;
-    margin: 0 auto;
+  .explain-title {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .explain-body {
     font-size: 1.0625rem;
     line-height: 1.7;
     color: var(--color-text-secondary);
   }
 
-  .privacy-content p {
-    margin-bottom: 1.25rem;
+  /* Map section */
+  .map-section {
+    padding: 6rem 2rem;
+    text-align: center;
+  }
+
+  .map-section-inner {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .map-section-title {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .map-section-body {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  /* How it works */
+  .how {
+    padding: 6rem 2rem;
+    background: var(--color-bg-secondary);
+  }
+
+  .how-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .how-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .how-step h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .how-step p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* Science */
+  .science {
+    padding: 6rem 2rem;
+    text-align: center;
+  }
+
+  .science-inner {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .science-title {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  .science-body {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
   }
 
   /* Footer */
@@ -338,15 +419,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   @media (max-width: 600px) {
     .hero {
-      padding: 8rem 1.25rem 4rem;
+      padding: 9rem 1.25rem 4rem;
     }
 
     .hero-subtitle {
-      font-size: 1.0625rem;
+      font-size: 1.25rem;
     }
 
-    .feature-grid {
+    .how-inner {
       grid-template-columns: 1fr;
+      gap: 2rem;
     }
 
     .nav-links {

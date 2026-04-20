@@ -27,12 +27,7 @@ export const GET: APIRoute = async ({ request }) => {
     const formattedKey = privateKey.replace(/\\n/g, '\n');
     const key = await importPKCS8(formattedKey, 'ES256');
 
-    // Get origin from request for domain restriction
-    const origin = request.headers.get('origin') || request.headers.get('referer') || '';
-
-    const token = await new SignJWT({
-      origin: origin || undefined,
-    })
+    const token = await new SignJWT({})
       .setProtectedHeader({
         alg: 'ES256',
         kid: keyId,

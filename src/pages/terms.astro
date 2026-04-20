@@ -5,60 +5,133 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout title="Terms of Use — Fractune">
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/" class="nav-logo">Fractune</a>
+      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
     </div>
   </nav>
 
   <main class="page">
     <div class="page-inner">
       <h1>Terms of Use</h1>
-      <p class="last-updated">Last updated: 17 April 2026</p>
+      <p class="last-updated">Version 1.0 — April 2026</p>
 
-      <h2>Acceptance</h2>
+      <h2>1. Scope</h2>
       <p>
-        By using the Fractune app or visiting fractune.dk, you agree to these
-        terms. If you do not agree, please refrain from using the service.
+        These terms apply to your use of the Fractune mobile application ("the App")
+        and the website at fractune.dk ("the Website"), collectively referred to as
+        "the Service". The App is available on the Apple App Store. The agreement for
+        the App is between you and Fractune (Colours by Barslund), not Apple. The App
+        is licensed, not sold, to you.
       </p>
 
-      <h2>Purpose of the Service</h2>
+      <h2>2. The Service</h2>
       <p>
-        Fractune is a tool for fractal fluence analysis of building facades.
-        The app calculates a fractal dimension (D-value) based on the
-        box-counting method and contributes results to a public dataset.
+        Fractune is a fractal fluence analysis tool for building facades. The App
+        calculates a fractal dimension (D-value) using the box-counting method and
+        contributes analysis results to a publicly accessible dataset.
       </p>
 
-      <h2>Contributions to the Dataset</h2>
+      <h2>3. Contributions to the Public Dataset</h2>
       <p>
-        When you analyse a building, you agree that the result will be published
-        in the shared dataset. You do not retain copyright over individual
-        analysis results, as they are factual measurements.
+        By analysing a building with location sharing enabled, you agree that the
+        analysis results — including D-value, metadata, and coordinates — will be
+        published as part of the public dataset and made available at
+        <a href="https://sites.fractune.dk">sites.fractune.dk</a>.
+      </p>
+      <p>
+        Analysis results are factual measurements and as such are not subject to
+        copyright. By contributing, you grant Fractune a perpetual, worldwide,
+        royalty-free, non-exclusive licence to use, display, distribute, and sublicence
+        your contributions as part of the public dataset.
       </p>
 
-      <h2>Acceptable Use</h2>
+      <h2>4. User Eligibility</h2>
       <p>
-        You may not use Fractune to submit false or manipulated data,
-        overload the API, or attempt to identify other contributors.
-        Misuse may result in your contributor ID being blocked.
+        There is no minimum age restriction for using Fractune. However, we recommend
+        that users under the age of 13 obtain parental or guardian consent before using
+        the Service.
       </p>
 
-      <h2>Disclaimer</h2>
+      <h2>5. Acceptable Use</h2>
+      <p>You agree not to:</p>
+      <ol>
+        <li>Submit false, fabricated, or deliberately manipulated analysis data.</li>
+        <li>Overload or abuse the API or backend infrastructure.</li>
+        <li>Attempt to identify, de-anonymise, or contact other contributors.</li>
+        <li>Scrape or bulk-download the public dataset without permission.</li>
+        <li>Use the dataset to train AI or machine learning models without prior written permission from Fractune.</li>
+      </ol>
+
+      <h2>6. Intellectual Property</h2>
       <p>
-        Fractune is provided "as is" without warranty of accuracy of analysis
-        results. D-values are approximations and should not be used as the
-        sole basis for professional or scientific decisions.
+        The App, Website, algorithms, design, and all associated intellectual property
+        are owned by Fractune / Anders Barslund. Analysis results (D-values and
+        associated metadata) are factual measurements and are considered to be in the
+        public domain.
       </p>
 
-      <h2>Changes</h2>
+      <h2>7. Dataset Licence</h2>
       <p>
-        We may update these terms. Significant changes will be announced in
-        the app. Continued use after changes constitutes acceptance of the
-        new terms.
+        Analysis data in the public dataset is made available under the terms of the
+        separate <a href="/license">Dataset Licence</a>. By using data from the dataset,
+        you agree to the terms set forth in that licence.
       </p>
 
-      <h2>Contact</h2>
+      <h2>8. Disclaimer</h2>
       <p>
-        Questions? Contact us at
-        <a href="mailto:support@fractune.dk">support@fractune.dk</a>.
+        The Service is provided "as is" and "as available" without warranty of any kind,
+        whether express or implied, including but not limited to warranties of
+        merchantability, fitness for a particular purpose, and non-infringement. D-values
+        are mathematical approximations and should not be used as the sole basis for
+        professional, scientific, or regulatory decisions. Apple Inc. expressly disclaims
+        all warranties with respect to the App.
+      </p>
+
+      <h2>9. Limitation of Liability</h2>
+      <p>
+        To the maximum extent permitted by applicable law, Fractune shall not be liable
+        for any indirect, incidental, special, consequential, or punitive damages arising
+        out of or in connection with your use of the Service. Apple Inc. is not
+        responsible for the App or its content and shall have no obligation to address
+        any claims relating to the App. Fractune is solely responsible for handling all
+        product claims and end-user support.
+      </p>
+
+      <h2>10. Apple Provisions</h2>
+      <p>
+        You acknowledge that Apple Inc. is a third-party beneficiary of these Terms and
+        may enforce them against you. The App Store Terms of Service supplement these
+        Terms. Apple disclaims any obligation to furnish maintenance or support services
+        with respect to the App.
+      </p>
+
+      <h2>11. Termination</h2>
+      <p>
+        Your rights under these Terms terminate automatically if you breach any
+        provision. Upon termination, you must cease all use of the Service. We reserve
+        the right to block your contributor ID and remove your contributions from the
+        dataset in the event of a breach.
+      </p>
+
+      <h2>12. Governing Law</h2>
+      <p>
+        These Terms are governed by the laws of Denmark. Any dispute arising out of or
+        in connection with the Service shall be submitted to the courts of Lyngby,
+        Denmark. If you are a consumer in the EU, you may also use the European
+        Commission's Online Dispute Resolution platform at
+        <a href="https://ec.europa.eu/consumers/odr" rel="noopener">ec.europa.eu/consumers/odr</a>.
+      </p>
+
+      <h2>13. Changes</h2>
+      <p>
+        We may update these Terms from time to time. Significant changes will be
+        announced in the App. Continued use of the Service after changes have been
+        published constitutes acceptance of the revised Terms.
+      </p>
+
+      <h2>14. Contact</h2>
+      <p>
+        Questions about these Terms? Contact us at
+        <a href="mailto:legal@fractune.dk">legal@fractune.dk</a>.
       </p>
     </div>
   </main>
@@ -74,11 +147,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     align-items: center;
   }
-  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); }
+  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 0.375rem; }
+  .nav-logo-icon { height: 1.0em; width: auto; vertical-align: middle; transform: translateY(-1px); }
   .page { padding: 4rem 0; }
   .page-inner { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
   h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
   .last-updated { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 2.5rem; }
   h2 { font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
   p { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; }
+  ol { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; padding-left: 1.5rem; }
+  li { margin-bottom: 0.5rem; }
 </style>

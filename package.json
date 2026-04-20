@@ -14,6 +14,8 @@
   "dependencies": {
     "@astrojs/vercel": "^10.0.4",
     "astro": "^6.1.7",
-    "jose": "^6.0.11"
+    "jose": "^6.0.11",
+    "node-app-attest": "^1.0.1",
+    "otpauth": "^9.5.0"
   }
 }

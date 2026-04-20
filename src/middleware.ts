@@ -3,6 +3,11 @@ import { defineMiddleware } from 'astro:middleware';
 export const onRequest = defineMiddleware(({ request, url, rewrite }, next) => {
   const host = request.headers.get('host') || '';
 
+  // Redirect fractune.dk/admin to sites.fractune.dk/admin
+  if (!host.startsWith('sites.') && url.pathname === '/admin') {
+    return Response.redirect('https://sites.fractune.dk/admin', 302);
+  }
+
   // If the request is for sites.fractune.dk, rewrite to /sites/* routes
   if (host.startsWith('sites.')) {
     // Don't rewrite API calls or if already on /sites path

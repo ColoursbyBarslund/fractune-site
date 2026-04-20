@@ -1,0 +1,571 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Fractune Admin — Sites"
+  description="Admin view of the Fractune sites map."
+>
+  <div class="map-page">
+
+    <!-- Login overlay -->
+    <div id="login-overlay" class="login-overlay">
+      <div class="login-box">
+        <h1>Fractune Admin</h1>
+        <input id="email-input" type="email" placeholder="Email" class="login-input" autofocus />
+        <input id="password-input" type="password" placeholder="Password" class="login-input" />
+        <input id="totp-input" type="text" placeholder="2FA code" class="login-input" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" />
+        <button id="login-btn" class="login-btn">Log in</button>
+        <p id="login-error" class="login-error"></p>
+      </div>
+    </div>
+
+    <!-- Admin header -->
+    <header class="map-header" id="admin-header" style="display:none">
+      <a href="https://fractune.dk" class="map-logo"><img src="/logo.png" alt="" class="map-logo-icon" />Fractune</a>
+      <h1 class="map-title">Admin</h1>
+      <div class="admin-stats" id="admin-stats"></div>
+      <div class="search-wrap">
+        <input id="search-input" type="search" placeholder="Search..." class="search-input" autocomplete="off" />
+        <span id="search-count" class="search-count"></span>
+      </div>
+      <button id="toggle-view" class="header-btn" title="Toggle public/admin view">Public view</button>
+      <button id="logout-btn" class="header-btn header-btn-muted">Log out</button>
+    </header>
+
+    <div id="map-container"></div>
+
+    <!-- D-value range slider -->
+    <div id="map-legend" class="map-legend">
+      <h3>D-value range</h3>
+      <div class="range-wrap">
+        <span class="range-label">1.0</span>
+        <div class="range-track" id="range-track">
+          <div class="range-gradient"></div>
+          <div class="range-selected" id="range-selected"></div>
+          <div class="range-handle range-handle-left" id="handle-left" tabindex="0"></div>
+          <div class="range-handle range-handle-right" id="handle-right" tabindex="0"></div>
+        </div>
+        <span class="range-label">2.0</span>
+      </div>
+      <p class="range-values" id="range-values">D 1.0 – 2.0</p>
+    </div>
+
+    <!-- Detail panel -->
+    <div id="site-detail" class="site-detail hidden">
+      <button id="close-detail" class="close-btn" aria-label="Close">&times;</button>
+      <h3 id="detail-title"></h3>
+      <p class="detail-d-value">D-value: <strong id="detail-d"></strong></p>
+      <p id="detail-address" class="detail-address"></p>
+      <p id="detail-style" class="detail-style"></p>
+      <p id="detail-date" class="detail-date"></p>
+      <p id="detail-contributor" class="detail-contributor"></p>
+      <p id="detail-id" class="detail-id"></p>
+    </div>
+
+    <!-- Context menu -->
+    <div id="context-menu" class="context-menu hidden">
+      <button class="ctx-item" data-action="viewcontributor"><span class="ctx-icon">&#x1F464;</span> View contributor</button>
+      <button class="ctx-item" data-action="copyid"><span class="ctx-icon">&#x1F4CB;</span> Copy record ID</button>
+      <button class="ctx-item" data-action="openmaps"><span class="ctx-icon">&#x1F5FA;</span> Open in Apple Maps</button>
+    </div>
+  </div>
+
+  <script is:inline src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" crossorigin async></script>
+
+  <script is:inline>
+    var adminToken = null;
+    var allSites = [];
+    var allAnnotations = [];
+    var siteMap = {};
+    var currentMap = null;
+    var currentSearch = '';
+    var rangeMin = 1.0;
+    var rangeMax = 2.0;
+    var showPublicView = false;
+    var contextSite = null;
+    var dragAnnotation = null;
+
+    // ─── Login ───
+    // Restore session from sessionStorage
+    (function() {
+      var saved = sessionStorage.getItem('fractune_admin_token');
+      if (saved) {
+        adminToken = saved;
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('admin-header').style.display = '';
+        initMap();
+      }
+    })();
+
+    document.getElementById('login-btn').addEventListener('click', doLogin);
+    document.querySelectorAll('.login-input').forEach(function(el) {
+      el.addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
+    });
+
+    async function doLogin() {
+      var email = document.getElementById('email-input').value.trim();
+      var pw = document.getElementById('password-input').value;
+      var code = document.getElementById('totp-input').value.trim();
+      if (!email || !pw || !code) {
+        document.getElementById('login-error').textContent = 'All fields required';
+        return;
+      }
+      document.getElementById('login-btn').textContent = 'Verifying...';
+      var res = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, password: pw, code: code }),
+      });
+      var data = await res.json();
+      document.getElementById('login-btn').textContent = 'Log in';
+      if (data.token) {
+        adminToken = data.token;
+        sessionStorage.setItem('fractune_admin_token', data.token);
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('admin-header').style.display = '';
+        initMap();
+      } else {
+        document.getElementById('login-error').textContent = data.error || 'Invalid credentials';
+      }
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', function() {
+      adminToken = null;
+      sessionStorage.removeItem('fractune_admin_token');
+      location.reload();
+    });
+
+    // ─── Map ───
+    function initMap() {
+      if (typeof mapkit === 'undefined') { setTimeout(initMap, 100); return; }
+      mapkit.init({
+        authorizationCallback: function(done) {
+          fetch('/api/mapkit-token').then(function(r) { return r.text(); }).then(done);
+        },
+      });
+      currentMap = new mapkit.Map('map-container', {
+        center: new mapkit.Coordinate(55.6761, 12.5683),
+        region: new mapkit.CoordinateRegion(
+          new mapkit.Coordinate(55.6761, 12.5683),
+          new mapkit.CoordinateSpan(0.5, 0.5)
+        ),
+        showsCompass: mapkit.FeatureVisibility.Adaptive,
+        showsScale: mapkit.FeatureVisibility.Adaptive,
+        mapType: mapkit.Map.MapTypes.Hybrid,
+      });
+      mapkit.addEventListener('configuration-change', function handler(event) {
+        if (event.status === 'Initialized') {
+          mapkit.removeEventListener('configuration-change', handler);
+          loadSites();
+        }
+      });
+      // Close context menu on map click
+      currentMap.element.addEventListener('click', closeContextMenu);
+
+      // Right-click: if a marker is selected (edit mode), show context menu
+      document.getElementById('map-container').addEventListener('contextmenu', function(e) {
+        if (editModeSite) {
+          e.preventDefault();
+          showContextMenu(e, editModeSite);
+        }
+      });
+    }
+
+    async function loadSites() {
+      var res = await fetch('/api/sites?includeHidden=true');
+      var data = await res.json();
+      allSites = data.sites || [];
+      siteMap = {};
+      allSites.forEach(function(s) { siteMap[s.id] = s; });
+      updateStats();
+      applyFilters();
+    }
+
+    function updateStats() {
+      var hidden = allSites.filter(function(s) { return s.hidden; }).length;
+      var total = allSites.length;
+      var el = document.getElementById('admin-stats');
+      el.textContent = total + ' sites' + (hidden > 0 ? ' · ' + hidden + ' hidden' : '');
+    }
+
+    function applyFilters() {
+      if (allAnnotations.length > 0) currentMap.removeAnnotations(allAnnotations);
+
+      var filtered = allSites.filter(function(site) {
+        if (site.dValue < rangeMin || site.dValue > rangeMax) return false;
+        if (showPublicView && site.hidden) return false;
+        if (currentSearch) {
+          var q = currentSearch.toLowerCase();
+          var s = [site.buildingName, site.buildingAddress, site.architect, site.buildingStyle, site.buildingType, site.contributorID, site.dValue.toFixed(3)].filter(Boolean).join(' ').toLowerCase();
+          if (!s.includes(q)) return false;
+        }
+        return true;
+      });
+
+      document.getElementById('search-count').textContent =
+        (currentSearch || rangeMin > 1.0 || rangeMax < 2.0)
+          ? filtered.length + ' of ' + allSites.length
+          : allSites.length + ' sites';
+
+      allAnnotations = filtered.map(function(site) {
+        var coord = new mapkit.Coordinate(site.latitude, site.longitude);
+        var color = dValueToColor(site.dValue);
+
+        var annotation = new mapkit.MarkerAnnotation(coord, {
+          color: site.hidden ? '#999' : color,
+          title: site.buildingName || 'D = ' + site.dValue.toFixed(3),
+          subtitle: site.buildingName ? 'D = ' + site.dValue.toFixed(3) : '',
+          glyphText: site.dValue.toFixed(1),
+          draggable: false,
+        });
+
+        if (site.hidden) {
+          annotation.displayPriority = 500;
+        }
+
+        annotation._siteId = site.id;
+
+        annotation.addEventListener('select', function() {
+          enterEditMode(annotation, site);
+        });
+
+        annotation.addEventListener('deselect', function() {
+          exitEditMode();
+        });
+
+        return annotation;
+      });
+
+      currentMap.addAnnotations(allAnnotations);
+
+      if (allAnnotations.length > 1) {
+        currentMap.showItems(allAnnotations, { animate: true, padding: new mapkit.Padding(80, 60, 60, 60) });
+      }
+    }
+
+    function dValueToColor(d) {
+      var t = Math.max(0, Math.min(1, (d - 1.0) / 1.0));
+      var sweet = 0.4;
+      var dist = Math.abs(t - sweet) / Math.max(sweet, 1 - sweet);
+      dist = Math.min(1, dist);
+      return 'rgb(' + Math.round(50 + dist * 180) + ',' + Math.round(160 - dist * 120) + ',' + Math.round(50 - dist * 20) + ')';
+    }
+
+    // ─── Detail panel ───
+    function showDetail(site) {
+      document.getElementById('detail-title').textContent = site.buildingName || 'D = ' + site.dValue.toFixed(3);
+      document.getElementById('detail-d').textContent = site.dValue.toFixed(4);
+      var details = [];
+      if (site.buildingAddress) details.push(site.buildingAddress);
+      if (site.architect) details.push(site.architect);
+      if (site.constructionYear) details.push(String(site.constructionYear));
+      document.getElementById('detail-address').textContent = details.join(' · ') || '';
+      var style = [];
+      if (site.buildingStyle) style.push(site.buildingStyle);
+      if (site.buildingType) style.push(site.buildingType);
+      document.getElementById('detail-style').textContent = style.join(' · ') || '';
+      document.getElementById('detail-date').textContent = site.analyzedAt ? 'Analysed: ' + new Date(site.analyzedAt).toLocaleDateString('en-GB') : '';
+      document.getElementById('detail-contributor').textContent = site.contributorID ? 'Contributor: ' + site.contributorID.substring(0, 8) + '…' : '';
+      document.getElementById('detail-id').textContent = 'ID: ' + site.id;
+      document.getElementById('site-detail').classList.remove('hidden');
+    }
+
+    document.getElementById('close-detail').addEventListener('click', function() {
+      document.getElementById('site-detail').classList.add('hidden');
+    });
+
+    // ─── Context menu ───
+    function showContextMenu(e, site) {
+      contextSite = site;
+      var menu = document.getElementById('context-menu');
+      menu.querySelector('[data-action="hide"]').style.display = site.hidden ? 'none' : '';
+      menu.querySelector('[data-action="unhide"]').style.display = site.hidden ? '' : 'none';
+      menu.style.left = (e.clientX || e.pageX) + 'px';
+      menu.style.top = (e.clientY || e.pageY) + 'px';
+      menu.classList.remove('hidden');
+    }
+
+    function closeContextMenu() {
+      document.getElementById('context-menu').classList.add('hidden');
+      contextSite = null;
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.context-menu')) closeContextMenu();
+    });
+
+    document.querySelectorAll('.ctx-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        if (!contextSite) return;
+        var action = this.dataset.action;
+        handleContextAction(action, contextSite);
+        closeContextMenu();
+      });
+    });
+
+    function handleContextAction(action, site) {
+      switch (action) {
+        case 'viewcontributor':
+            applyFilters();
+            document.getElementById('site-detail').classList.add('hidden');
+            showToast('Record deleted');
+          });
+          break;
+        case 'edit':
+          openEditModal(site);
+          break;
+        case 'viewcontributor':
+          if (site.contributorID) {
+            document.getElementById('search-input').value = site.contributorID.substring(0, 8);
+            currentSearch = site.contributorID.substring(0, 8);
+            applyFilters();
+          }
+          break;
+        case 'copyid':
+          navigator.clipboard.writeText(site.id);
+          showToast('ID copied');
+          break;
+        case 'openmaps':
+          window.open('https://maps.apple.com/?ll=' + site.latitude + ',' + site.longitude + '&z=18', '_blank');
+          break;
+      }
+    }
+
+
+    // ─── Edit mode (when marker selected) ───
+    var editModeAnnotation = null;
+    var editModeSite = null;
+    function enterEditMode(annotation, site) {
+      if (editModeSite) exitEditMode();
+      editModeAnnotation = annotation;
+      editModeSite = site;
+      showDetail(site);
+      showEditToolbar(site);
+    }
+
+    function exitEditMode() {
+      editModeAnnotation = null;
+      editModeSite = null;
+      hideEditToolbar();
+    }
+
+
+    function showEditToolbar(site) {
+      var existing = document.getElementById('edit-toolbar');
+      if (existing) existing.remove();
+
+      var bar = document.createElement('div');
+      bar.id = 'edit-toolbar';
+      bar.className = 'edit-toolbar';
+      var hiddenLabel = site.hidden ? ' (hidden)' : '';
+      bar.innerHTML =
+        '<span class="edit-toolbar-label">' + (site.buildingName || 'D=' + site.dValue.toFixed(2)) + hiddenLabel + '</span>' +
+        '<button class="toolbar-btn" data-action="viewcontributor">Contributor</button>' +
+        '<button class="toolbar-btn" data-action="openmaps">Maps</button>' +
+        '<button class="toolbar-btn" data-action="copyid">Copy ID</button>' +
+        '<button class="toolbar-btn toolbar-btn-done" data-action="done">Done</button>';
+
+      document.querySelector('.map-page').appendChild(bar);
+
+      bar.querySelectorAll('.toolbar-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var action = this.dataset.action;
+          if (action === 'done') {
+            if (currentMap) currentMap.selectedAnnotation = null;
+            exitEditMode();
+          } else {
+            handleContextAction(action, site);
+          }
+        });
+      });
+    }
+
+    function hideEditToolbar() {
+      var bar = document.getElementById('edit-toolbar');
+      if (bar) bar.remove();
+    }
+
+    // ─── Toggle public view ───
+    document.getElementById('toggle-view').addEventListener('click', function() {
+      showPublicView = !showPublicView;
+      this.textContent = showPublicView ? 'Admin view' : 'Public view';
+      applyFilters();
+    });
+
+    // ─── Search ───
+    var searchTimeout;
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('search-input').addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        var el = this;
+        searchTimeout = setTimeout(function() { currentSearch = el.value.trim(); applyFilters(); }, 200);
+      });
+      document.getElementById('search-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') { this.value = ''; currentSearch = ''; applyFilters(); this.blur(); }
+      });
+      initRangeSlider();
+    });
+
+    // ─── Toast ───
+    function showToast(msg) {
+      var el = document.createElement('div');
+      el.className = 'toast';
+      el.textContent = msg;
+      document.body.appendChild(el);
+      setTimeout(function() { el.classList.add('toast-show'); }, 10);
+      setTimeout(function() { el.classList.remove('toast-show'); setTimeout(function() { el.remove(); }, 300); }, 2000);
+    }
+
+    // ─── Range slider (same as public) ───
+    function initRangeSlider() {
+      var track = document.getElementById('range-track');
+      var handleLeft = document.getElementById('handle-left');
+      var handleRight = document.getElementById('handle-right');
+      var selected = document.getElementById('range-selected');
+      var valuesEl = document.getElementById('range-values');
+      var D_MIN = 1.0, D_MAX = 2.0;
+      function dToPercent(d) { return ((d - D_MIN) / (D_MAX - D_MIN)) * 100; }
+      function percentToD(p) { return D_MIN + (p / 100) * (D_MAX - D_MIN); }
+      function updateVisuals() {
+        var lp = dToPercent(rangeMin), rp = dToPercent(rangeMax);
+        handleLeft.style.left = lp + '%'; handleRight.style.left = rp + '%';
+        selected.style.left = lp + '%'; selected.style.width = (rp - lp) + '%';
+        valuesEl.textContent = 'D ' + rangeMin.toFixed(1) + ' \u2013 ' + rangeMax.toFixed(1);
+      }
+      updateVisuals();
+      function startDrag(handle, isLeft) {
+        var onMove = function(e) {
+          e.preventDefault();
+          var rect = track.getBoundingClientRect();
+          var cx = e.touches ? e.touches[0].clientX : e.clientX;
+          var pct = Math.max(0, Math.min(100, ((cx - rect.left) / rect.width) * 100));
+          var d = Math.round(percentToD(pct) * 20) / 20;
+          d = Math.max(D_MIN, Math.min(D_MAX, d));
+          if (isLeft) rangeMin = Math.min(d, rangeMax - 0.05); else rangeMax = Math.max(d, rangeMin + 0.05);
+          updateVisuals(); applyFilters();
+        };
+        var onEnd = function() {
+          document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onEnd);
+          document.removeEventListener('touchmove', onMove); document.removeEventListener('touchend', onEnd);
+          handle.classList.remove('dragging');
+        };
+        handle.classList.add('dragging');
+        document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchmove', onMove, { passive: false }); document.addEventListener('touchend', onEnd);
+      }
+      handleLeft.addEventListener('mousedown', function(e) { e.preventDefault(); startDrag(handleLeft, true); });
+      handleLeft.addEventListener('touchstart', function(e) { e.preventDefault(); startDrag(handleLeft, true); }, { passive: false });
+      handleRight.addEventListener('mousedown', function(e) { e.preventDefault(); startDrag(handleRight, false); });
+      handleRight.addEventListener('touchstart', function(e) { e.preventDefault(); startDrag(handleRight, false); }, { passive: false });
+      track.addEventListener('click', function(e) {
+        if (e.target === handleLeft || e.target === handleRight) return;
+        var rect = track.getBoundingClientRect();
+        var d = Math.round(percentToD(((e.clientX - rect.left) / rect.width) * 100) * 20) / 20;
+        if (Math.abs(d - rangeMin) < Math.abs(d - rangeMax)) rangeMin = Math.min(d, rangeMax - 0.05);
+        else rangeMax = Math.max(d, rangeMin + 0.05);
+        updateVisuals(); applyFilters();
+      });
+      track.addEventListener('dblclick', function() { rangeMin = D_MIN; rangeMax = D_MAX; updateVisuals(); applyFilters(); });
+    }
+  </script>
+</BaseLayout>
+
+<style>
+  .map-page { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+
+  /* Login overlay */
+  .login-overlay { position: absolute; inset: 0; z-index: 100; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
+  .login-box { background: #fff; padding: 2.5rem; border-radius: var(--radius); box-shadow: 0 8px 40px rgba(0,0,0,0.15); text-align: center; width: 320px; }
+  .login-box h1 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; }
+  .login-input { display: block; width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: 8px; font-size: 0.875rem; font-family: var(--font-sans); margin-bottom: 0.625rem; outline: none; }
+  .login-input:focus { border-color: var(--color-accent); }
+  .login-btn { width: 100%; padding: 0.5rem; border: none; border-radius: 8px; background: var(--color-accent); color: #fff; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: var(--font-sans); }
+  .login-btn:hover { background: var(--color-accent-hover); }
+  .login-error { color: var(--color-danger); font-size: 0.8125rem; margin-top: 0.5rem; min-height: 1.25em; }
+
+  /* Header */
+  .map-header { position: absolute; top: 0; left: 0; right: 0; z-index: 10; display: flex; align-items: center; gap: 0.75rem; padding: 0.625rem 1.5rem; background: #ffffff; border-bottom: 1px solid var(--color-border); }
+  .map-logo { font-size: 1.125rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 0.375rem; flex-shrink: 0; }
+  .map-logo-icon { height: 1.0em; width: auto; vertical-align: middle; transform: translateY(-1px); }
+  .map-title { font-size: 1rem; font-weight: 400; color: var(--color-text-secondary); flex-shrink: 0; }
+  .admin-stats { font-size: 0.75rem; color: var(--color-text-secondary); }
+  .search-wrap { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; flex-shrink: 0; }
+  .search-input { padding: 0.3125rem 0.75rem; border: 1px solid var(--color-border); border-radius: 980px; font-size: 0.6875rem; font-family: var(--font-sans); width: 160px; outline: none; transition: width var(--transition); }
+  .search-input:focus { border-color: var(--color-accent); width: 240px; }
+  .search-count { font-size: 0.625rem; color: var(--color-text-secondary); white-space: nowrap; }
+  .header-btn { padding: 0.3125rem 0.625rem; border: 1px solid var(--color-border); border-radius: 980px; background: #fff; font-size: 0.6875rem; font-family: var(--font-sans); cursor: pointer; white-space: nowrap; }
+  .header-btn:hover { background: var(--color-bg-secondary); }
+  .header-btn-muted { color: var(--color-text-secondary); }
+
+  #map-container { width: 100%; height: 100%; }
+
+  /* Context menu */
+  .context-menu { position: fixed; z-index: 50; background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.15); padding: 0.375rem 0; min-width: 200px; }
+  .context-menu.hidden { display: none; }
+  .ctx-item { display: flex; align-items: center; gap: 0.5rem; width: 100%; padding: 0.5rem 1rem; border: none; background: none; font-size: 0.8125rem; font-family: var(--font-sans); color: var(--color-text); cursor: pointer; text-align: left; }
+  .ctx-item:hover { background: var(--color-bg-secondary); }
+  .ctx-danger { color: var(--color-danger); }
+  .ctx-danger:hover { background: #fff0f0; }
+  .ctx-icon { font-size: 0.875rem; width: 1.25rem; text-align: center; }
+  .ctx-divider { border: none; border-top: 1px solid var(--color-border); margin: 0.25rem 0; }
+
+  /* Edit modal */
+  .edit-modal { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; }
+  .edit-modal.hidden { display: none; }
+  .edit-box { background: #fff; padding: 2rem; border-radius: var(--radius); width: 360px; box-shadow: 0 8px 40px rgba(0,0,0,0.15); }
+  .edit-box h2 { font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; }
+  .edit-box label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
+  .edit-box .login-input { margin-top: 0.25rem; }
+  .edit-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; }
+  .edit-actions .login-btn { width: auto; padding: 0.5rem 1.25rem; }
+
+  /* Detail panel */
+  .site-detail { position: absolute; bottom: 2rem; right: 1.5rem; z-index: 10; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: var(--radius); padding: 1.25rem 1.5rem; min-width: 240px; max-width: 340px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); transition: opacity 0.2s, transform 0.2s; }
+  .site-detail.hidden { opacity: 0; pointer-events: none; transform: translateY(8px); }
+  .close-btn { position: absolute; top: 0.5rem; right: 0.75rem; background: none; border: none; font-size: 1.25rem; color: var(--color-text-secondary); cursor: pointer; }
+  .site-detail h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; padding-right: 1.5rem; }
+  .detail-d-value { font-size: 0.9375rem; margin-bottom: 0.25rem; }
+  .detail-address, .detail-style, .detail-date, .detail-contributor, .detail-id { font-size: 0.8125rem; color: var(--color-text-secondary); }
+  .detail-style { font-style: italic; }
+  .detail-contributor { margin-top: 0.5rem; }
+  .detail-id { font-family: var(--font-mono); font-size: 0.6875rem; opacity: 0.5; word-break: break-all; }
+
+  /* Range slider */
+  .map-legend { position: absolute; bottom: 2rem; left: 1.5rem; z-index: 10; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-radius: var(--radius); padding: 1rem 1.25rem 0.75rem; box-shadow: 0 2px 12px rgba(0,0,0,0.08); user-select: none; min-width: 220px; }
+  .map-legend h3 { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-secondary); margin-bottom: 0.625rem; }
+  .range-wrap { display: flex; align-items: center; gap: 0.5rem; }
+  .range-label { font-size: 0.6875rem; font-weight: 600; color: var(--color-text); flex-shrink: 0; }
+  .range-track { position: relative; flex: 1; height: 8px; cursor: pointer; }
+  .range-gradient { position: absolute; inset: 0; border-radius: 4px; background: linear-gradient(to right, #e63232, #d4a030 20%, #32a032 35%, #32a032 45%, #d4a030 65%, #e63232); opacity: 0.3; }
+  .range-selected { position: absolute; top: 0; height: 100%; border-radius: 4px; background: linear-gradient(to right, #e63232, #d4a030 20%, #32a032 35%, #32a032 45%, #d4a030 65%, #e63232); background-size: 220px 100%; pointer-events: none; }
+  .range-handle { position: absolute; top: 50%; width: 4px; height: 20px; margin-left: -2px; margin-top: -10px; background: var(--color-accent); border-radius: 2px; cursor: ew-resize; transition: transform 0.1s; z-index: 2; }
+  .range-handle:hover, .range-handle.dragging { transform: scaleX(1.5); background: var(--color-accent-hover); }
+  .range-values { margin-top: 0.375rem; font-size: 0.75rem; font-weight: 500; color: var(--color-text); text-align: center; }
+
+  /* Edit toolbar */
+  .edit-toolbar { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 20; background: #fff; border-radius: var(--radius); box-shadow: 0 4px 24px rgba(0,0,0,0.15); padding: 0.5rem 0.75rem; display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
+  .edit-toolbar-label { font-size: 0.75rem; font-weight: 600; color: var(--color-text); max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
+  .move-pulse { animation: pulse 1.5s ease-in-out infinite; color: var(--color-accent); }
+  .toolbar-btn { padding: 0.3125rem 0.625rem; border: 1px solid var(--color-border); border-radius: 6px; background: #fff; font-size: 0.6875rem; font-family: var(--font-sans); cursor: pointer; color: var(--color-text); }
+  .toolbar-btn:hover { background: var(--color-bg-secondary); }
+  .toolbar-btn-danger { color: var(--color-danger); border-color: var(--color-danger); }
+  .toolbar-btn-danger:hover { background: #fff0f0; }
+  .toolbar-btn-done { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
+  .toolbar-btn-done:hover { background: var(--color-accent-hover); }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--color-accent); color: #fff; padding: 0.625rem 1.25rem; border-radius: 980px; font-size: 0.8125rem; font-weight: 500; opacity: 0; transition: opacity 0.2s, transform 0.2s; z-index: 100; pointer-events: none; }
+  .toast-show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  @media (max-width: 768px) {
+    .search-input { width: 120px; }
+    .search-input:focus { width: 160px; }
+    .site-detail { left: 1rem; right: 1rem; bottom: 1rem; }
+    .map-legend { left: 1rem; right: 1rem; bottom: 1rem; min-width: auto; }
+    .admin-stats { display: none; }
+  }
+</style>

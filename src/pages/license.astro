@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Dataset Licence — Fractune">
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
+    </div>
+  </nav>
+
+  <main class="page">
+    <div class="page-inner">
+      <h1>Dataset Licence</h1>
+      <p class="last-updated">Version 1.0 — April 2026</p>
+
+      <h2>1. Scope</h2>
+      <p>
+        This licence covers all analysis data contributed to and available through the
+        Fractune public dataset, including but not limited to: fractal dimension values
+        (D-values), stability scores, lacunarity values, multi-scale profiles,
+        geographic coordinates, camera metadata, and timestamps (collectively, "the
+        Dataset"). The Dataset is accessible at
+        <a href="https://sites.fractune.dk">sites.fractune.dk</a>.
+      </p>
+
+      <h2>2. Licence Grant</h2>
+      <p>
+        Subject to the terms and restrictions below, Fractune grants you a limited,
+        non-exclusive, non-transferable, revocable licence to access and use the
+        Dataset for the following purposes:
+      </p>
+      <ol>
+        <li><strong>Personal reference and education</strong> — exploring, studying, and learning from the data for non-commercial personal use.</li>
+        <li><strong>Academic and scientific research</strong> — using the data in research projects, publications, and academic work, provided proper attribution is given.</li>
+        <li><strong>Urban planning and architectural analysis</strong> — using the data to inform urban design, architectural assessment, and built-environment studies.</li>
+        <li><strong>Journalism and public interest reporting</strong> — referencing or visualising the data in news articles, reports, and public interest publications.</li>
+      </ol>
+
+      <h2>3. Attribution</h2>
+      <p>
+        When publishing research, analysis, visualisations, or reports based on data
+        from the Fractune Dataset, you must credit the source as
+        <strong>"Fractune (fractune.dk)"</strong> and, where applicable, cite the
+        Dataset with a link to <a href="https://sites.fractune.dk">sites.fractune.dk</a>.
+      </p>
+
+      <h2>4. Restrictions</h2>
+      <p>You may not:</p>
+      <ol>
+        <li>Use the Dataset to build or operate a competing fractal analysis service or product.</li>
+        <li>Bulk-scrape, mirror, or systematically download the Dataset through automated means.</li>
+        <li>Use the Dataset to train artificial intelligence or machine learning models without prior written permission from Fractune.</li>
+        <li>Sell, sublicence, or redistribute the raw Dataset as a standalone product or service.</li>
+        <li>Attempt to identify, de-anonymise, or derive personal information about individual contributors.</li>
+      </ol>
+
+      <h2>5. Research Partnerships</h2>
+      <p>
+        Academic institutions and research groups may request extended access to the
+        Dataset for scientific purposes. Extended access may include bulk data exports,
+        custom queries, and early access to new data fields. To discuss a research
+        partnership, contact
+        <a href="mailto:research@fractune.dk">research@fractune.dk</a>.
+      </p>
+
+      <h2>6. Disclaimer</h2>
+      <p>
+        The Dataset is provided "as is" without warranty of any kind, whether express
+        or implied. Fractune makes no representations or warranties regarding the
+        accuracy, completeness, or reliability of the data. D-values are mathematical
+        approximations derived from image analysis and may vary depending on conditions
+        such as lighting, camera angle, and image resolution. You use the Dataset
+        entirely at your own risk.
+      </p>
+
+      <h2>7. Termination</h2>
+      <p>
+        This licence terminates automatically and immediately if you breach any of its
+        terms. Upon termination, you must cease all use of the Dataset and destroy any
+        copies in your possession. Fractune reserves the right to revoke access at its
+        sole discretion.
+      </p>
+
+      <h2>8. Contact</h2>
+      <p>
+        For questions about this licence, contact us at
+        <a href="mailto:legal@fractune.dk">legal@fractune.dk</a>.
+      </p>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .nav { border-bottom: 1px solid var(--color-border); }
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+  }
+  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 0.375rem; }
+  .nav-logo-icon { height: 1.0em; width: auto; vertical-align: middle; transform: translateY(-1px); }
+  .page { padding: 4rem 0; }
+  .page-inner { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
+  h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .last-updated { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 2.5rem; }
+  h2 { font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
+  p { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; }
+  ol { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; padding-left: 1.5rem; }
+  li { margin-bottom: 0.5rem; }
+</style>

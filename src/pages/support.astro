@@ -5,7 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout title="Support — Fractune">
   <nav class="nav">
     <div class="nav-inner">
-      <a href="/" class="nav-logo">Fractune</a>
+      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
     </div>
   </nav>
 
@@ -62,7 +62,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     align-items: center;
   }
-  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); }
+  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 0.375rem; }
+  .nav-logo-icon { height: 1.0em; width: auto; vertical-align: middle; transform: translateY(-1px); }
   .page { padding: 4rem 0; }
   .page-inner { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
   h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.5rem; }

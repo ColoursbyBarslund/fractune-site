@@ -8,24 +8,44 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 >
   <div class="map-page">
     <header class="map-header">
-      <a href="/" class="map-logo">Fractune</a>
+      <a href="https://fractune.dk" class="map-logo"><img src="/logo.png" alt="" class="map-logo-icon" />Fractune</a>
       <h1 class="map-title">Sites</h1>
-    </header>
-    <div id="map-container"></div>
-    <div id="map-legend" class="map-legend">
-      <h3>D-value scale</h3>
-      <div class="legend-scale">
-        <span class="legend-low">1.0</span>
-        <div class="legend-gradient"></div>
-        <span class="legend-high">2.0</span>
+      <div class="search-wrap">
+        <input
+          id="search-input"
+          type="search"
+          placeholder="Search..."
+          class="search-input"
+          autocomplete="off"
+        />
+        <span id="search-count" class="search-count"></span>
       </div>
-      <p class="legend-desc">Lower = simpler geometry &middot; Higher = more complex</p>
+    </header>
+
+    <div id="map-container"></div>
+
+    <div id="map-legend" class="map-legend">
+      <h3>D-value range</h3>
+      <div class="range-wrap">
+        <span class="range-label">1.0</span>
+        <div class="range-track" id="range-track">
+          <div class="range-gradient"></div>
+          <div class="range-selected" id="range-selected"></div>
+          <div class="range-handle range-handle-left" id="handle-left" tabindex="0" role="slider" aria-label="Minimum D-value" aria-valuemin="1.0" aria-valuemax="2.0"></div>
+          <div class="range-handle range-handle-right" id="handle-right" tabindex="0" role="slider" aria-label="Maximum D-value" aria-valuemin="1.0" aria-valuemax="2.0"></div>
+        </div>
+        <span class="range-label">2.0</span>
+      </div>
+      <p class="range-values" id="range-values">D 1.0 – 2.0</p>
+      <p class="range-hint">Drag brackets to filter</p>
     </div>
+
     <div id="site-detail" class="site-detail hidden">
       <button id="close-detail" class="close-btn" aria-label="Close">&times;</button>
       <h3 id="detail-title"></h3>
       <p class="detail-d-value">D-value: <strong id="detail-d"></strong></p>
       <p id="detail-address" class="detail-address"></p>
+      <p id="detail-style" class="detail-style"></p>
       <p id="detail-date" class="detail-date"></p>
     </div>
   </div>
@@ -33,6 +53,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   <script is:inline src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" crossorigin async></script>
 
   <script is:inline>
+    // Global state
+    var allSites = [];
+    var allAnnotations = [];
+    var currentMap = null;
+    var currentSearch = '';
+    var rangeMin = 1.0;
+    var rangeMax = 2.0;
+
     function initMap() {
       if (typeof mapkit === 'undefined') {
         setTimeout(initMap, 100);
@@ -47,7 +75,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         },
       });
 
-      var map = new mapkit.Map('map-container', {
+      currentMap = new mapkit.Map('map-container', {
         center: new mapkit.Coordinate(55.6761, 12.5683),
         region: new mapkit.CoordinateRegion(
           new mapkit.Coordinate(55.6761, 12.5683),
@@ -55,79 +83,266 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         ),
         showsCompass: mapkit.FeatureVisibility.Adaptive,
         showsScale: mapkit.FeatureVisibility.Adaptive,
-        colorScheme: mapkit.Map.ColorSchemes.Light,
+        mapType: mapkit.Map.MapTypes.Hybrid,
       });
 
-      // Wait a moment for MapKit auth to complete, then load markers
-      setTimeout(function () { loadSites(map); }, 2000);
+      mapkit.addEventListener('configuration-change', function handler(event) {
+        if (event.status === 'Initialized') {
+          mapkit.removeEventListener('configuration-change', handler);
+          loadSites();
+        }
+      });
     }
 
-    async function loadSites(map) {
+    async function loadSites() {
       try {
         var res = await fetch('/api/sites');
         if (!res.ok) throw new Error('Failed to fetch sites');
         var data = await res.json();
 
-        if (!data.sites || data.sites.length === 0) return;
+        allSites = data.sites || [];
 
-        var annotations = data.sites.map(function (site) {
-          var coord = new mapkit.Coordinate(site.latitude, site.longitude);
-          var color = dValueToColor(site.dValue);
+        // Filter chips are always visible in header
 
-          var annotation = new mapkit.MarkerAnnotation(coord, {
-            color: color,
-            title: site.name || 'Building',
-            subtitle: 'D = ' + site.dValue.toFixed(3),
-            glyphText: site.dValue.toFixed(1),
-          });
-
-          annotation.addEventListener('select', function () {
-            showDetail(site);
-          });
-
-          return annotation;
-        });
-
-        map.addAnnotations(annotations);
-
-        if (annotations.length > 1) {
-          map.showItems(annotations, {
-            animate: true,
-            padding: new mapkit.Padding(60, 60, 60, 60),
-          });
-        }
+        applyFilters();
       } catch (err) {
         console.error('Error loading sites:', err);
       }
     }
 
+    function applyFilters() {
+      // Remove existing annotations
+      if (allAnnotations.length > 0) {
+        currentMap.removeAnnotations(allAnnotations);
+      }
+
+      // Filter sites
+      var filtered = allSites.filter(function (site) {
+        // D-value range filter
+        if (site.dValue < rangeMin || site.dValue > rangeMax) return false;
+
+        // Search filter
+        if (currentSearch) {
+          var q = currentSearch.toLowerCase();
+          var searchable = [
+            site.buildingName,
+            site.buildingAddress,
+            site.architect,
+            site.buildingStyle,
+            site.buildingType,
+            site.dValue.toFixed(3),
+          ].filter(Boolean).join(' ').toLowerCase();
+          if (!searchable.includes(q)) return false;
+        }
+
+        return true;
+      });
+
+      // Update count
+      var countEl = document.getElementById('search-count');
+      var isFiltered = currentSearch || rangeMin > 1.0 || rangeMax < 2.0;
+      if (isFiltered) {
+        countEl.textContent = filtered.length + ' of ' + allSites.length;
+      } else {
+        countEl.textContent = allSites.length > 0 ? allSites.length + ' sites' : '';
+      }
+
+      // Create annotations
+      allAnnotations = filtered.map(function (site) {
+        var coord = new mapkit.Coordinate(site.latitude, site.longitude);
+        var color = dValueToColor(site.dValue);
+        var title = site.buildingName || 'D = ' + site.dValue.toFixed(3);
+        var subtitle = site.buildingName ? 'D = ' + site.dValue.toFixed(3) : '';
+
+        var annotation = new mapkit.MarkerAnnotation(coord, {
+          color: color,
+          title: title,
+          subtitle: subtitle,
+          glyphText: site.dValue.toFixed(1),
+        });
+
+        annotation.addEventListener('select', function () {
+          showDetail(site);
+        });
+
+        return annotation;
+      });
+
+      currentMap.addAnnotations(allAnnotations);
+
+      // Zoom to fit
+      if (allAnnotations.length > 1) {
+        currentMap.showItems(allAnnotations, {
+          animate: true,
+          padding: new mapkit.Padding(80, 60, 60, 60),
+        });
+      } else if (allAnnotations.length === 1) {
+        currentMap.setCenterAnimated(allAnnotations[0].coordinate);
+      }
+    }
+
     function dValueToColor(d) {
       var t = Math.max(0, Math.min(1, (d - 1.0) / 1.0));
-      var r = Math.round(18 + t * 200);
-      var g = Math.round(40 + t * 60);
-      var b = Math.round(62 + t * 80);
+      var sweet = 0.4;
+      var dist = Math.abs(t - sweet) / Math.max(sweet, 1 - sweet);
+      dist = Math.min(1, dist);
+      var r = Math.round(50 + dist * 180);
+      var g = Math.round(160 - dist * 120);
+      var b = Math.round(50 - dist * 20);
       return 'rgb(' + r + ', ' + g + ', ' + b + ')';
     }
 
     function showDetail(site) {
       var panel = document.getElementById('site-detail');
-      document.getElementById('detail-title').textContent = site.name || 'Building';
+      document.getElementById('detail-title').textContent = site.buildingName || 'D = ' + site.dValue.toFixed(3);
       document.getElementById('detail-d').textContent = site.dValue.toFixed(4);
-      document.getElementById('detail-address').textContent = site.address || '';
+
+      var details = [];
+      if (site.buildingAddress) details.push(site.buildingAddress);
+      if (site.architect) details.push(site.architect);
+      if (site.constructionYear) details.push(String(site.constructionYear));
+      document.getElementById('detail-address').textContent = details.join(' · ') || '';
+
+      var style = [];
+      if (site.buildingStyle) style.push(site.buildingStyle);
+      if (site.buildingType) style.push(site.buildingType);
+      document.getElementById('detail-style').textContent = style.join(' · ') || '';
+
       document.getElementById('detail-date').textContent = site.analyzedAt
         ? 'Analysed: ' + new Date(site.analyzedAt).toLocaleDateString('en-GB')
         : '';
       panel.classList.remove('hidden');
     }
 
+    // Event listeners
     document.addEventListener('DOMContentLoaded', function () {
+      // Close detail panel
       var closeBtn = document.getElementById('close-detail');
       if (closeBtn) {
         closeBtn.addEventListener('click', function () {
           document.getElementById('site-detail').classList.add('hidden');
         });
       }
+
+      // Search input
+      var searchInput = document.getElementById('search-input');
+      var searchTimeout;
+      searchInput.addEventListener('input', function () {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function () {
+          currentSearch = searchInput.value.trim();
+          applyFilters();
+        }, 200);
+      });
+
+      // Clear search on Escape
+      searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          searchInput.value = '';
+          currentSearch = '';
+          applyFilters();
+          searchInput.blur();
+        }
+      });
+
+      // Range slider
+      initRangeSlider();
     });
+
+    function initRangeSlider() {
+      var track = document.getElementById('range-track');
+      var handleLeft = document.getElementById('handle-left');
+      var handleRight = document.getElementById('handle-right');
+      var selected = document.getElementById('range-selected');
+      var valuesEl = document.getElementById('range-values');
+
+      var D_MIN = 1.0;
+      var D_MAX = 2.0;
+
+      function dToPercent(d) { return ((d - D_MIN) / (D_MAX - D_MIN)) * 100; }
+      function percentToD(p) { return D_MIN + (p / 100) * (D_MAX - D_MIN); }
+
+      function updateVisuals() {
+        var leftPct = dToPercent(rangeMin);
+        var rightPct = dToPercent(rangeMax);
+        handleLeft.style.left = leftPct + '%';
+        handleRight.style.left = rightPct + '%';
+        selected.style.left = leftPct + '%';
+        selected.style.width = (rightPct - leftPct) + '%';
+        valuesEl.textContent = 'D ' + rangeMin.toFixed(1) + ' – ' + rangeMax.toFixed(1);
+        handleLeft.setAttribute('aria-valuenow', rangeMin.toFixed(2));
+        handleRight.setAttribute('aria-valuenow', rangeMax.toFixed(2));
+      }
+
+      updateVisuals();
+
+      function startDrag(handle, isLeft) {
+        var onMove = function (e) {
+          e.preventDefault();
+          var rect = track.getBoundingClientRect();
+          var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+          var pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+          var d = percentToD(pct);
+
+          // Snap to 0.05 increments
+          d = Math.round(d * 20) / 20;
+          d = Math.max(D_MIN, Math.min(D_MAX, d));
+
+          if (isLeft) {
+            rangeMin = Math.min(d, rangeMax - 0.05);
+          } else {
+            rangeMax = Math.max(d, rangeMin + 0.05);
+          }
+
+          updateVisuals();
+          applyFilters();
+        };
+
+        var onEnd = function () {
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onEnd);
+          document.removeEventListener('touchmove', onMove);
+          document.removeEventListener('touchend', onEnd);
+          handle.classList.remove('dragging');
+        };
+
+        handle.classList.add('dragging');
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onEnd);
+      }
+
+      handleLeft.addEventListener('mousedown', function (e) { e.preventDefault(); startDrag(handleLeft, true); });
+      handleLeft.addEventListener('touchstart', function (e) { e.preventDefault(); startDrag(handleLeft, true); }, { passive: false });
+      handleRight.addEventListener('mousedown', function (e) { e.preventDefault(); startDrag(handleRight, false); });
+      handleRight.addEventListener('touchstart', function (e) { e.preventDefault(); startDrag(handleRight, false); }, { passive: false });
+
+      // Click on track to move nearest handle
+      track.addEventListener('click', function (e) {
+        if (e.target === handleLeft || e.target === handleRight) return;
+        var rect = track.getBoundingClientRect();
+        var pct = ((e.clientX - rect.left) / rect.width) * 100;
+        var d = Math.round(percentToD(pct) * 20) / 20;
+        var distLeft = Math.abs(d - rangeMin);
+        var distRight = Math.abs(d - rangeMax);
+        if (distLeft < distRight) {
+          rangeMin = Math.min(d, rangeMax - 0.05);
+        } else {
+          rangeMax = Math.max(d, rangeMin + 0.05);
+        }
+        updateVisuals();
+        applyFilters();
+      });
+
+      // Double-click to reset
+      track.addEventListener('dblclick', function () {
+        rangeMin = D_MIN;
+        rangeMax = D_MAX;
+        updateVisuals();
+        applyFilters();
+      });
+    }
 
     initMap();
   </script>
@@ -149,11 +364,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     z-index: 10;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.5rem;
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    gap: 0.75rem;
+    padding: 0.625rem 1.5rem;
+    background: #ffffff;
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -161,69 +374,177 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     font-size: 1.125rem;
     font-weight: 600;
     color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    flex-shrink: 0;
+  }
+
+  .map-logo-icon {
+    height: 1.0em;
+    width: auto;
+    vertical-align: middle;
+    transform: translateY(-1px);
   }
 
   .map-title {
     font-size: 1rem;
     font-weight: 400;
     color: var(--color-text-secondary);
+    flex-shrink: 0;
   }
 
+
+  /* Search (right-aligned, same height as chips) */
+  .search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .search-input {
+    padding: 0.3125rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 980px;
+    font-size: 0.6875rem;
+    font-family: var(--font-sans);
+    background: #fff;
+    color: var(--color-text);
+    outline: none;
+    width: 160px;
+    transition: border-color var(--transition), box-shadow var(--transition), width var(--transition);
+  }
+
+  .search-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(18, 40, 62, 0.1);
+    width: 240px;
+  }
+
+  .search-input::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 0.5;
+  }
+
+  .search-count {
+    font-size: 0.625rem;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  /* Map */
   #map-container {
     width: 100%;
     height: 100%;
   }
 
+  /* Range slider legend */
   .map-legend {
     position: absolute;
     bottom: 2rem;
     left: 1.5rem;
     z-index: 10;
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-radius: var(--radius);
-    padding: 1rem 1.25rem;
-    font-size: 0.8125rem;
+    padding: 1rem 1.25rem 0.75rem;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    user-select: none;
+    min-width: 220px;
   }
 
   .map-legend h3 {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--color-text-secondary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.625rem;
   }
 
-  .legend-scale {
+  .range-wrap {
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
-  .legend-gradient {
+  .range-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--color-text);
+    flex-shrink: 0;
+  }
+
+  .range-track {
+    position: relative;
     flex: 1;
     height: 8px;
+    cursor: pointer;
+  }
+
+  .range-gradient {
+    position: absolute;
+    inset: 0;
     border-radius: 4px;
-    background: linear-gradient(to right, #12283E, #2a5a8a, #4a8aba);
-    min-width: 100px;
+    background: linear-gradient(to right, #e63232, #d4a030 20%, #32a032 35%, #32a032 45%, #d4a030 65%, #e63232);
+    opacity: 0.3;
   }
 
-  .legend-low,
-  .legend-high {
-    font-weight: 600;
-    font-size: 0.75rem;
-    color: var(--color-text);
+  .range-selected {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(to right, #e63232, #d4a030 20%, #32a032 35%, #32a032 45%, #d4a030 65%, #e63232);
+    background-size: 220px 100%;
+    pointer-events: none;
   }
 
-  .legend-desc {
+  .range-handle {
+    position: absolute;
+    top: 50%;
+    width: 4px;
+    height: 20px;
+    margin-left: -2px;
+    margin-top: -10px;
+    background: var(--color-accent);
+    border-radius: 2px;
+    cursor: ew-resize;
+    transition: transform 0.1s;
+    z-index: 2;
+  }
+
+  .range-handle:hover,
+  .range-handle.dragging {
+    transform: scaleX(1.5);
+    background: var(--color-accent-hover);
+  }
+
+  .range-handle:focus {
+    outline: 2px solid rgba(18, 40, 62, 0.3);
+    outline-offset: 2px;
+  }
+
+  .range-values {
     margin-top: 0.375rem;
-    color: var(--color-text-secondary);
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text);
+    text-align: center;
   }
 
+  .range-hint {
+    margin-top: 0.125rem;
+    font-size: 0.5625rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    opacity: 0.6;
+  }
+
+  /* Detail panel */
   .site-detail {
     position: absolute;
     bottom: 2rem;
@@ -235,6 +556,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     border-radius: var(--radius);
     padding: 1.25rem 1.5rem;
     min-width: 240px;
+    max-width: 320px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: opacity 0.2s, transform 0.2s;
   }
@@ -260,6 +582,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    padding-right: 1.5rem;
   }
 
   .detail-d-value {
@@ -268,8 +591,32 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .detail-address,
+  .detail-style,
   .detail-date {
     font-size: 0.8125rem;
     color: var(--color-text-secondary);
+  }
+
+  .detail-style {
+    font-style: italic;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .search-input { width: 120px; }
+    .search-input:focus { width: 160px; }
+
+    .site-detail {
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+    }
+
+    .map-legend {
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      min-width: auto;
+    }
   }
 </style>

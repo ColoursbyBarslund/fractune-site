@@ -1,0 +1,497 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="The Science — Fractune">
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <!-- Hero -->
+    <section class="hero-area">
+      <h1>Why some spaces<br />feel like home.</h1>
+      <p class="subtitle">The science of fractal fluence — and what your buildings are saying.</p>
+    </section>
+
+    <div class="content">
+
+      <!-- 1. The big insight -->
+      <section class="section">
+        <h2>Your brain expects fractals.</h2>
+        <p>
+          Your visual system is a prediction machine. Every moment, it anticipates
+          the next shape, the next curve, the next rhythm. Natural environments —
+          trees, clouds, coastlines — follow fractal patterns that your brain
+          processes effortlessly.
+        </p>
+        <p>
+          When a building follows these same patterns, something clicks. You feel
+          calm, engaged, at ease. When it doesn't, something feels off. Not wrong,
+          exactly. Just harder to be in.
+        </p>
+        <p class="kicker">This isn't a metaphor. It's measurable.</p>
+      </section>
+
+      <!-- 2. The D-value — visual scale -->
+      <section class="section">
+        <h2>The D-value.</h2>
+        <p>
+          Fractal dimension — D — is a single number that captures how much
+          detail a surface carries across scales. Think of it as a complexity
+          score for what your eye sees.
+        </p>
+
+        <div class="scale">
+          <div class="scale-bar">
+            <div class="scale-zone scale-low">
+              <span class="scale-label">Simple</span>
+            </div>
+            <div class="scale-zone scale-sweet">
+              <span class="scale-label">Sweet spot</span>
+            </div>
+            <div class="scale-zone scale-high">
+              <span class="scale-label">Complex</span>
+            </div>
+          </div>
+          <div class="scale-numbers">
+            <span>1.0</span>
+            <span>1.3</span>
+            <span>1.5</span>
+            <span>2.0</span>
+          </div>
+          <div class="scale-examples">
+            <span>Glass wall</span>
+            <span class="scale-examples-sweet">Trees &middot; Coastlines &middot; Beloved buildings</span>
+            <span>Gothic cathedral</span>
+          </div>
+        </div>
+
+        <p>
+          Physicist Richard Taylor discovered that people measurably prefer fractal
+          patterns around D&nbsp;=&nbsp;1.3&ndash;1.5. Stress drops. Attention sharpens.
+          The effect is consistent across cultures.
+        </p>
+        <p>
+          Architects Ostwald &amp; Vaughan measured 85 canonical buildings — from
+          Le&nbsp;Corbusier to Frank Lloyd Wright — and found an average D of 1.41.
+          Right in the sweet spot.
+        </p>
+
+        <details class="disclosure">
+          <summary>How D is measured</summary>
+          <div class="disclosure-content">
+            <ol>
+              <li><strong>Edge detection.</strong> The image passes through a Canny pipeline: Gaussian blur (5&times;5), Sobel gradients, non-maximum suppression, Otsu threshold, and hysteretic thresholding.</li>
+              <li><strong>Box-counting.</strong> Boxes from &frac14; image size down to 2px are laid over the edges, at 12 offset grid positions per scale (FracLac methodology).</li>
+              <li><strong>Log-log regression.</strong> D = slope of log(count) vs. log(1/box_size). R&sup2; measures goodness-of-fit.</li>
+              <li><strong>Robust analysis.</strong> Repeated at 9 sensitivity levels (0.5&ndash;2.5 &times; Otsu). Plateau detection picks the most stable region. Final D = median of plateau.</li>
+              <li><strong>Stability score</strong> (1&ndash;5) reflects total variation across thresholds.</li>
+            </ol>
+          </div>
+        </details>
+      </section>
+
+      <!-- 3. Chromatic fluence -->
+      <section class="section">
+        <h2>Colour matters too.</h2>
+        <p>
+          Just as geometry has a sweet spot, so does colour. Fractune measures
+          three properties and combines them into a single score — the C-value:
+        </p>
+        <div class="trio">
+          <div class="trio-item">
+            <h3>Entropy</h3>
+            <p>How varied the colours are. Too little is monotonous. Too much is chaotic.</p>
+          </div>
+          <div class="trio-item">
+            <h3>Coherence</h3>
+            <p>Whether the colours relate to each other in a structured, harmonious way.</p>
+          </div>
+          <div class="trio-item">
+            <h3>Ecological fit</h3>
+            <p>How close the palette is to natural colour statistics. Your visual system is calibrated to nature.</p>
+          </div>
+        </div>
+        <p>
+          The best buildings score well on both D and C. The geometry and the
+          colour work together.
+        </p>
+
+        <details class="disclosure">
+          <summary>How C is measured</summary>
+          <div class="disclosure-content">
+            <ul>
+              <li><strong>H<sub>c</sub></strong> (entropy): Shannon entropy of hue distribution in CIELAB, quantised to 36 bins (10&deg;). Normalised 0&ndash;1.</li>
+              <li><strong>K</strong> (coherence): k-means clustering (5&ndash;8 clusters) in CIELAB. Angular distribution scored against harmonic schemes (analogous, complementary, triadic).</li>
+              <li><strong>E</strong> (ecological deviation): Wasserstein distance between facade chromaticity and natural scene reference (Long &amp; Purves 2003).</li>
+              <li><strong>Composite:</strong> C = 0.35 &times; H<sub>c</sub>_score + 0.35 &times; K + 0.30 &times; (1 &minus; E)</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <!-- 4. What the numbers mean -->
+      <section class="section">
+        <h2>What the numbers mean.</h2>
+        <table>
+          <thead>
+            <tr><th>Metric</th><th>What it tells you</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>D</strong></td><td>Geometric complexity. Sweet spot: 1.3&ndash;1.5.</td></tr>
+            <tr><td><strong>C</strong></td><td>Colour harmony and naturalness. Higher is more balanced.</td></tr>
+            <tr><td><strong>Stability</strong></td><td>How consistent D is across sensitivity levels. 5 = rock solid.</td></tr>
+            <tr><td><strong>&Lambda;</strong></td><td>How evenly the detail is distributed. Low = uniform.</td></tr>
+            <tr><td><strong>R&sup2;</strong></td><td>How well the data fits a true fractal. Above 0.99 is excellent.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 5. For researchers -->
+      <section id="methodology" class="section methodology-section">
+        <h2>For researchers.</h2>
+        <p>Full methodology, output fields, and citation guidelines.</p>
+
+        <details class="disclosure">
+          <summary>Complete edge detection pipeline</summary>
+          <div class="disclosure-content">
+            <p>Input is scaled to max 800px. Contrast is normalised via histogram equalisation on the luminance channel.</p>
+            <p>Canny pipeline (5 stages):</p>
+            <ol>
+              <li>Gaussian blur (5&times;5 kernel)</li>
+              <li>Sobel gradient computation (horizontal + vertical)</li>
+              <li>Non-maximum suppression</li>
+              <li>Automatic threshold via Otsu's method</li>
+              <li>Hysteretic thresholding (dual threshold)</li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="disclosure">
+          <summary>Box-counting and regression</summary>
+          <div class="disclosure-content">
+            <ul>
+              <li>Box sizes: &frac14; of image dimension down to 2px, divided by factor 1.5</li>
+              <li>12 systematically offset grid positions per scale (Karperien 2013)</li>
+              <li>Count: boxes containing &ge;1 edge pixel, averaged across offsets</li>
+              <li>D = slope of log-log regression (log(count) vs. log(1/box_size))</li>
+              <li>R&sup2; reported as goodness-of-fit</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="disclosure">
+          <summary>Multi-threshold analysis</summary>
+          <div class="disclosure-content">
+            <ul>
+              <li>9 sensitivity levels (0.5&ndash;2.5 &times; Otsu threshold)</li>
+              <li>Plateau detection: sliding window (width 5) identifies most stable region</li>
+              <li>Final D = median of plateau values</li>
+              <li>Stability (1&ndash;5): based on total variation across all 9 thresholds</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="disclosure">
+          <summary>Lacunarity and multi-scale profile</summary>
+          <div class="disclosure-content">
+            <ul>
+              <li>&Lambda; = 1 + &sigma;&sup2;/&mu;&sup2; across 12 grid offsets, per box size. Reported: mean across all sizes.</li>
+              <li>Multi-scale D profile: local D in sliding window of 3 box sizes. Classified as Large (&ge;8%), Medium (2&ndash;8%), Fine (&lt;2%).</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="disclosure">
+          <summary>Chromatic fluence formulas</summary>
+          <div class="disclosure-content">
+            <ul>
+              <li><strong>H<sub>c</sub>:</strong> Shannon entropy over 36 hue bins (10&deg;) in CIELAB. Normalised 0&ndash;1.</li>
+              <li><strong>K:</strong> k-means (5&ndash;8 clusters) in CIELAB. Angular hue distribution scored 0&ndash;1 against nearest harmonic scheme.</li>
+              <li><strong>E:</strong> Wasserstein distance in a*b* space vs. Long &amp; Purves (2003) natural reference.</li>
+              <li><strong>C</strong> = 0.35 &times; H<sub>c</sub>_score + 0.35 &times; K + 0.30 &times; (1 &minus; E)</li>
+            </ul>
+            <p>H<sub>c</sub>_score maps entropy to 0&ndash;1 with sweet spot at moderate entropy. Weighting is preliminary; calibration against perceptual data is ongoing.</p>
+          </div>
+        </details>
+
+        <details class="disclosure">
+          <summary>Quality assessment</summary>
+          <div class="disclosure-content">
+            <p>Quality score computed from:</p>
+            <ul>
+              <li><strong>Coverage:</strong> proportion of image containing edges</li>
+              <li><strong>Clipping:</strong> over/underexposure detection</li>
+              <li><strong>Contrast:</strong> luminance range</li>
+              <li><strong>Edge energy:</strong> signal-to-noise in gradient domain</li>
+            </ul>
+            <p>Issues classified as critical (unreliable) or warnings (suboptimal).</p>
+          </div>
+        </details>
+
+        <details class="disclosure">
+          <summary>Output field reference</summary>
+          <div class="disclosure-content">
+            <table>
+              <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td>D</td><td>Float</td><td>Fractal dimension (robust median)</td></tr>
+                <tr><td>R&sup2;</td><td>Float</td><td>Regression goodness-of-fit</td></tr>
+                <tr><td>&sigma;</td><td>Float</td><td>Std. deviation of D across thresholds</td></tr>
+                <tr><td>&Lambda;</td><td>Float</td><td>Mean lacunarity</td></tr>
+                <tr><td>stability</td><td>Int</td><td>D consistency (1&ndash;5)</td></tr>
+                <tr><td>C</td><td>Float</td><td>Composite chromatic fluence</td></tr>
+                <tr><td>H<sub>c</sub></td><td>Float</td><td>Normalised chromatic entropy</td></tr>
+                <tr><td>K</td><td>Float</td><td>Palette coherence</td></tr>
+                <tr><td>E</td><td>Float</td><td>Ecological deviation</td></tr>
+                <tr><td>harmonyType</td><td>String</td><td>Palette harmony type</td></tr>
+                <tr><td>qualityScore</td><td>Float</td><td>Measurement quality (0&ndash;1)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="disclosure">
+          <summary>Limitations and reproducibility</summary>
+          <div class="disclosure-content">
+            <h4>Limitations</h4>
+            <ul>
+              <li>Input capped at 800px (mobile constraint)</li>
+              <li>No perspective correction (planned: AI facade segmentation)</li>
+              <li>D sensitive to framing/lighting; robust analysis mitigates but does not eliminate</li>
+              <li>Chromatic analysis assumes daylight; artificial lighting may skew</li>
+              <li>C-value weighting preliminary; perceptual calibration ongoing</li>
+            </ul>
+            <h4>Reproducibility</h4>
+            <ul>
+              <li>Fully deterministic — no random seeds</li>
+              <li>Results may vary between app versions; <code>appVersion</code> recorded per analysis</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="disclosure">
+          <summary>References</summary>
+          <div class="disclosure-content">
+            <ol class="references">
+              <li>Taylor, R.P. et al. (2005). Perceptual and physiological responses to fractal patterns. <em>Nonlinear Dynamics, Psychology, and Life Sciences, 9</em>(1), 89&ndash;114.</li>
+              <li>Ostwald, M.J. &amp; Vaughan, J. (2016). <em>The Fractal Dimension of Architecture.</em> Birkh&auml;user.</li>
+              <li>Salingaros, N.A. (2012). Fractal Art and Architecture Reduce Physiological Stress. <em>J. Biourbanism, 2</em>(2), 11&ndash;28.</li>
+              <li>Karperien, A. (2013). <em>FracLac for ImageJ.</em> Charles Sturt University.</li>
+              <li>Palmer, S.E. &amp; Schloss, K.B. (2010). An ecological valence theory of human color preferences. <em>PNAS, 107</em>(19), 8877&ndash;8882.</li>
+              <li>Schloss, K.B. (2024). Color preferences and color harmony. <em>Annual Review of Vision Science, 10</em>, 323&ndash;349.</li>
+              <li>Long, F. &amp; Purves, D. (2003). Natural scene statistics as the universal basis of color context effects. <em>PNAS, 100</em>(25), 15190&ndash;15193.</li>
+              <li>Penacchio, O. &amp; Wilkins, A.J. (2015). Visual discomfort and the spatial distribution of Fourier energy. <em>Vision Research, 108</em>, 1&ndash;8.</li>
+              <li>Canny, J. (1986). A Computational Approach to Edge Detection. <em>IEEE TPAMI, 8</em>(6), 679&ndash;698.</li>
+              <li>Otsu, N. (1979). A Threshold Selection Method from Gray-Level Histograms. <em>IEEE Trans. Sys. Man. Cyber., 9</em>(1), 62&ndash;66.</li>
+              <li>Huynh, D.C. et al. (2026). Moving beyond environmental categories in environmental psychology. <em>J. Environmental Psychology, 111</em>, 103016.</li>
+            </ol>
+          </div>
+        </details>
+      </section>
+
+      <!-- Citation -->
+      <section class="section citation-section">
+        <p class="citation-label">Cite this work</p>
+        <blockquote>
+          Fractune (2026). Fractal Fluence Analysis.<br />
+          <a href="https://fractune.dk/science">https://fractune.dk/science</a>
+        </blockquote>
+      </section>
+
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  /* Nav */
+  .nav { border-bottom: 1px solid var(--color-border); }
+  .nav-inner { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; height: 52px; display: flex; align-items: center; }
+  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 0.375rem; }
+  .nav-logo-icon { height: 1.0em; width: auto; vertical-align: middle; transform: translateY(-1px); }
+
+  /* Hero */
+  .hero-area {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 5.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+  }
+  .subtitle {
+    font-size: 1.1875rem;
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  /* Content */
+  .content { max-width: 680px; margin: 0 auto; padding: 0 2rem 4rem; }
+  .section { margin-bottom: 4rem; }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  h3 { font-size: 1.0625rem; font-weight: 600; margin-bottom: 0.25rem; }
+  h4 { font-size: 0.9375rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.5rem; }
+  p { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; }
+  .kicker { color: var(--color-text); font-weight: 500; }
+
+  /* D-value scale */
+  .scale { margin: 2rem 0; }
+  .scale-bar {
+    display: flex;
+    height: 40px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .scale-zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .scale-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .scale-low {
+    flex: 3;
+    background: linear-gradient(90deg, #d94040, #c89030);
+    color: #fff;
+  }
+  .scale-sweet {
+    flex: 2;
+    background: linear-gradient(90deg, #4a9a4a, #4a9a4a);
+    color: #fff;
+  }
+  .scale-high {
+    flex: 5;
+    background: linear-gradient(90deg, #c89030, #d94040);
+    color: #fff;
+  }
+  .scale-numbers {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.375rem 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .scale-examples {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+  }
+  .scale-examples-sweet { color: #3a8a3a; font-weight: 500; }
+
+  /* C-value trio */
+  .trio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 1.5rem 0 2rem;
+  }
+  .trio-item {
+    padding: 1.25rem;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius);
+  }
+  .trio-item h3 { margin-bottom: 0.375rem; }
+  .trio-item p { font-size: 0.875rem; margin-bottom: 0; }
+
+  /* Metrics table */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  th, td { padding: 0.625rem 0.75rem; text-align: left; border-bottom: 1px solid var(--color-border); font-size: 0.9375rem; }
+  th { font-weight: 600; color: var(--color-text); }
+  td { color: var(--color-text-secondary); }
+
+  /* Progressive disclosure */
+  .disclosure {
+    margin: 1rem 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .disclosure summary {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+    background: var(--color-bg-secondary);
+    transition: background var(--transition);
+    list-style: none;
+  }
+  .disclosure summary::-webkit-details-marker { display: none; }
+  .disclosure summary::before {
+    content: '▸ ';
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  .disclosure[open] summary::before { content: '▾ '; }
+  .disclosure summary:hover { background: #eee; }
+  .disclosure-content {
+    padding: 1rem 1.25rem 0.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Methodology section */
+  .methodology-section { padding-top: 3rem; border-top: 1px solid var(--color-border); }
+  .methodology-section > p { color: var(--color-text-secondary); margin-bottom: 1.5rem; }
+
+  /* Lists in disclosures */
+  ol, ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 0.25rem; }
+  .references li { margin-bottom: 0.5rem; font-size: 0.875rem; }
+
+  /* Citation */
+  .citation-section { text-align: center; }
+  .citation-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.5rem;
+  }
+  blockquote {
+    display: inline-block;
+    text-align: left;
+    padding: 1rem 1.5rem;
+    border-left: 3px solid var(--color-accent);
+    background: var(--color-bg-secondary);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  code {
+    font-family: 'SF Mono', SFMono-Regular, Menlo, monospace;
+    font-size: 0.875em;
+    background: var(--color-bg-secondary);
+    padding: 0.125em 0.375em;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 600px) {
+    .trio { grid-template-columns: 1fr; }
+    .scale-examples { flex-direction: column; gap: 0.25rem; align-items: center; }
+  }
+</style>

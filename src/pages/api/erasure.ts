@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { queryRecords, deleteRecords } from '../../lib/cloudkit';
 
 /**
  * POST /api/erasure
@@ -13,6 +14,13 @@ interface ErasureRequest {
 }
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
+  // Guard: require API key to prevent unauthorized erasure requests
+  const apiKey = request.headers.get('x-fractune-api-key');
+  const expectedKey = import.meta.env.FRACTUNE_INGEST_KEY;
+  if (!expectedKey || apiKey !== expectedKey) {
+    return errorResponse(403, 'Forbidden');
+  }
+
   const contentType = request.headers.get('content-type');
   if (!contentType?.includes('application/json')) {
     return errorResponse(400, 'Content-Type must be application/json');
@@ -60,18 +68,27 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 };
 
 async function processErasure(contributorID: string): Promise<void> {
-  const containerId = import.meta.env.CLOUDKIT_CONTAINER_ID;
+  // 1. Query all Research records for this contributor
+  const records = await queryRecords('Research', [{
+    fieldName: 'contributorID',
+    comparator: 'EQUALS',
+    fieldValue: { value: contributorID },
+  }]);
 
-  if (!containerId) {
-    console.warn('CloudKit credentials not configured — logging erasure request only');
+  if (records.length === 0) {
+    console.log(`Erasure: no records found for contributor ${hashContributorID(contributorID)}`);
     return;
   }
 
-  // TODO: Implement CloudKit record deletion
-  // 1. Query all records where contributorID matches
-  // 2. Delete or anonymize each record
-  // 3. Update audit log status to "completed"
-  console.log('Would process erasure for contributor:', hashContributorID(contributorID));
+  // 2. Delete all matching records
+  const recordNames = records.map((r: any) => r.recordName);
+  const result = await deleteRecords(recordNames, 'Research');
+
+  console.log(`Erasure: deleted ${result.deleted} records, ${result.errors} errors for contributor ${hashContributorID(contributorID)}`);
+
+  if (result.errors > 0) {
+    throw new Error(`Failed to delete ${result.errors} of ${recordNames.length} records`);
+  }
 }
 
 function hashContributorID(id: string): string {
