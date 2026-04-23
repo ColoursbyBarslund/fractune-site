@@ -15,91 +15,158 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-inner">
-      <h1 class="hero-title">
-        Some buildings<br />
-        <span class="hero-accent">feel right.</span>
-      </h1>
-      <p class="hero-subtitle">Now you can measure why.</p>
-      <div class="hero-cta">
-        <a
-          href="https://apps.apple.com/app/fractune/idXXXXXXXXXX"
-          class="btn btn-primary"
-        >
-          Download on the App Store
-        </a>
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-inner">
+        <h1 class="hero-title">
+          Some buildings feel right.<br />
+          <span class="hero-accent">Now you can measure why.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Fractune reads the fractal fingerprint of any facade &mdash; a single number
+          that captures the complexity your eye already senses.
+        </p>
+        <div class="hero-cta">
+          <a
+            href="https://apps.apple.com/app/fractune/idXXXXXXXXXX"
+            class="btn btn-primary"
+          >
+            Download on the App Store
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- What it does -->
-  <section class="explain">
-    <div class="explain-image-wrap">
-      <img src="/varde-lethgori.jpg" alt="Varde Teater & Musikhus — layered red timber facades with varying rhythms" class="explain-image" />
-    </div>
-    <div class="explain-inner">
-      <h2 class="explain-title">Every facade has a fractal fingerprint.<br />Fractune reads it.</h2>
-      <p class="explain-body">
-        Point your camera at any building. Fractune calculates its fractal
-        dimension &mdash; a single number that captures the complexity your
-        eye already senses. Research shows we prefer buildings around
-        D&nbsp;=&nbsp;1.3&ndash;1.5, the same range found in trees, coastlines,
-        and the architecture we have loved for centuries.
-      </p>
-      <p class="explain-credit">Varde Teater &amp; Musikhus &middot; <a href="https://lethgori.dk" rel="noopener" target="_blank">Leth &amp; Gori</a></p>
-    </div>
-  </section>
+    <!-- What is fractal dimension? -->
+    <section class="dimension">
+      <div class="dimension-inner">
+        <h2 class="section-title">What is fractal dimension?</h2>
+        <p class="section-body">
+          Fractal dimension measures how detail repeats across scales. Research by
+          Taylor, Mandelbrot, and Salingaros shows humans consistently prefer
+          buildings with D&nbsp;&asymp;&nbsp;1.3&ndash;1.5 &mdash; the same range found in nature.
+        </p>
 
-  <!-- Map -->
-  <section class="map-section">
-    <div class="map-section-inner">
-      <h2 class="map-section-title">A growing map of architectural complexity.</h2>
-      <p class="map-section-body">
-        Every scan adds to a shared, open dataset. Explore how buildings
-        compare across neighbourhoods, cities, and styles.
-      </p>
-      <a href="https://sites.fractune.dk" class="btn btn-secondary">Explore the map</a>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section class="how">
-    <div class="how-inner">
-      <div class="how-step">
-        <span class="how-number">1</span>
-        <h3>Point</h3>
-        <p>Frame the facade in your camera.</p>
+        <!-- D-value scale -->
+        <div class="scale" role="figure" aria-label="Fractal dimension scale from 1.0 to 2.0">
+          <div class="scale-bar">
+            <div class="scale-sweet-spot" style="left: 30%; width: 20%;"></div>
+            <div class="scale-marker" style="left: 10%;">
+              <span class="scale-dot"></span>
+              <span class="scale-label">D &asymp; 1.1</span>
+              <span class="scale-desc">Blank glass facade</span>
+            </div>
+            <div class="scale-marker scale-marker-sweet" style="left: 35%;">
+              <span class="scale-dot scale-dot-sweet"></span>
+              <span class="scale-label">D &asymp; 1.3&ndash;1.5</span>
+              <span class="scale-desc">Sweet spot</span>
+            </div>
+            <div class="scale-marker" style="left: 41%;">
+              <span class="scale-dot scale-dot-small"></span>
+              <span class="scale-label">D &asymp; 1.41</span>
+              <span class="scale-desc">Avg. of 85 iconic buildings</span>
+            </div>
+            <div class="scale-marker" style="left: 70%;">
+              <span class="scale-dot"></span>
+              <span class="scale-label">D &asymp; 1.7</span>
+              <span class="scale-desc">Gothic cathedral</span>
+            </div>
+          </div>
+          <div class="scale-ends">
+            <span>1.0 &mdash; Simple</span>
+            <span>2.0 &mdash; Complex</span>
+          </div>
+        </div>
       </div>
-      <div class="how-step">
-        <span class="how-number">2</span>
-        <h3>Scan</h3>
-        <p>Fractune analyses on-device. Your photos never leave your phone.</p>
-      </div>
-      <div class="how-step">
-        <span class="how-number">3</span>
-        <h3>Understand</h3>
-        <p>Get the D-value &mdash; and see where it sits on the fluence scale.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Science -->
-  <section class="science">
-    <div class="science-inner">
-      <h2 class="science-title">Built on decades of research.</h2>
-      <p class="science-body">
-        Fractal fluence draws on the work of physicist Richard Taylor, who
-        discovered that humans respond measurably to fractal patterns in
-        art and architecture. Fractune builds on methods established by
-        Ostwald &amp; Vaughan across 85 canonical buildings, and connects
-        to the broader theory of predictive processing in environmental
-        psychology.
-      </p>
-      <a href="/science" class="btn btn-secondary" style="margin-top: 2rem;">The science</a>
-    </div>
-  </section>
+    <!-- How it works -->
+    <section class="how">
+      <div class="how-inner">
+        <h2 class="section-title">How it works</h2>
+        <div class="how-steps">
+          <div class="how-step">
+            <span class="how-number">1</span>
+            <h3>Point</h3>
+            <p>Frame any building facade in your camera.</p>
+          </div>
+          <div class="how-step">
+            <span class="how-number">2</span>
+            <h3>Scan</h3>
+            <p>Fractune analyses on-device using Canny edge detection and box-counting. Your photos never leave your phone.</p>
+          </div>
+          <div class="how-step">
+            <span class="how-number">3</span>
+            <h3>Understand</h3>
+            <p>Get the D-value and see where it sits on the fluence scale.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature cards -->
+    <section class="features">
+      <div class="features-inner">
+        <div class="feature-card">
+          <h3>Fractal Analysis (D)</h3>
+          <p>9-threshold robust plateau analysis with stability score.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Chromatic Fluence (C)</h3>
+          <p>Entropy, palette coherence, and ecological deviation.</p>
+        </div>
+        <div class="feature-card">
+          <h3>AI Segmentation</h3>
+          <p>Analyse individual building elements using DETR.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Interactive Viewer</h3>
+          <p>Switch between Original, Edges, Boxes, and Colours.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Session History</h3>
+          <p>Side-by-side comparison and shareable report images.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Research Contribution</h3>
+          <p>Anonymous opt-in data sharing via CloudKit.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Home Screen Widget</h3>
+          <p>Quick access to your latest analysis.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Science -->
+    <section class="science">
+      <div class="science-inner">
+        <h2 class="section-title">Built on decades of research.</h2>
+        <p class="section-body">
+          Fractal fluence draws on the work of physicist Richard Taylor, who
+          discovered that humans respond measurably to fractal patterns in
+          art and architecture. Fractune builds on methods established by
+          Ostwald &amp; Vaughan across 85 canonical buildings, and connects
+          to the broader theory of predictive processing in environmental
+          psychology.
+        </p>
+        <a href="/science" class="btn btn-secondary">The science</a>
+      </div>
+    </section>
+
+    <!-- Map -->
+    <section class="map-section">
+      <div class="map-section-inner">
+        <h2 class="section-title">A growing map of architectural complexity.</h2>
+        <p class="section-body">
+          Every scan adds to a shared, open dataset. Explore how buildings
+          compare across neighbourhoods, cities, and styles.
+        </p>
+        <a href="https://sites.fractune.dk" class="btn btn-secondary">Explore the map</a>
+      </div>
+    </section>
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
@@ -117,7 +184,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  /* Nav */
+  /* ─── Nav ─── */
   .nav {
     position: fixed;
     top: 0;
@@ -171,14 +238,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--color-text);
   }
 
-  /* Hero */
+  /* ─── Shared section styles ─── */
+  .section-title {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-body {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+    max-width: 640px;
+  }
+
+  /* ─── Hero ─── */
   .hero {
     padding: 12rem 2rem 6rem;
     text-align: center;
   }
 
   .hero-inner {
-    max-width: 680px;
+    max-width: 720px;
     margin: 0 auto;
   }
 
@@ -187,22 +270,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-weight: 700;
     line-height: 1.08;
     letter-spacing: -0.035em;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
   }
 
   .hero-accent {
-    background: linear-gradient(135deg, #12283E, #2a5a8a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-accent);
   }
 
   .hero-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 300;
     color: var(--color-text-secondary);
-    line-height: 1.4;
+    line-height: 1.55;
     margin-bottom: 2.5rem;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .hero-cta {
@@ -210,7 +293,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     justify-content: center;
   }
 
-  /* Buttons */
+  /* ─── Buttons ─── */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -242,98 +325,115 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--color-accent-hover);
   }
 
-  /* Explain */
-  .explain {
-    padding: 0 0 6rem;
-    text-align: center;
+  /* ─── Fractal dimension section ─── */
+  .dimension {
+    padding: 6rem 2rem;
     background: var(--color-bg-secondary);
+    text-align: center;
   }
 
-  .explain-image-wrap {
-    width: 100%;
-    aspect-ratio: 16 / 7;
-    overflow: hidden;
-    margin-bottom: 3rem;
-  }
-
-  .explain-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 25%;
-  }
-
-  .explain-inner {
-    max-width: 640px;
+  .dimension-inner {
+    max-width: var(--max-width);
     margin: 0 auto;
-    padding: 0 2rem;
   }
 
-  .explain-credit {
-    margin-top: 1.5rem;
+  .dimension .section-body {
+    margin: 0 auto 3rem;
+  }
+
+  /* ─── D-value scale ─── */
+  .scale {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .scale-bar {
+    position: relative;
+    height: 6px;
+    background: var(--color-border);
+    border-radius: 3px;
+    margin-bottom: 5rem;
+  }
+
+  .scale-sweet-spot {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: #2A7D3F;
+    border-radius: 3px;
+    opacity: 0.22;
+  }
+
+  .scale-marker {
+    position: absolute;
+    top: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .scale-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-text);
+    border: 2px solid var(--color-bg-secondary);
+    transform: translateY(-50%);
+  }
+
+  .scale-dot-sweet {
+    background: #2A7D3F;
+  }
+
+  .scale-dot-small {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scale-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+    margin-top: 0.25rem;
+  }
+
+  .scale-desc {
     font-size: 0.75rem;
     color: var(--color-text-secondary);
-    opacity: 0.7;
+    white-space: nowrap;
   }
 
-  .explain-credit a {
+  .scale-marker-sweet .scale-label {
+    color: #2A7D3F;
+  }
+
+  .scale-ends {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
     color: var(--color-text-secondary);
-    text-decoration: underline;
+    margin-top: -3.5rem;
   }
 
-  .explain-title {
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
-    font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
-  }
-
-  .explain-body {
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    color: var(--color-text-secondary);
-  }
-
-  /* Map section */
-  .map-section {
-    padding: 6rem 2rem;
-    text-align: center;
-  }
-
-  .map-section-inner {
-    max-width: 640px;
-    margin: 0 auto;
-  }
-
-  .map-section-title {
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
-    font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-  }
-
-  .map-section-body {
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    color: var(--color-text-secondary);
-    margin-bottom: 2rem;
-  }
-
-  /* How it works */
+  /* ─── How it works ─── */
   .how {
     padding: 6rem 2rem;
-    background: var(--color-bg-secondary);
+    text-align: center;
   }
 
   .how-inner {
     max-width: var(--max-width);
     margin: 0 auto;
+  }
+
+  .how-steps {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 3rem;
-    text-align: center;
+    margin-top: 3rem;
   }
 
   .how-number {
@@ -358,36 +458,80 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .how-step p {
     font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+
+  /* ─── Feature cards ─── */
+  .features {
+    padding: 6rem 2rem;
+    background: var(--color-bg-secondary);
+  }
+
+  .features-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    background: var(--color-bg);
+    border-radius: var(--radius);
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+    transition: box-shadow var(--transition);
+  }
+
+  .feature-card:hover {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .feature-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-card p {
+    font-size: 0.9375rem;
     line-height: 1.6;
     color: var(--color-text-secondary);
   }
 
-  /* Science */
+  /* ─── Science ─── */
   .science {
     padding: 6rem 2rem;
     text-align: center;
   }
 
   .science-inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .science .section-body {
+    margin: 0 auto 2rem;
+  }
+
+  /* ─── Map section ─── */
+  .map-section {
+    padding: 6rem 2rem;
+    background: var(--color-bg-secondary);
+    text-align: center;
+  }
+
+  .map-section-inner {
     max-width: 640px;
     margin: 0 auto;
   }
 
-  .science-title {
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
-    font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
+  .map-section .section-body {
+    margin: 0 auto 2rem;
   }
 
-  .science-body {
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    color: var(--color-text-secondary);
-  }
-
-  /* Footer */
+  /* ─── Footer ─── */
   .footer {
     padding: 3rem 0;
     border-top: 1px solid var(--color-border);
@@ -412,9 +556,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--color-text-secondary);
   }
 
+  .footer-links a:hover {
+    color: var(--color-text);
+  }
+
   .footer-copy {
     font-size: 0.8125rem;
     color: var(--color-text-secondary);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 768px) {
+    .features-inner {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   @media (max-width: 600px) {
@@ -422,17 +577,37 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       padding: 9rem 1.25rem 4rem;
     }
 
-    .hero-subtitle {
-      font-size: 1.25rem;
+    .hero-title {
+      font-size: clamp(2.2rem, 8vw, 3rem);
     }
 
-    .how-inner {
+    .hero-subtitle {
+      font-size: 1.0625rem;
+    }
+
+    .how-steps {
       grid-template-columns: 1fr;
       gap: 2rem;
     }
 
+    .features-inner {
+      grid-template-columns: 1fr;
+    }
+
     .nav-links {
       gap: 1rem;
+    }
+
+    .scale-marker .scale-desc {
+      display: none;
+    }
+
+    .scale-bar {
+      margin-bottom: 3.5rem;
+    }
+
+    .scale-ends {
+      margin-top: -2rem;
     }
   }
 </style>

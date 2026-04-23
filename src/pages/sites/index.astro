@@ -10,6 +10,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <header class="map-header">
       <a href="https://fractune.dk" class="map-logo"><img src="/logo.png" alt="" class="map-logo-icon" />Fractune</a>
       <h1 class="map-title">Sites</h1>
+      <div id="filter-chips" class="filter-chips"></div>
       <div class="search-wrap">
         <input
           id="search-input"
@@ -40,27 +41,24 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <p class="range-hint">Drag brackets to filter</p>
     </div>
 
-    <div id="site-detail" class="site-detail hidden">
-      <button id="close-detail" class="close-btn" aria-label="Close">&times;</button>
-      <h3 id="detail-title"></h3>
-      <p class="detail-d-value">D-value: <strong id="detail-d"></strong></p>
-      <p id="detail-address" class="detail-address"></p>
-      <p id="detail-style" class="detail-style"></p>
-      <p id="detail-date" class="detail-date"></p>
-    </div>
+    <!-- Detail panels container (stacks right-to-left) -->
+    <div id="detail-panels" class="detail-panels"></div>
   </div>
 
   <script is:inline src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" crossorigin async></script>
 
   <script is:inline>
-    // Global state
+    // ─── Global state ───
     var allSites = [];
     var allAnnotations = [];
     var currentMap = null;
     var currentSearch = '';
     var rangeMin = 1.0;
     var rangeMax = 2.0;
+    var activeFilters = { city: null, century: null, style: null };
+    var openPanels = []; // array of site objects currently shown
 
+    // ─── Map init ───
     function initMap() {
       if (typeof mapkit === 'undefined') {
         setTimeout(initMap, 100);
@@ -94,45 +92,234 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       });
     }
 
+    // ─── Load sites ───
     async function loadSites() {
       try {
         var res = await fetch('/api/sites');
         if (!res.ok) throw new Error('Failed to fetch sites');
         var data = await res.json();
-
         allSites = data.sites || [];
 
-        // Filter chips are always visible in header
-
+        buildFilterChips();
         applyFilters();
+        handlePermalink();
       } catch (err) {
         console.error('Error loading sites:', err);
       }
     }
 
+    // ─── Permalink handling ───
+    function handlePermalink() {
+      var params = new URLSearchParams(window.location.search);
+      var siteId = params.get('site');
+      if (!siteId) return;
+
+      var site = allSites.find(function (s) { return s.id === siteId; });
+      if (!site) return;
+
+      // Center map on the site
+      currentMap.setCenterAnimated(
+        new mapkit.Coordinate(site.latitude, site.longitude)
+      );
+      currentMap.setRegionAnimated(
+        new mapkit.CoordinateRegion(
+          new mapkit.Coordinate(site.latitude, site.longitude),
+          new mapkit.CoordinateSpan(0.01, 0.01)
+        )
+      );
+
+      // Open detail panel
+      openPanels = [site];
+      renderPanels();
+    }
+
+    function updatePermalink(sites) {
+      var url = new URL(window.location);
+      if (sites.length === 1) {
+        url.searchParams.set('site', sites[0].id);
+      } else {
+        url.searchParams.delete('site');
+      }
+      window.history.replaceState({}, '', url);
+    }
+
+    function getPermalink(site) {
+      var url = new URL(window.location.origin + window.location.pathname);
+      url.searchParams.set('site', site.id);
+      return url.toString();
+    }
+
+    // ─── Filter chips ───
+    function buildFilterChips() {
+      var container = document.getElementById('filter-chips');
+      container.innerHTML = '';
+
+      // Extract unique values
+      var cities = extractUnique(allSites, 'buildingAddress', extractCity);
+      var styles = extractUnique(allSites, 'buildingStyle');
+      var centuries = extractUnique(allSites, 'constructionYear', yearToCentury);
+
+      if (cities.length > 1) addFilterGroup(container, 'city', 'City', cities);
+      if (centuries.length > 1) addFilterGroup(container, 'century', 'Century', centuries);
+      if (styles.length > 1) addFilterGroup(container, 'style', 'Style', styles);
+    }
+
+    function extractUnique(sites, field, transformFn) {
+      var seen = {};
+      var values = [];
+      sites.forEach(function (s) {
+        var raw = s[field];
+        if (!raw) return;
+        var val = transformFn ? transformFn(raw) : raw;
+        if (val && !seen[val]) {
+          seen[val] = true;
+          values.push(val);
+        }
+      });
+      return values.sort();
+    }
+
+    function extractCity(address) {
+      if (!address) return null;
+      // Take last part after comma as city
+      var parts = address.split(',');
+      var city = parts[parts.length - 1].trim();
+      // Remove postal codes (digits at start)
+      city = city.replace(/^\d+\s*/, '');
+      return city || null;
+    }
+
+    function yearToCentury(year) {
+      if (!year || year < 1000) return null;
+      var c = Math.ceil(year / 100);
+      return c + ordinalSuffix(c) + ' c.';
+    }
+
+    function ordinalSuffix(n) {
+      if (n === 11 || n === 12 || n === 13) return 'th';
+      var last = n % 10;
+      if (last === 1) return 'st';
+      if (last === 2) return 'nd';
+      if (last === 3) return 'rd';
+      return 'th';
+    }
+
+    function addFilterGroup(container, key, label, values) {
+      var wrapper = document.createElement('div');
+      wrapper.className = 'filter-group';
+
+      var btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.textContent = label;
+      btn.setAttribute('aria-expanded', 'false');
+
+      var dropdown = document.createElement('div');
+      dropdown.className = 'filter-dropdown hidden';
+
+      // "All" option
+      var allOpt = document.createElement('button');
+      allOpt.className = 'filter-option active';
+      allOpt.textContent = 'All';
+      allOpt.addEventListener('click', function () {
+        activeFilters[key] = null;
+        updateFilterUI(dropdown, null);
+        btn.textContent = label;
+        btn.classList.remove('filter-active');
+        applyFilters();
+        dropdown.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+      dropdown.appendChild(allOpt);
+
+      values.forEach(function (val) {
+        var opt = document.createElement('button');
+        opt.className = 'filter-option';
+        opt.textContent = val;
+        opt.addEventListener('click', function () {
+          activeFilters[key] = val;
+          updateFilterUI(dropdown, val);
+          btn.textContent = val;
+          btn.classList.add('filter-active');
+          applyFilters();
+          dropdown.classList.add('hidden');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+        dropdown.appendChild(opt);
+      });
+
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        // Close other dropdowns
+        document.querySelectorAll('.filter-dropdown').forEach(function (d) {
+          if (d !== dropdown) {
+            d.classList.add('hidden');
+            d.previousElementSibling && d.previousElementSibling.setAttribute('aria-expanded', 'false');
+          }
+        });
+        var isHidden = dropdown.classList.contains('hidden');
+        dropdown.classList.toggle('hidden');
+        btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+      });
+
+      wrapper.appendChild(btn);
+      wrapper.appendChild(dropdown);
+      container.appendChild(wrapper);
+    }
+
+    function updateFilterUI(dropdown, activeVal) {
+      dropdown.querySelectorAll('.filter-option').forEach(function (opt) {
+        if (activeVal === null) {
+          opt.classList.toggle('active', opt.textContent === 'All');
+        } else {
+          opt.classList.toggle('active', opt.textContent === activeVal);
+        }
+      });
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.filter-dropdown').forEach(function (d) {
+        d.classList.add('hidden');
+      });
+      document.querySelectorAll('.filter-btn').forEach(function (b) {
+        b.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // ─── Apply filters ───
     function applyFilters() {
-      // Remove existing annotations
       if (allAnnotations.length > 0) {
         currentMap.removeAnnotations(allAnnotations);
       }
 
-      // Filter sites
       var filtered = allSites.filter(function (site) {
-        // D-value range filter
         if (site.dValue < rangeMin || site.dValue > rangeMax) return false;
 
-        // Search filter
+        // Search
         if (currentSearch) {
           var q = currentSearch.toLowerCase();
           var searchable = [
-            site.buildingName,
-            site.buildingAddress,
-            site.architect,
-            site.buildingStyle,
-            site.buildingType,
-            site.dValue.toFixed(3),
+            site.buildingName, site.buildingAddress, site.architect,
+            site.buildingStyle, site.buildingType, site.dValue.toFixed(3),
           ].filter(Boolean).join(' ').toLowerCase();
           if (!searchable.includes(q)) return false;
+        }
+
+        // City filter
+        if (activeFilters.city) {
+          var city = extractCity(site.buildingAddress);
+          if (city !== activeFilters.city) return false;
+        }
+
+        // Century filter
+        if (activeFilters.century) {
+          var century = yearToCentury(site.constructionYear);
+          if (century !== activeFilters.century) return false;
+        }
+
+        // Style filter
+        if (activeFilters.style) {
+          if (site.buildingStyle !== activeFilters.style) return false;
         }
 
         return true;
@@ -140,7 +327,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
       // Update count
       var countEl = document.getElementById('search-count');
-      var isFiltered = currentSearch || rangeMin > 1.0 || rangeMax < 2.0;
+      var isFiltered = currentSearch || rangeMin > 1.0 || rangeMax < 2.0
+        || activeFilters.city || activeFilters.century || activeFilters.style;
       if (isFiltered) {
         countEl.textContent = filtered.length + ' of ' + allSites.length;
       } else {
@@ -161,8 +349,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           glyphText: site.dValue.toFixed(1),
         });
 
-        annotation.addEventListener('select', function () {
-          showDetail(site);
+        annotation._fractuneSite = site;
+
+        annotation.addEventListener('select', function (e) {
+          var shiftKey = window._lastClickShift || false;
+          handleMarkerClick(site, shiftKey);
         });
 
         return annotation;
@@ -170,7 +361,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
       currentMap.addAnnotations(allAnnotations);
 
-      // Zoom to fit
       if (allAnnotations.length > 1) {
         currentMap.showItems(allAnnotations, {
           animate: true,
@@ -180,6 +370,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         currentMap.setCenterAnimated(allAnnotations[0].coordinate);
       }
     }
+
+    // Track shift key globally for marker clicks
+    window._lastClickShift = false;
+    document.addEventListener('mousedown', function (e) {
+      window._lastClickShift = e.shiftKey;
+    });
+    document.addEventListener('touchstart', function () {
+      window._lastClickShift = false;
+    });
 
     function dValueToColor(d) {
       var t = Math.max(0, Math.min(1, (d - 1.0) / 1.0));
@@ -192,38 +391,97 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       return 'rgb(' + r + ', ' + g + ', ' + b + ')';
     }
 
-    function showDetail(site) {
-      var panel = document.getElementById('site-detail');
-      document.getElementById('detail-title').textContent = site.buildingName || 'D = ' + site.dValue.toFixed(3);
-      document.getElementById('detail-d').textContent = site.dValue.toFixed(4);
-
-      var details = [];
-      if (site.buildingAddress) details.push(site.buildingAddress);
-      if (site.architect) details.push(site.architect);
-      if (site.constructionYear) details.push(String(site.constructionYear));
-      document.getElementById('detail-address').textContent = details.join(' · ') || '';
-
-      var style = [];
-      if (site.buildingStyle) style.push(site.buildingStyle);
-      if (site.buildingType) style.push(site.buildingType);
-      document.getElementById('detail-style').textContent = style.join(' · ') || '';
-
-      document.getElementById('detail-date').textContent = site.analyzedAt
-        ? 'Analysed: ' + new Date(site.analyzedAt).toLocaleDateString('en-GB')
-        : '';
-      panel.classList.remove('hidden');
+    // ─── Multi-panel detail view ───
+    function handleMarkerClick(site, shiftKey) {
+      if (shiftKey) {
+        // Shift-click: add panel if not already open
+        var alreadyOpen = openPanels.some(function (s) { return s.id === site.id; });
+        if (!alreadyOpen) {
+          openPanels.push(site);
+        }
+      } else {
+        // Normal click: replace all with single panel
+        openPanels = [site];
+      }
+      updatePermalink(openPanels);
+      renderPanels();
     }
 
-    // Event listeners
-    document.addEventListener('DOMContentLoaded', function () {
-      // Close detail panel
-      var closeBtn = document.getElementById('close-detail');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function () {
-          document.getElementById('site-detail').classList.add('hidden');
-        });
-      }
+    function closePanel(siteId) {
+      openPanels = openPanels.filter(function (s) { return s.id !== siteId; });
+      updatePermalink(openPanels);
+      renderPanels();
+    }
 
+    function renderPanels() {
+      var container = document.getElementById('detail-panels');
+      container.innerHTML = '';
+
+      openPanels.forEach(function (site, index) {
+        var panel = document.createElement('div');
+        panel.className = 'site-detail';
+        panel.style.animationDelay = (index * 0.05) + 's';
+
+        var dColor = dValueToColor(site.dValue);
+
+        var details = [];
+        if (site.buildingAddress) details.push(site.buildingAddress);
+        if (site.architect) details.push(site.architect);
+        if (site.constructionYear) details.push(String(site.constructionYear));
+
+        var styleInfo = [];
+        if (site.buildingStyle) styleInfo.push(site.buildingStyle);
+        if (site.buildingType) styleInfo.push(site.buildingType);
+
+        var dateStr = site.analyzedAt
+          ? 'Analysed ' + new Date(site.analyzedAt).toLocaleDateString('en-GB')
+          : '';
+
+        var permalink = getPermalink(site);
+
+        panel.innerHTML =
+          '<button class="close-btn" aria-label="Close">&times;</button>' +
+          '<h3>' + escapeHtml(site.buildingName || 'Unnamed site') + '</h3>' +
+          '<p class="detail-d-value">D = <strong style="color:' + dColor + '">' + site.dValue.toFixed(4) + '</strong></p>' +
+          (details.length ? '<p class="detail-meta">' + escapeHtml(details.join(' · ')) + '</p>' : '') +
+          (styleInfo.length ? '<p class="detail-style">' + escapeHtml(styleInfo.join(' · ')) + '</p>' : '') +
+          (dateStr ? '<p class="detail-date">' + dateStr + '</p>' : '') +
+          '<a class="detail-permalink" href="' + permalink + '" title="Copy permalink" onclick="copyPermalink(event, this)">Permalink</a>';
+
+        panel.querySelector('.close-btn').addEventListener('click', function () {
+          closePanel(site.id);
+        });
+
+        container.appendChild(panel);
+      });
+
+      // Show comparison hint if exactly one panel
+      if (openPanels.length === 1) {
+        var hint = document.createElement('p');
+        hint.className = 'compare-hint';
+        hint.textContent = 'Shift-click another marker to compare';
+        container.appendChild(hint);
+      }
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function copyPermalink(e, el) {
+      e.preventDefault();
+      var url = el.href;
+      navigator.clipboard.writeText(url).then(function () {
+        var original = el.textContent;
+        el.textContent = 'Copied!';
+        setTimeout(function () { el.textContent = original; }, 1500);
+      });
+    }
+
+    // ─── Event listeners ───
+    document.addEventListener('DOMContentLoaded', function () {
       // Search input
       var searchInput = document.getElementById('search-input');
       var searchTimeout;
@@ -235,7 +493,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         }, 200);
       });
 
-      // Clear search on Escape
       searchInput.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
           searchInput.value = '';
@@ -245,10 +502,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         }
       });
 
-      // Range slider
       initRangeSlider();
     });
 
+    // ─── Range slider ───
     function initRangeSlider() {
       var track = document.getElementById('range-track');
       var handleLeft = document.getElementById('handle-left');
@@ -283,8 +540,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           var clientX = e.touches ? e.touches[0].clientX : e.clientX;
           var pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
           var d = percentToD(pct);
-
-          // Snap to 0.05 increments
           d = Math.round(d * 20) / 20;
           d = Math.max(D_MIN, Math.min(D_MAX, d));
 
@@ -318,7 +573,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       handleRight.addEventListener('mousedown', function (e) { e.preventDefault(); startDrag(handleRight, false); });
       handleRight.addEventListener('touchstart', function (e) { e.preventDefault(); startDrag(handleRight, false); }, { passive: false });
 
-      // Click on track to move nearest handle
       track.addEventListener('click', function (e) {
         if (e.target === handleLeft || e.target === handleRight) return;
         var rect = track.getBoundingClientRect();
@@ -335,7 +589,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         applyFilters();
       });
 
-      // Double-click to reset
       track.addEventListener('dblclick', function () {
         rangeMin = D_MIN;
         rangeMax = D_MAX;
@@ -356,6 +609,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     overflow: hidden;
   }
 
+  /* ─── Header ─── */
   .map-header {
     position: absolute;
     top: 0;
@@ -394,8 +648,89 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     flex-shrink: 0;
   }
 
+  /* ─── Filter chips ─── */
+  .filter-chips {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-left: 0.5rem;
+    overflow-x: auto;
+    flex: 1;
+    min-width: 0;
+  }
 
-  /* Search (right-aligned, same height as chips) */
+  .filter-group {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .filter-btn {
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--color-border);
+    border-radius: 980px;
+    font-size: 0.6875rem;
+    font-family: var(--font-sans);
+    background: #fff;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition);
+  }
+
+  .filter-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  .filter-btn.filter-active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+
+  .filter-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 20;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    min-width: 140px;
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 0.25rem 0;
+  }
+
+  .filter-dropdown.hidden {
+    display: none;
+  }
+
+  .filter-option {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    border: none;
+    background: none;
+    font-size: 0.75rem;
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    text-align: left;
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+
+  .filter-option:hover {
+    background: var(--color-bg-secondary);
+  }
+
+  .filter-option.active {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  /* ─── Search ─── */
   .search-wrap {
     display: flex;
     align-items: center;
@@ -434,13 +769,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     white-space: nowrap;
   }
 
-  /* Map */
+  /* ─── Map ─── */
   #map-container {
     width: 100%;
     height: 100%;
   }
 
-  /* Range slider legend */
+  /* ─── Range slider legend ─── */
   .map-legend {
     position: absolute;
     bottom: 2rem;
@@ -544,27 +879,40 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     opacity: 0.6;
   }
 
-  /* Detail panel */
-  .site-detail {
+  /* ─── Detail panels (multi-panel comparison) ─── */
+  .detail-panels {
     position: absolute;
     bottom: 2rem;
     right: 1.5rem;
     z-index: 10;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.75rem;
+    align-items: flex-end;
+  }
+
+  .site-detail {
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-radius: var(--radius);
     padding: 1.25rem 1.5rem;
     min-width: 240px;
-    max-width: 320px;
+    max-width: 300px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    transition: opacity 0.2s, transform 0.2s;
+    animation: panelSlideIn 0.2s ease both;
+    position: relative;
   }
 
-  .site-detail.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(8px);
+  @keyframes panelSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .close-btn {
@@ -576,6 +924,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     font-size: 1.25rem;
     color: var(--color-text-secondary);
     cursor: pointer;
+    transition: color var(--transition);
+  }
+
+  .close-btn:hover {
+    color: var(--color-text);
   }
 
   .site-detail h3 {
@@ -586,37 +939,87 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   .detail-d-value {
-    font-size: 0.9375rem;
-    margin-bottom: 0.25rem;
+    font-size: 1.125rem;
+    margin-bottom: 0.375rem;
   }
 
-  .detail-address,
+  .detail-d-value strong {
+    font-weight: 700;
+  }
+
+  .detail-meta,
   .detail-style,
   .detail-date {
     font-size: 0.8125rem;
     color: var(--color-text-secondary);
+    margin-top: 0.125rem;
   }
 
   .detail-style {
     font-style: italic;
   }
 
-  /* Mobile */
+  .detail-permalink {
+    display: inline-block;
+    margin-top: 0.625rem;
+    font-size: 0.6875rem;
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .detail-permalink:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .compare-hint {
+    font-size: 0.625rem;
+    color: var(--color-text-secondary);
+    opacity: 0.6;
+    white-space: nowrap;
+    align-self: center;
+    padding-right: 0.5rem;
+  }
+
+  /* ─── Mobile ─── */
   @media (max-width: 768px) {
+    .map-header {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+    }
+
+    .filter-chips {
+      order: 3;
+      width: 100%;
+      margin-left: 0;
+      padding-bottom: 0.25rem;
+    }
+
     .search-input { width: 120px; }
     .search-input:focus { width: 160px; }
 
-    .site-detail {
+    .detail-panels {
       left: 1rem;
       right: 1rem;
       bottom: 1rem;
+      flex-direction: column-reverse;
+    }
+
+    .site-detail {
+      max-width: none;
+      min-width: auto;
     }
 
     .map-legend {
       left: 1rem;
-      right: 1rem;
+      right: auto;
       bottom: 1rem;
       min-width: auto;
+    }
+
+    .compare-hint {
+      display: none;
     }
   }
 </style>
