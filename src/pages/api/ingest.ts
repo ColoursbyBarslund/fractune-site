@@ -132,7 +132,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return errorResponse(502, 'Upstream error');
   }
 
-  console.log(`Ingest: record accepted (auth=${authMethod}, contributor=${body.contributorID.substring(0, 8)}...)`);
+  const summary = summariseMetrics(body.metricsJSON);
+  const fStr = summary.F != null ? `F=${summary.F.toFixed(2)}` : 'F=—';
+  const dStr = summary.D != null ? `D=${summary.D.toFixed(2)}` : 'D=—';
+  const cStr = summary.confidence != null ? `conf=${summary.confidence.toFixed(2)}` : 'conf=—';
+  console.log(`Ingest: record accepted (auth=${authMethod}, contributor=${body.contributorID.substring(0, 8)}..., ${fStr} ${dStr} ${cStr})`);
 
   return new Response(JSON.stringify({ ok: true }), {
     status: 200,
@@ -197,6 +201,17 @@ function validatePayload(body: unknown): string | null {
   if (typeof b.analyzedAt !== 'string')
     return 'Missing analyzedAt';
 
+  // metricsJSON must parse and contain a `metrics` object. Older payloads
+  // without F still pass — only structural validity is required here.
+  // The metric values themselves are stored opaquely.
+  try {
+    const parsed = JSON.parse(b.metricsJSON);
+    if (!parsed || typeof parsed !== 'object') return 'metricsJSON must be a JSON object';
+    if (!parsed.metrics || typeof parsed.metrics !== 'object') return 'metricsJSON must contain a `metrics` object';
+  } catch {
+    return 'metricsJSON is not valid JSON';
+  }
+
   // Location is optional (user may not have consented)
   if (b.geoLat != null && (typeof b.geoLat !== 'number' || b.geoLat < -90 || b.geoLat > 90))
     return 'Invalid geoLat';
@@ -214,6 +229,20 @@ function validatePayload(body: unknown): string | null {
   }
 
   return null;
+}
+
+/**
+ * Inspect metricsJSON for the headline values we want to log for observability.
+ * Best-effort: returns nulls if the field is missing or non-numeric.
+ */
+function summariseMetrics(metricsJSON: string): { D: number | null; F: number | null; confidence: number | null } {
+  try {
+    const m = JSON.parse(metricsJSON)?.metrics ?? {};
+    const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : null);
+    return { D: num(m.D), F: num(m.F), confidence: num(m.F_confidence) };
+  } catch {
+    return { D: null, F: null, confidence: null };
+  }
 }
 
 /** Trim string, return undefined if empty */

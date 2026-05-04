@@ -1,438 +1,1121 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 ---
 
-<BaseLayout title="Fractune — Measure what buildings make you feel">
-  <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
-      <div class="nav-links">
-        <a href="https://sites.fractune.dk">Map</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/support">Support</a>
+<BaseLayout title="Fractune · Field instrument for architectural fluency">
+  <SiteHeader />
+
+  <!-- ─── Hero ────────────────────────────────────────────────── -->
+  <section class="ft-hero">
+    <div class="ft-grid">
+      <aside class="ft-spine">
+        <div class="ft-spine-block">
+          <div class="ft-spine-section">A.01 STATEMENT</div>
+        </div>
+        <div class="ft-spine-block">
+          <div class="ft-spine-heading">INSTRUMENT</div>
+          <div>Fractune v2.0</div>
+          <div>iOS 26.4+</div>
+        </div>
+        <div class="ft-spine-block">
+          <div class="ft-spine-heading">MEASURES</div>
+          <div>Architectural Fluency F</div>
+          <div>F ∈ [0, 1]</div>
+        </div>
+        <div class="ft-spine-block">
+          <div class="ft-spine-heading">METHOD</div>
+          <div>Four-dimensional</div>
+          <div>Edge · Spectral · Colour</div>
+          <div>On-device</div>
+        </div>
+      </aside>
+
+      <div class="ft-hero-statement">
+        <h1 class="ft-h1">
+          Some buildings<br />
+          feel right.<br />
+          <span class="ft-h1-accent">Now you can</span><br />
+          <span class="ft-h1-accent">measure why.</span>
+        </h1>
       </div>
     </div>
-  </nav>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-inner">
-      <h1 class="hero-title">
-        Some buildings<br />
-        <span class="hero-accent">feel right.</span>
-      </h1>
-      <p class="hero-subtitle">Now you can measure why.</p>
-      <div class="hero-cta">
-        <a
-          href="https://apps.apple.com/app/fractune/idXXXXXXXXXX"
-          class="btn btn-primary"
-        >
-          Download on the App Store
-        </a>
+    <!-- Specimen photograph, hero asset has the iPhone composited in
+         and the phone deliberately overhangs the photo top + bottom -->
+    <figure class="ft-hero-figure">
+      <div class="ft-photo-frame">
+        <img src="/mockups/hero2.png" alt="Brick facade in Venice with Fractune showing F ≈ 0.77 for the facade" class="ft-photo-img" loading="eager" />
+
+        <!-- Corner ticks, the instrument is sighted on the facade -->
+        <span class="ft-tick ft-tick-tl"></span>
+        <span class="ft-tick ft-tick-tr"></span>
+        <span class="ft-tick ft-tick-bl"></span>
+        <span class="ft-tick ft-tick-br"></span>
+
+        <!-- Specimen annotation -->
+        <div class="ft-specimen">
+          <div class="ft-specimen-id">SPECIMEN · SS-047</div>
+          <div>Campo San Marziale</div>
+          <div>Venezia, IT · 2025.09</div>
+        </div>
+      </div>
+
+      <figcaption class="ft-photo-caption">
+        <span>PL. 01 · BRICK FACADE · VENEZIA · F · N = 85 REFERENCE</span>
+        <span>PHOTO · FRACTUNE FIELD ARCHIVE</span>
+      </figcaption>
+    </figure>
+
+    <!-- Descriptor + CTA + Stats -->
+    <div class="ft-hero-bottom">
+      <div class="ft-grid">
+        <aside class="ft-spine"></aside>
+        <div class="ft-hero-bottom-content">
+          <p class="ft-hero-descriptor">
+            Fractune is a pocket-sized field instrument for reading the
+            architectural fluency of building facades.
+            <span class="ft-muted">
+              Point, scan, and quantify the visual coherence a building
+              places into the world, across four dimensions: fractal
+              complexity, rhythm, colour, and structure.
+            </span>
+          </p>
+          <div class="ft-cta-block">
+            <a href="https://apps.apple.com/app/fractune/idXXXXXXXXXX" class="ft-app-store-link" aria-label="Download Fractune on the App Store">
+              <img src="/app-store-badge.svg" alt="Download on the App Store" class="ft-app-store-badge" />
+            </a>
+            <div class="ft-cta-req">REQ · IPHONE 14 OR LATER · iOS 26.4+</div>
+            <div class="ft-stats">
+              <div class="ft-stat">
+                <div class="ft-stat-num">F</div>
+                <div class="ft-stat-label">Headline metric</div>
+              </div>
+              <div class="ft-stat">
+                <div class="ft-stat-num">4</div>
+                <div class="ft-stat-label">Dimensions</div>
+              </div>
+              <div class="ft-stat">
+                <div class="ft-stat-num">85</div>
+                <div class="ft-stat-label">References</div>
+              </div>
+              <div class="ft-stat">
+                <div class="ft-stat-num">0</div>
+                <div class="ft-stat-label">Images leave device</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- What it does -->
-  <section class="explain">
-    <div class="explain-image-wrap">
-      <img src="/varde-lethgori.jpg" alt="Varde Teater & Musikhus — layered red timber facades with varying rhythms" class="explain-image" />
-    </div>
-    <div class="explain-inner">
-      <h2 class="explain-title">Every facade has a fractal fingerprint.<br />Fractune reads it.</h2>
-      <p class="explain-body">
-        Point your camera at any building. Fractune calculates its fractal
-        dimension &mdash; a single number that captures the complexity your
-        eye already senses. Research shows we prefer buildings around
-        D&nbsp;=&nbsp;1.3&ndash;1.5, the same range found in trees, coastlines,
-        and the architecture we have loved for centuries.
-      </p>
-      <p class="explain-credit">Varde Teater &amp; Musikhus &middot; <a href="https://lethgori.dk" rel="noopener" target="_blank">Leth &amp; Gori</a></p>
+  <!-- ─── §01, F and the four dimensions ─────────────────────── -->
+  <section class="ft-section ft-bg-surface">
+    <div class="ft-grid">
+      <aside class="ft-spine">
+        <div class="ft-spine-num">§ 01</div>
+        <div>On the quantity</div>
+        <div>F ∈ [0, 1]</div>
+      </aside>
+      <div class="ft-section-content">
+        <h2 class="ft-h2">A composite reading made from four independent measurements.</h2>
+        <div class="ft-two-col">
+          <p>
+            F is calibrated against six decades of empirical aesthetics
+            research. Stamps' regression coefficient β = 0.72 for surface
+            complexity, Spehar &amp; Taylor's 1/f<sup>1.2</sup> preference
+            peak, Stanischewski et al.'s edge-orientation entropy, all
+            converge on a sweet zone where well-composed facades cluster.
+          </p>
+          <p>
+            The composition matters. A tile roof scores high on fractal
+            dimension D alone, but its monotonous repetition fails on
+            lacunarity Λ and edge-orientation entropy H<sub>θ</sub>. F
+            catches this, the four dimensions correct each other.
+          </p>
+        </div>
+
+        <!-- F-Scale figure -->
+        <div class="ft-figure">
+          <div class="ft-figure-header">
+            <span>FIG. 01 · ARCHITECTURAL FLUENCY SCALE</span>
+            <span>n = 85 reference buildings</span>
+          </div>
+
+          <div class="ft-fscale">
+            <div class="ft-fscale-bar">
+              <span class="ft-fscale-zone ft-fscale-monotone">MONOTONE</span>
+              <span class="ft-fscale-zone ft-fscale-sweet">SWEET SPOT</span>
+              <span class="ft-fscale-zone ft-fscale-chaos">NEAR CHAOS</span>
+            </div>
+            <div class="ft-fscale-ticks">
+              <span class="ft-tick-0">0.0</span>
+              <span class="ft-tick-55">0.55</span>
+              <span class="ft-tick-75">0.75</span>
+              <span class="ft-tick-100">1.0</span>
+            </div>
+            <div class="ft-fscale-captions">
+              <span>Plain glass wall</span>
+              <span class="ft-fscale-sweet-text">Fluent · Coherent · Beloved buildings</span>
+              <span>Visually overwhelming</span>
+            </div>
+            <div class="ft-fscale-mean">F · ICONIC MEAN</div>
+          </div>
+        </div>
+
+        <div class="ft-callouts">
+          <div class="ft-callout ft-callout-sweet">
+            <div class="ft-callout-label">SWEET SPOT · F = 0.55 – 0.75</div>
+            <p>
+              Where well-composed facades land. Renaissance palazzi,
+              modernist Nordic vernacular, Belle Époque streets, different
+              traditions, similar F.
+            </p>
+          </div>
+          <div class="ft-callout ft-callout-primary">
+            <div class="ft-callout-label">FRACTAL SUB-DIMENSION · D = 1.41</div>
+            <p>
+              The Ostwald &amp; Vaughan mean across 85 canonical buildings.
+              D is now one of four sub-scores feeding F, modulated by
+              lacunarity Λ and edge-orientation entropy H<sub>θ</sub>.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Map -->
-  <section class="map-section">
-    <div class="map-section-inner">
-      <h2 class="map-section-title">A growing map of architectural complexity.</h2>
-      <p class="map-section-body">
-        Every scan adds to a shared, open dataset. Explore how buildings
-        compare across neighbourhoods, cities, and styles.
-      </p>
-      <a href="https://sites.fractune.dk" class="btn btn-secondary">Explore the map</a>
+  <!-- ─── §02, Three operations ─────────────────────────────── -->
+  <section class="ft-section">
+    <div class="ft-grid">
+      <aside class="ft-spine">
+        <div class="ft-spine-num">§ 02</div>
+        <div>Three operations,</div>
+        <div>no servers</div>
+      </aside>
+      <div class="ft-section-content">
+        <h2 class="ft-h2">Point. Scan. Understand.</h2>
+        <p class="ft-section-lead">
+          Every step runs on the iPhone. No image leaves the device unless
+          you choose to contribute the reading to the open dataset.
+        </p>
+        <div class="ft-ops">
+          <div class="ft-op">
+            <img
+              src="/mockups/point.png"
+              alt="CoreML segmentation isolating the facade with colored overlays"
+              class="ft-op-phone"
+              loading="lazy"
+            />
+            <div class="ft-op-label">OPERATION / 01</div>
+            <div class="ft-op-title">Point</div>
+            <p>Frame the facade. CoreML segmentation isolates the building surface from sky, vegetation, and street furniture.</p>
+          </div>
+          <div class="ft-op">
+            <img
+              src="/mockups/scan.png"
+              alt="Box-counting visualization, gold boxes covering the facade edges"
+              class="ft-op-phone"
+              loading="lazy"
+            />
+            <div class="ft-op-label">OPERATION / 02</div>
+            <div class="ft-op-title">Scan</div>
+            <p>Four parallel pipelines run on-device: fractal box-counting, FFT-based rhythm analysis, CIELAB colour clustering, and structural composition. F is composed from all four.</p>
+          </div>
+          <div class="ft-op">
+            <img
+              src="/mockups/understand.png"
+              alt="Result screen showing F with the sweet-spot bar and four dimension breakdown"
+              class="ft-op-phone"
+              loading="lazy"
+            />
+            <div class="ft-op-label">OPERATION / 03</div>
+            <div class="ft-op-title">Understand</div>
+            <p>F lands on the sweet-spot bar with confidence indicator. Fold open each dimension to see its sub-metrics: D, Λ, H<sub>θ</sub>, β, R<sub>w</sub>, B, V, Σ_h, κ, Δ_L.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- How it works -->
-  <section class="how">
-    <div class="how-inner">
-      <div class="how-step">
-        <span class="how-number">1</span>
-        <h3>Point</h3>
-        <p>Frame the facade in your camera.</p>
-      </div>
-      <div class="how-step">
-        <span class="how-number">2</span>
-        <h3>Scan</h3>
-        <p>Fractune analyses on-device. Your photos never leave your phone.</p>
-      </div>
-      <div class="how-step">
-        <span class="how-number">3</span>
-        <h3>Understand</h3>
-        <p>Get the D-value &mdash; and see where it sits on the fluence scale.</p>
+  <!-- ─── §03, Capabilities ─────────────────────────────────── -->
+  <section class="ft-section ft-bg-surface">
+    <div class="ft-grid">
+      <aside class="ft-spine ft-spine-with-phone">
+        <div class="ft-spine-num">§ 03</div>
+        <div>Seven capabilities,</div>
+        <div>one scan</div>
+        <figure class="ft-spine-phone">
+          <img
+            src="/mockups/instrument-in-full.png"
+            alt="Fractune showing the full instrument with all four dimensions"
+            loading="lazy"
+          />
+          <figcaption>PL. 03 · Instrument</figcaption>
+        </figure>
+      </aside>
+      <div class="ft-section-content">
+        <h2 class="ft-h2">The instrument in full.</h2>
+        <p class="ft-section-lead">
+          One measurement unfolds into seven parallel readings, geometry,
+          rhythm, colour, structure, segmentation, history, and a calibrated
+          uncertainty marker.
+        </p>
+        <div class="ft-features">
+          <div class="ft-feature">
+            <span class="ft-feature-num">01</span>
+            <span class="ft-feature-title">Architectural Fluency F</span>
+            <span class="ft-feature-body">A single composite score 0–1, calibrated to a sweet zone of 0.55–0.75.</span>
+            <span class="ft-feature-tag">COMPOSITE</span>
+          </div>
+          <div class="ft-feature">
+            <span class="ft-feature-num">02</span>
+            <span class="ft-feature-title">Four Dimensions</span>
+            <span class="ft-feature-body">Fractal, rhythm, colour, structure, each with its own sweet spot and breakdown.</span>
+            <span class="ft-feature-tag">MULTI-DIM</span>
+          </div>
+          <div class="ft-feature">
+            <span class="ft-feature-num">03</span>
+            <span class="ft-feature-title">CoreML Segmentation</span>
+            <span class="ft-feature-body">On-device isolation of the facade from sky, vegetation, and surroundings.</span>
+            <span class="ft-feature-tag">COREML</span>
+          </div>
+          <div class="ft-feature">
+            <span class="ft-feature-num">04</span>
+            <span class="ft-feature-title">Quality Confidence</span>
+            <span class="ft-feature-body">F shown with "?" when image quality or perspective skew reduces reliability, never silently mislead.</span>
+            <span class="ft-feature-tag">UNCERTAIN</span>
+          </div>
+          <div class="ft-feature">
+            <span class="ft-feature-num">05</span>
+            <span class="ft-feature-title">Session History</span>
+            <span class="ft-feature-body">Every measurement saved with thumbnail and metadata, exportable as CSV.</span>
+            <span class="ft-feature-tag">LOCAL</span>
+          </div>
+          <div class="ft-feature">
+            <span class="ft-feature-num">06</span>
+            <span class="ft-feature-title">Research Contribution</span>
+            <span class="ft-feature-body">Anonymised scans optionally feed the open architectural dataset. Per-field consent.</span>
+            <span class="ft-feature-tag">OPT-IN</span>
+          </div>
+          <div class="ft-feature">
+            <span class="ft-feature-num">07</span>
+            <span class="ft-feature-title">Home Screen Widget</span>
+            <span class="ft-feature-body">Your latest F + D + C, plus pending donation queue, refreshed at a glance.</span>
+            <span class="ft-feature-tag">WIDGETKIT</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Science -->
-  <section class="science">
-    <div class="science-inner">
-      <h2 class="science-title">Built on decades of research.</h2>
-      <p class="science-body">
-        Fractal fluence draws on the work of physicist Richard Taylor, who
-        discovered that humans respond measurably to fractal patterns in
-        art and architecture. Fractune builds on methods established by
-        Ostwald &amp; Vaughan across 85 canonical buildings, and connects
-        to the broader theory of predictive processing in environmental
-        psychology.
-      </p>
-      <a href="/science" class="btn btn-secondary" style="margin-top: 2rem;">The science</a>
+  <!-- ─── §04, Science ───────────────────────────────────────── -->
+  <section class="ft-section">
+    <div class="ft-grid">
+      <aside class="ft-spine">
+        <div class="ft-spine-num">§ 04</div>
+        <div>Literature</div>
+      </aside>
+      <div class="ft-section-content ft-science-grid">
+        <div>
+          <h2 class="ft-h2">Built on decades of research.</h2>
+          <p class="ft-science-lead">
+            Box-counting methods in architecture date to Bovill (1996).
+            Fractune extends the tradition with calibrated iPhone optics,
+            on-device CoreML segmentation, FFT-based spectral rhythm
+            analysis, and a four-dimensional composition framework drawing on
+            Spehar, Stamps, Salingaros, Vartanian, and the Aarhus
+            School-of-Architecture work on cognitive responses to space.
+          </p>
+          <a href="/science" class="ft-link-arrow">Read the full methodology →</a>
+        </div>
+        <div class="ft-references">
+          <div class="ft-references-label">SELECTED REFERENCES</div>
+          <div>Mandelbrot, B. (1982)</div>
+          <div>Bovill, C. (1996)</div>
+          <div>Stamps, A. E. (2000)</div>
+          <div>Spehar &amp; Taylor (2003)</div>
+          <div>Salingaros, N. (2006)</div>
+          <div>Vartanian et al. (2013)</div>
+          <div>Ostwald &amp; Vaughan (2016)</div>
+          <div>Stanischewski et al. (2020)</div>
+          <a href="/research" class="ft-references-link">and 44 others →</a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-links">
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-        <a href="/license">Dataset Licence</a>
-        <a href="/support">Support</a>
-        <a href="https://sites.fractune.dk">Map</a>
+  <!-- ─── §05, sites.fractune.dk ────────────────────────────── -->
+  <section class="ft-section ft-section-dark">
+    <div class="ft-grid">
+      <aside class="ft-spine ft-spine-dark">
+        <div class="ft-spine-num">§ 05</div>
+        <div>The atlas</div>
+        <div>sites.fractune.dk</div>
+      </aside>
+      <div class="ft-section-content ft-atlas-grid">
+        <div>
+          <h2 class="ft-h2 ft-h2-light">Every reading lands<br />on a public map.</h2>
+          <p class="ft-atlas-body">
+            <strong>sites.fractune.dk</strong> is the browser-side companion
+            to the app, a living atlas of anonymised facade readings. Filter
+            by city, era, style, or F-band. Browse the sweet spot, hunt for
+            outliers, compare your street to a Renaissance palazzo.
+          </p>
+          <div class="ft-atlas-stats">
+            <div>
+              <div class="ft-atlas-stat-h">Browse</div>
+              <div class="ft-atlas-stat-b">Every reading, mapped and searchable.</div>
+            </div>
+            <div>
+              <div class="ft-atlas-stat-h">Compare</div>
+              <div class="ft-atlas-stat-b">Stack any two facades side by side.</div>
+            </div>
+            <div>
+              <div class="ft-atlas-stat-h">Filter</div>
+              <div class="ft-atlas-stat-b">By city, century, style, or F-band.</div>
+            </div>
+            <div>
+              <div class="ft-atlas-stat-h">Cite</div>
+              <div class="ft-atlas-stat-b">Permalinks for every observation.</div>
+            </div>
+          </div>
+          <a href="https://sites.fractune.dk" class="ft-link-arrow ft-link-arrow-light">Visit sites.fractune.dk →</a>
+        </div>
+
+        <!-- Pre-composited laptop mockup of sites.fractune.dk -->
+        <figure class="ft-atlas-laptop">
+          <img
+            src="/mockups/sites.png"
+            alt="sites.fractune.dk showing analysed buildings on a satellite map of Europe"
+            loading="lazy"
+          />
+          <figcaption>PL. 05 · sites.fractune.dk</figcaption>
+        </figure>
       </div>
-      <p class="footer-copy">&copy; {new Date().getFullYear()} Fractune &middot; Colours by Barslund</p>
     </div>
-  </footer>
+  </section>
+
+  <SiteFooter />
 </BaseLayout>
 
 <style>
-  /* Nav */
-  .nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .nav-inner {
-    max-width: var(--max-width);
+  /* ── Grid ───────────────────────────────────────────────── */
+  .ft-grid {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 48px;
+    max-width: 1168px;
     margin: 0 auto;
-    padding: 0 2rem;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
 
-  .nav-logo {
-    font-size: 1.25rem;
+  .ft-spine {
+    padding-top: 6px;
+  }
+  .ft-spine-phone {
+    display: block;
+    margin: 32px 0 0;
+  }
+  .ft-spine-phone img {
+    width: 140px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  .ft-spine-phone figcaption {
+    margin-top: 10px;
+    font-family: var(--ft-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    color: var(--ft-text-dim);
+    text-transform: uppercase;
+  }
+  .ft-spine-block { margin-bottom: 16px; }
+  .ft-spine-block:last-child { margin-bottom: 0; }
+  .ft-spine-section,
+  .ft-spine-heading,
+  .ft-spine-num,
+  .ft-spine div {
+    font-family: var(--ft-mono);
+    font-size: 11px;
+    color: var(--ft-text-dim);
+    letter-spacing: 0.12em;
+    line-height: 1.8;
+  }
+  .ft-spine-num {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ft-text);
+    margin-bottom: 6px;
+  }
+  .ft-spine-section,
+  .ft-spine-heading {
     font-weight: 600;
-    color: var(--color-text);
-    letter-spacing: -0.02em;
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
+    color: var(--ft-text);
   }
 
-  .nav-logo-icon {
-    height: 1.0em;
-    width: auto;
-    vertical-align: middle;
-    transform: translateY(-1px);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 1.5rem;
-    font-size: 0.875rem;
-  }
-
-  .nav-links a {
-    color: var(--color-text-secondary);
-  }
-
-  .nav-links a:hover {
-    color: var(--color-text);
-  }
-
-  /* Hero */
-  .hero {
-    padding: 12rem 2rem 6rem;
-    text-align: center;
-  }
-
-  .hero-inner {
-    max-width: 680px;
-    margin: 0 auto;
-  }
-
-  .hero-title {
-    font-size: clamp(2.8rem, 7vw, 4.5rem);
-    font-weight: 700;
-    line-height: 1.08;
+  /* ── Hero ────────────────────────────────────────────── */
+  .ft-hero { padding: 96px 64px 0; }
+  .ft-hero-statement { padding-top: 0; }
+  .ft-hero-statement .ft-h1 {
+    font-family: var(--font-sans, 'Myriad Pro', -apple-system, BlinkMacSystemFont, sans-serif);
+    font-weight: 600;
+    font-size: clamp(56px, 7.2vw, 92px);
+    line-height: 0.98;
     letter-spacing: -0.035em;
-    margin-bottom: 1rem;
+    margin: 0;
+    max-width: 900px;
+    color: var(--ft-text);
+  }
+  .ft-hero-statement .ft-h1-accent {
+    font-weight: 600;
+    color: var(--ft-primary);
   }
 
-  .hero-accent {
-    background: linear-gradient(135deg, #12283E, #2a5a8a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  /* Hero figure */
+  .ft-hero-figure {
+    margin: 72px 0 0;
+    padding: 0;
+    position: relative;
+  }
+  .ft-photo-frame {
+    position: relative;
+    width: 100%;
+    /* The frame represents the visible Venice photo (16:9). The iPhone in
+       hero2.png deliberately overhangs the photo top + bottom, so we let it
+       spill out (no overflow:hidden) and reserve margin around it.
+       Top overhang is small (~4.7% of frame height), bottom is ~7.5%. */
+    aspect-ratio: 16 / 9;
+    margin: 3% 0 7.5%;
+    background: transparent;
+  }
+  .ft-photo-img {
+    position: absolute;
+    /* hero2.png photo region runs y=123..2711 of 2907. Pulling the image up
+       by 4.73% of frame height aligns the photo top with the frame top. */
+    top: -4.73%;
+    left: 0;
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .ft-tick {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    pointer-events: none;
+  }
+  .ft-tick-tl { top: 24px; left: 24px; border-top: 1.5px solid rgba(255,255,255,0.85); border-left: 1.5px solid rgba(255,255,255,0.85); }
+  .ft-tick-tr { top: 24px; right: 24px; border-top: 1.5px solid rgba(255,255,255,0.85); border-right: 1.5px solid rgba(255,255,255,0.85); }
+  .ft-tick-bl { bottom: 24px; left: 24px; border-bottom: 1.5px solid rgba(255,255,255,0.85); border-left: 1.5px solid rgba(255,255,255,0.85); }
+  .ft-tick-br { bottom: 24px; right: 24px; border-bottom: 1.5px solid rgba(255,255,255,0.85); border-right: 1.5px solid rgba(255,255,255,0.85); }
+
+  .ft-specimen {
+    position: absolute;
+    top: 72px;
+    left: 72px;
+    font-family: var(--ft-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.9;
+  }
+  .ft-specimen-id { font-weight: 600; }
+
+  /* iPhone bezel + screen */
+
+  /* App Store badge */
+  .ft-app-store-link {
+    display: inline-block;
+    line-height: 0;
+  }
+  .ft-app-store-badge {
+    height: 52px;
+    display: block;
   }
 
-  .hero-subtitle {
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: var(--color-text-secondary);
-    line-height: 1.4;
-    margin-bottom: 2.5rem;
-  }
-
-  .hero-cta {
+  .ft-photo-caption {
+    max-width: 1168px;
+    margin: 16px auto 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    font-family: var(--ft-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--ft-text-dim);
   }
 
-  /* Buttons */
-  .btn {
+  .ft-hero-bottom {
+    padding: 80px 0 128px;
+  }
+  .ft-hero-bottom-content {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .ft-hero-descriptor {
+    font-size: 20px;
+    color: var(--ft-text);
+    line-height: 1.45;
+    max-width: 600px;
+    margin: 0;
+  }
+  .ft-muted { color: var(--ft-text-dim); }
+  .ft-cta-block { padding-top: 6px; }
+  .ft-cta-req {
+    font-family: var(--ft-mono);
+    font-size: 10px;
+    color: var(--ft-text-dim);
+    letter-spacing: 0.12em;
+    margin-top: 16px;
+  }
+  .ft-stats {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--ft-border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
+  }
+  .ft-stat-num {
+    font-family: var(--ft-mono);
+    font-weight: 300;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    color: var(--ft-primary);
+  }
+  .ft-stat-label {
+    display: block;
+    font-size: 11px;
+    color: var(--ft-text-dim);
+    margin-top: 2px;
+  }
+
+  /* ── Buttons ─────────────────────────────────────────── */
+  .ft-btn {
     display: inline-flex;
     align-items: center;
-    padding: 0.875rem 2rem;
-    border-radius: 980px;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all var(--transition);
+    gap: 10px;
+    padding: 14px 22px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: background 0.15s, border-color 0.15s;
   }
-
-  .btn-primary {
-    background: var(--color-accent);
+  .ft-btn-primary {
+    background: var(--ft-primary);
     color: #fff;
   }
+  .ft-btn-primary:hover { background: var(--ft-primary-hover); color: #fff; }
 
-  .btn-primary:hover {
-    background: var(--color-accent-hover);
-    color: #fff;
+  /* ── Sections ────────────────────────────────────────── */
+  .ft-section {
+    padding: 128px 64px;
+    border-top: 1px solid var(--ft-border);
+    position: relative;
+  }
+  .ft-bg-surface { background: var(--ft-surface); }
+  .ft-section-content { max-width: 880px; }
+  .ft-h2 {
+    font-size: 46px;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0 0 28px;
+    max-width: 680px;
+    font-weight: 600;
+  }
+  .ft-section-lead {
+    font-size: 17px;
+    color: var(--ft-text-dim);
+    margin: 0 0 56px;
+    max-width: 560px;
+    line-height: 1.5;
+  }
+  .ft-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  .ft-two-col p {
+    font-size: 17px;
+    color: var(--ft-text-dim);
+    max-width: 420px;
+    line-height: 1.55;
+    margin: 0;
   }
 
-  .btn-secondary {
-    background: transparent;
-    color: var(--color-accent);
-    border: 1px solid var(--color-border);
+  /* ── Figure (F-Scale) ────────────────────────────────── */
+  .ft-figure {
+    margin-top: 80px;
+    padding: 56px 48px 64px;
+    background: var(--ft-bg);
+    border: 1px solid var(--ft-border);
   }
-
-  .btn-secondary:hover {
-    background: var(--color-bg-secondary);
-    color: var(--color-accent-hover);
+  .ft-figure-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    font-family: var(--ft-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--ft-text-dim);
   }
-
-  /* Explain */
-  .explain {
-    padding: 0 0 6rem;
-    text-align: center;
-    background: var(--color-bg-secondary);
-  }
-
-  .explain-image-wrap {
-    width: 100%;
-    aspect-ratio: 16 / 7;
+  .ft-fscale-bar {
+    position: relative;
+    display: flex;
+    height: 44px;
+    border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 3rem;
+    background: linear-gradient(to right,
+      #b0b0b0 0%, #b0b0b0 35%,
+      #6E8F3A 45%,
+      var(--ft-sweet) 55%, var(--ft-sweet) 75%,
+      #6E8F3A 80%,
+      var(--ft-warm) 100%);
+  }
+  .ft-fscale-zone {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--ft-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .ft-fscale-monotone { left: 27.5%; }
+  .ft-fscale-sweet { left: 65%; }
+  .ft-fscale-chaos { left: 87.5%; }
+
+  .ft-fscale-ticks {
+    position: relative;
+    height: 24px;
+    margin-top: 10px;
+    font-family: var(--ft-mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ft-text);
+    letter-spacing: -0.01em;
+  }
+  .ft-fscale-ticks span { position: absolute; }
+  .ft-tick-0 { left: 0%; }
+  .ft-tick-55 { left: 55%; transform: translateX(-50%); color: var(--ft-sweet); }
+  .ft-tick-75 { left: 75%; transform: translateX(-50%); color: var(--ft-sweet); }
+  .ft-tick-100 { left: 100%; transform: translateX(-100%); }
+
+  .ft-fscale-captions {
+    position: relative;
+    height: 22px;
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--ft-text-dim);
+  }
+  .ft-fscale-captions > span:first-child { position: absolute; left: 0; }
+  .ft-fscale-captions > .ft-fscale-sweet-text { position: absolute; left: 65%; transform: translateX(-50%); color: var(--ft-sweet); white-space: nowrap; }
+  .ft-fscale-captions > span:last-child { position: absolute; right: 0; }
+
+  .ft-fscale-mean {
+    position: relative;
+    margin-top: 16px;
+    height: 18px;
+    font-family: var(--ft-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--ft-primary);
+    font-weight: 600;
+    white-space: nowrap;
   }
 
-  .explain-image {
+  .ft-callouts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 56px;
+  }
+  .ft-callout { padding-left: 20px; }
+  .ft-callout-sweet { border-left: 2px solid var(--ft-sweet); }
+  .ft-callout-primary { border-left: 2px solid var(--ft-primary); }
+  .ft-callout-label {
+    font-family: var(--ft-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+  }
+  .ft-callout-sweet .ft-callout-label { color: var(--ft-sweet); }
+  .ft-callout-primary .ft-callout-label { color: var(--ft-primary); }
+  .ft-callout p {
+    font-size: 15px;
+    color: var(--ft-text-dim);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ── Operations (§02) ────────────────────────────────── */
+  .ft-ops {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-top: 1px solid var(--ft-border);
+    border-bottom: 1px solid var(--ft-border);
+  }
+  .ft-op {
+    padding: 44px 28px 40px;
+    border-left: 1px solid var(--ft-border);
+  }
+  .ft-op:first-child { border-left: none; }
+  .ft-op-phone {
+    display: block;
+    margin: 0 auto 28px;
+    width: 200px;
+    max-width: 100%;
+    height: auto;
+  }
+  .ft-op-label {
+    font-family: var(--ft-mono);
+    font-size: 10px;
+    color: var(--ft-text-dim);
+    letter-spacing: 0.18em;
+    margin-bottom: 28px;
+  }
+  .ft-op-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
+  }
+  .ft-op p {
+    font-size: 14px;
+    color: var(--ft-text-dim);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── Features (§03) ──────────────────────────────────── */
+  .ft-features { border-top: 1px solid var(--ft-border); }
+  .ft-feature {
+    display: grid;
+    grid-template-columns: 56px 280px 1fr 100px;
+    gap: 24px;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--ft-border);
+    align-items: baseline;
+  }
+  .ft-feature-num {
+    font-family: var(--ft-mono);
+    font-size: 12px;
+    color: var(--ft-text-dim);
+    font-weight: 500;
+  }
+  .ft-feature-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .ft-feature-body {
+    font-size: 15px;
+    color: var(--ft-text-dim);
+    line-height: 1.55;
+  }
+  .ft-feature-tag {
+    font-family: var(--ft-mono);
+    font-size: 10px;
+    color: var(--ft-text-dim);
+    letter-spacing: 0.15em;
+    text-align: right;
+  }
+
+  /* ── Science (§04) ───────────────────────────────────── */
+  .ft-science-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: start;
+    max-width: none;
+  }
+  .ft-science-lead {
+    font-size: 18px;
+    color: var(--ft-text-dim);
+    margin: 28px 0 0;
+    max-width: 560px;
+    line-height: 1.5;
+  }
+  .ft-link-arrow {
+    margin-top: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ft-primary);
+    border-bottom: 1px solid var(--ft-primary);
+    padding-bottom: 3px;
+  }
+  .ft-link-arrow-light {
+    color: #fff !important;
+    border-bottom-color: rgba(255,255,255,0.45) !important;
+  }
+  .ft-references {
+    font-family: var(--ft-mono);
+    font-size: 12px;
+    color: var(--ft-text-dim);
+    letter-spacing: 0.05em;
+    line-height: 2.0;
+    padding-left: 20px;
+    border-left: 1px solid var(--ft-border);
+  }
+  .ft-references-label {
+    color: var(--ft-text);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .ft-references-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--ft-primary) !important;
+    font-weight: 600;
+  }
+
+  /* ── Atlas (§05), dark navy ─────────────────────────── */
+  .ft-section-dark {
+    background: var(--ft-primary);
+    color: #fff;
+    border-top: none;
+  }
+  .ft-spine-dark .ft-spine-num,
+  .ft-spine-dark div {
+    color: rgba(255,255,255,0.55);
+  }
+  .ft-spine-dark .ft-spine-num { color: #fff; }
+  .ft-h2-light { color: #fff !important; letter-spacing: -0.025em; }
+  /* Pre-composited sites mockup, on the dark §05 background */
+  .ft-atlas-laptop {
+    margin: 0;
+    text-align: center;
+  }
+  .ft-atlas-laptop img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .ft-atlas-laptop figcaption {
+    margin-top: 14px;
+    font-family: var(--ft-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .ft-atlas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+    align-items: start;
+    max-width: none;
+  }
+  .ft-atlas-body {
+    font-size: 17px;
+    color: rgba(255,255,255,0.72);
+    margin: 28px 0 0;
+    max-width: 520px;
+    line-height: 1.5;
+  }
+  .ft-atlas-body strong { color: #fff; font-weight: 600; }
+  .ft-atlas-stats {
+    margin: 36px 0 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 480px;
+  }
+  .ft-atlas-stat-h { font-size: 14px; font-weight: 600; color: #fff; }
+  .ft-atlas-stat-b {
+    font-size: 13px;
+    color: rgba(255,255,255,0.62);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* ── Browser preview ─────────────────────────────────── */
+  .ft-browser {
+    background: #1C1C1E;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  }
+  .ft-browser-chrome {
+    padding: 12px 16px;
+    background: #1C1C1E;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .ft-browser-dots { display: flex; gap: 6px; }
+  .ft-dot { width: 11px; height: 11px; border-radius: 50%; }
+  .ft-dot-r { background: #ff5f57; }
+  .ft-dot-y { background: #febc2e; }
+  .ft-dot-g { background: #28c840; }
+  .ft-browser-url {
+    font-family: var(--ft-mono);
+    flex: 1;
+    margin: 0 80px;
+    padding: 6px 12px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+  .ft-browser-topbar {
+    background: #fff;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--ft-border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--ft-text);
+  }
+  .ft-browser-logo { width: 18px; height: 18px; }
+  .ft-browser-brand { font-size: 13px; font-weight: 600; color: var(--ft-primary); }
+  .ft-browser-section { font-size: 13px; color: var(--ft-text-dim); }
+  .ft-browser-spacer { flex: 1; }
+  .ft-browser-search {
+    padding: 5px 10px;
+    background: var(--ft-surface);
+    border: 1px solid var(--ft-border);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--ft-text-dim);
+    min-width: 180px;
+  }
+  .ft-browser-count {
+    font-family: var(--ft-mono);
+    font-size: 11px;
+    color: var(--ft-text-dim);
+    letter-spacing: 0.05em;
+  }
+  .ft-browser-count strong { color: var(--ft-text); font-weight: 600; }
+  .ft-browser-map {
+    position: relative;
+    aspect-ratio: 3024 / 1700;
+    overflow: hidden;
+  }
+  .ft-map-surface {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 25%;
+    display: block;
   }
-
-  .explain-inner {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 0 2rem;
+  .ft-map-tint {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.04);
+    pointer-events: none;
   }
-
-  .explain-credit {
-    margin-top: 1.5rem;
-    font-size: 0.75rem;
-    color: var(--color-text-secondary);
-    opacity: 0.7;
-  }
-
-  .explain-credit a {
-    color: var(--color-text-secondary);
-    text-decoration: underline;
-  }
-
-  .explain-title {
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
-    font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
-  }
-
-  .explain-body {
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    color: var(--color-text-secondary);
-  }
-
-  /* Map section */
-  .map-section {
-    padding: 6rem 2rem;
-    text-align: center;
-  }
-
-  .map-section-inner {
-    max-width: 640px;
-    margin: 0 auto;
-  }
-
-  .map-section-title {
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
-    font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-  }
-
-  .map-section-body {
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    color: var(--color-text-secondary);
-    margin-bottom: 2rem;
-  }
-
-  /* How it works */
-  .how {
-    padding: 6rem 2rem;
-    background: var(--color-bg-secondary);
-  }
-
-  .how-inner {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
-    text-align: center;
-  }
-
-  .how-number {
-    display: inline-flex;
+  .ft-pin {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--ft-sweet);
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background: var(--color-accent);
+    font-size: 11px;
+    font-weight: 600;
     color: #fff;
-    font-size: 1.125rem;
+    letter-spacing: -0.01em;
+  }
+  .ft-pin-light { background: #b0b0b0; }
+  .ft-pin-high { background: var(--ft-warm); }
+
+  .ft-map-legend {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 6px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 180px;
+  }
+  .ft-legend-label {
+    font-family: var(--ft-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: var(--ft-text-dim);
     font-weight: 600;
-    margin-bottom: 1rem;
   }
-
-  .how-step h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .how-step p {
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-  }
-
-  /* Science */
-  .science {
-    padding: 6rem 2rem;
-    text-align: center;
-  }
-
-  .science-inner {
-    max-width: 640px;
-    margin: 0 auto;
-  }
-
-  .science-title {
-    font-size: clamp(1.5rem, 3.5vw, 2rem);
-    font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
-  }
-
-  .science-body {
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    color: var(--color-text-secondary);
-  }
-
-  /* Footer */
-  .footer {
-    padding: 3rem 0;
-    border-top: 1px solid var(--color-border);
-    text-align: center;
-  }
-
-  .footer-inner {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-
-  .footer-links {
+  .ft-legend-numbers {
+    margin-top: 8px;
     display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    margin-bottom: 1rem;
-    font-size: 0.875rem;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--ft-text);
+    font-weight: 600;
   }
-
-  .footer-links a {
-    color: var(--color-text-secondary);
+  .ft-legend-bar {
+    margin-top: 4px;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right,
+      #b0b0b0 0%, #b0b0b0 35%,
+      var(--ft-sweet) 55%, var(--ft-sweet) 75%,
+      var(--ft-warm) 100%);
   }
-
-  .footer-copy {
-    font-size: 0.8125rem;
-    color: var(--color-text-secondary);
+  .ft-legend-sweet {
+    font-family: var(--ft-mono);
+    margin-top: 6px;
+    font-size: 9px;
+    color: var(--ft-text-dim);
+    letter-spacing: 0.05em;
+    text-align: center;
   }
+  .ft-legend-sweet strong { color: var(--ft-sweet); font-weight: 600; }
 
-  @media (max-width: 600px) {
-    .hero {
-      padding: 9rem 1.25rem 4rem;
-    }
-
-    .hero-subtitle {
-      font-size: 1.25rem;
-    }
-
-    .how-inner {
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .ft-grid {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 24px;
     }
-
-    .nav-links {
-      gap: 1rem;
+    .ft-hero { padding: 64px 24px 0; }
+    .ft-section { padding: 64px 24px; }
+    .ft-spine { display: none; }
+    .ft-hero-bottom-content { grid-template-columns: 1fr; gap: 32px; }
+    .ft-two-col { grid-template-columns: 1fr; }
+    .ft-callouts { grid-template-columns: 1fr; gap: 24px; }
+    .ft-ops { grid-template-columns: 1fr; }
+    .ft-op { border-left: none; border-top: 1px solid var(--ft-border); }
+    .ft-op:first-child { border-top: none; }
+    .ft-feature {
+      grid-template-columns: 36px 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 8px 16px;
     }
+    .ft-feature-num { grid-row: 1; }
+    .ft-feature-title { grid-row: 1; }
+    .ft-feature-body { grid-column: 2; grid-row: 2; }
+    .ft-feature-tag { grid-column: 2; grid-row: 3; text-align: left; }
+    .ft-science-grid { grid-template-columns: 1fr; gap: 32px; }
+    .ft-atlas-grid { grid-template-columns: 1fr; gap: 32px; }
+    .ft-atlas-stats { grid-template-columns: 1fr; }
+    .ft-h1 { font-size: clamp(40px, 12vw, 60px); }
+    .ft-h2 { font-size: 32px; }
+    .ft-figure { padding: 32px 16px; margin-top: 32px; }
+    .ft-fscale-zone { font-size: 9px; letter-spacing: 0.15em; }
+    .ft-stats { grid-template-columns: 1fr 1fr; }
   }
 </style>

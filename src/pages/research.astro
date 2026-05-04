@@ -1,0 +1,315 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+
+<BaseLayout title="Research · Fractune">
+  <SiteHeader />
+
+  <main class="page">
+
+    <!-- Hero -->
+    <section class="hero-area">
+      <p class="eyebrow">Research underpinnings</p>
+      <h1>The work behind<br />the numbers.</h1>
+      <p class="subtitle">
+        Fractune's Architectural Fluency F is calibrated against six decades of
+        empirical research on aesthetic preference, perceptual processing, and
+        architectural composition. Below is the curated reference list, grouped
+        by which dimension of F each strand supports.
+      </p>
+    </section>
+
+    <div class="content">
+
+      <!-- Intro -->
+      <section class="section">
+        <p>
+          Where possible we cite primary peer-reviewed sources. Books and
+          treatises are included where the field's conceptual foundation lives
+          there (Mandelbrot, Salingaros, Arnheim). Each citation is reproduced
+          in standard APA form so it can be entered into reference managers
+          without modification.
+        </p>
+        <p class="kicker">
+          If you are using Fractune for research and need a citation for the
+          system itself, see the <a href="/science#citation">citation block</a>
+          at the bottom of the science page.
+        </p>
+      </section>
+
+      <!-- Fractal complexity -->
+      <section class="section">
+        <h2>Fractal complexity</h2>
+        <p class="section-intro">
+          Foundational work on fractal geometry as a descriptor of natural and
+          designed surfaces, plus the empirical preference studies that locate
+          the human aesthetic sweet spot near D = 1.3–1.5.
+        </p>
+        <ol class="references">
+          <li>Mandelbrot, B.B. (1982). <em>The Fractal Geometry of Nature.</em> W. H. Freeman.</li>
+          <li>Falconer, K. (2003). <em>Fractal Geometry: Mathematical Foundations and Applications</em> (2nd ed.). Wiley.</li>
+          <li>Ostwald, M.J. &amp; Vaughan, J. (2016). <em>The Fractal Dimension of Architecture.</em> Birkhäuser.</li>
+          <li>Spehar, B., Clifford, C.W.G., Newell, B.R. &amp; Taylor, R.P. (2003). Universal aesthetic of fractals. <em>Computers &amp; Graphics, 27</em>(5), 813–820.</li>
+          <li>Spehar, B., Walker, N. &amp; Taylor, R.P. (2016). Taxonomy of individual variations in aesthetic responses to fractal patterns. <em>Frontiers in Human Neuroscience, 10</em>, 350.</li>
+          <li>Taylor, R.P., Spehar, B., Wise, J.A., Clifford, C.W.G., Newell, B.R. &amp; Martin, T.P. (2005). Perceptual and physiological responses to the visual complexity of fractal patterns. <em>Nonlinear Dynamics, Psychology, and Life Sciences, 9</em>(1), 89–114.</li>
+          <li>Taylor, R.P. (2006). Reduction of physiological stress using fractal art and architecture. <em>Leonardo, 39</em>(3), 245–251.</li>
+          <li>Allain, C. &amp; Cloitre, M. (1991). Characterizing the lacunarity of random and deterministic fractal sets. <em>Physical Review A, 44</em>(6), 3552–3558.</li>
+          <li>Plotnick, R.E., Gardner, R.H., Hargrove, W.W., Prestegaard, K. &amp; Perlmutter, M. (1996). Lacunarity analysis: A general technique for the analysis of spatial patterns. <em>Physical Review E, 53</em>(5), 5461–5468.</li>
+          <li>Mandelbrot, B.B. (1995). Measures of fractal lacunarity: Minkowski content and alternatives. In <em>Fractal Geometry and Stochastics</em>. Birkhäuser.</li>
+          <li>Karperien, A. (2013). <em>FracLac for ImageJ.</em> Charles Sturt University.</li>
+        </ol>
+      </section>
+
+      <!-- Edge orientation, curvature -->
+      <section class="section">
+        <h2>Edge orientation, curvature, and second-order statistics</h2>
+        <p class="section-intro">
+          Recent work in computational aesthetics, particularly Christoph
+          Redies' programme, identifies edge-orientation entropy as one of
+          the strongest single predictors of facade preference. Curvature
+          enters via Vartanian's neuroimaging studies showing that
+          curvilinear architectural rooms drive measurable affective
+          responses in reward-related cortex.
+        </p>
+        <ol class="references" start="12">
+          <li>Stanischewski, S., Altmann, C.S., Brachmann, A. &amp; Redies, C. (2020). Aesthetic perception of line patterns: Effect of edge-orientation entropy and curvilinear shape. <em>i-Perception, 11</em>(5).</li>
+          <li>Brachmann, A. &amp; Redies, C. (2017). High entropy of edge orientations characterizes visual artworks from diverse cultural backgrounds. <em>Vision Research, 133</em>, 130–144.</li>
+          <li>Brachmann, A. &amp; Redies, C. (2017). Computational and experimental approaches to visual aesthetics. <em>Frontiers in Computational Neuroscience, 11</em>, 102.</li>
+          <li>Redies, C. (2015). Combining universal beauty and cultural context in a unifying model of visual aesthetic experience. <em>Frontiers in Human Neuroscience, 9</em>, 218.</li>
+          <li>Redies, C., Hasenstein, J. &amp; Denzler, J. (2007). Fractal-like image statistics in visual art: Similarity to natural scenes. <em>Spatial Vision, 21</em>(1–2), 137–148.</li>
+          <li>Vartanian, O., Navarrete, G., Chatterjee, A., Fich, L.B., Leder, H., Modroño, C., Nadal, M., Rostrup, N. &amp; Skov, M. (2013). Impact of contour on aesthetic judgments and approach-avoidance decisions in architecture. <em>PNAS, 110</em>(Suppl 2), 10446–10453.</li>
+          <li>Bar, M. &amp; Neta, M. (2006). Humans prefer curved visual objects. <em>Psychological Science, 17</em>(8), 645–648.</li>
+        </ol>
+      </section>
+
+      <!-- Spectral & rhythm -->
+      <section class="section">
+        <h2>Spectral statistics and rhythm</h2>
+        <p class="section-intro">
+          Natural scenes follow a 1/f<sup>β</sup> amplitude spectrum with β
+          ≈ 1.2; human visual sensitivity peaks near this slope. Fractune
+          measures β alongside two-dimensional autocorrelation peaks for
+          rhythm strength and fenestration regularity.
+        </p>
+        <ol class="references" start="19">
+          <li>van der Schaaf, A. &amp; van Hateren, J.H. (1996). Modelling the power spectra of natural images: Statistics and information. <em>Vision Research, 36</em>(17), 2759–2770.</li>
+          <li>Field, D.J. (1987). Relations between the statistics of natural images and the response properties of cortical cells. <em>Journal of the Optical Society of America A, 4</em>(12), 2379–2394.</li>
+          <li>Penacchio, O. &amp; Wilkins, A.J. (2015). Visual discomfort and the spatial distribution of Fourier energy. <em>Vision Research, 108</em>, 1–8.</li>
+          <li>Liu, Y., Hel-Or, H., Kaplan, C.S. &amp; Van Gool, L. (2010). <em>Computational Symmetry in Computer Vision and Computer Graphics.</em> Now Publishers.</li>
+          <li>Stamps, A.E. (2003). Advances in visual diversity and entropy. <em>Environment and Planning B: Planning and Design, 30</em>(3), 449–463.</li>
+        </ol>
+      </section>
+
+      <!-- Composition, balance, hierarchy -->
+      <section class="section">
+        <h2>Composition: balance, hierarchy, surface complexity</h2>
+        <p class="section-intro">
+          The architectural-composition tradition. Stamps' empirical regression
+          identifies surface complexity as the dominant single predictor of
+          facade preference (β = 0.72). Salingaros' theoretical framework
+          locates "life" in hierarchical scale cooperation. Arnheim and
+          subsequent eye-tracking work establish balance as a fundamental
+          compositional principle.
+        </p>
+        <ol class="references" start="24">
+          <li>Stamps, A.E. (1999). Sex, complexity, and preferences for residential facades. <em>Perceptual and Motor Skills, 88</em>(3c), 1301–1312.</li>
+          <li>Stamps, A.E. (2000). <em>Psychology and the Aesthetics of the Built Environment.</em> Springer.</li>
+          <li>Salingaros, N.A. (2006). <em>A Theory of Architecture.</em> Umbau-Verlag.</li>
+          <li>Salingaros, N.A. (2012). Fractal art and architecture reduce physiological stress. <em>Journal of Biourbanism, 2</em>(2), 11–28.</li>
+          <li>Alexander, C. (2002). <em>The Nature of Order, Book 1: The Phenomenon of Life.</em> Center for Environmental Structure.</li>
+          <li>Mehaffy, M.W. &amp; Salingaros, N.A. (2015). <em>Design for a Living Planet.</em> Sustasis Press.</li>
+          <li>Arnheim, R. (1974). <em>Art and Visual Perception: A Psychology of the Creative Eye.</em> University of California Press.</li>
+          <li>Wilson, A. &amp; Chatterjee, A. (2005). The assessment of preference for balance: Introducing a new test. <em>Empirical Studies of the Arts, 23</em>(2), 165–180.</li>
+          <li>Locher, P., Stappers, P.J. &amp; Overbeeke, K. (1996). The role of balance as an organizing design principle. <em>Perception, 27</em>(12), 1459–1472.</li>
+        </ol>
+      </section>
+
+      <!-- Colour and naturalness -->
+      <section class="section">
+        <h2>Colour and naturalness</h2>
+        <p class="section-intro">
+          Joye's biophilic-design framework, ecological-valence theory of
+          colour preference, and the colour-harmony tradition that informs
+          Fractune's Chromatic Fluency C and value-contrast Δ_L.
+        </p>
+        <ol class="references" start="33">
+          <li>Joye, Y. (2007). Architectural lessons from environmental psychology: The case of biophilic architecture. <em>Review of General Psychology, 11</em>(4), 305–328.</li>
+          <li>Kellert, S.R., Heerwagen, J. &amp; Mador, M. (Eds.). (2008). <em>Biophilic Design: The Theory, Science and Practice of Bringing Buildings to Life.</em> Wiley.</li>
+          <li>Long, F. &amp; Purves, D. (2003). Natural scene statistics as the universal basis of color context effects. <em>PNAS, 100</em>(25), 15190–15193.</li>
+          <li>Palmer, S.E. &amp; Schloss, K.B. (2010). An ecological valence theory of human color preferences. <em>PNAS, 107</em>(19), 8877–8882.</li>
+          <li>Schloss, K.B. (2024). Color preferences and color harmony. <em>Annual Review of Vision Science, 10</em>, 323–349.</li>
+          <li>Itten, J. (1970). <em>The Elements of Color.</em> Van Nostrand Reinhold.</li>
+          <li>Albers, J. (1963). <em>Interaction of Color.</em> Yale University Press.</li>
+          <li>Burchett, K.E. (2002). Color harmony. <em>Color Research &amp; Application, 27</em>(1), 28–31.</li>
+          <li>CIE (2004). <em>Colorimetry</em> (3rd ed.). Commission Internationale de l'Éclairage.</li>
+        </ol>
+      </section>
+
+      <!-- Architecture and the brain -->
+      <section class="section">
+        <h2>Architecture and the brain</h2>
+        <p class="section-intro">
+          The neuroscience of architectural experience, the bridge between
+          measurable image statistics and the affective and cognitive
+          responses architects intuit. This is also where Fractune's most
+          important interlocutors live, including the recent Aarhus
+          School-of-Architecture work on cognitive responses to space.
+        </p>
+        <ol class="references" start="42">
+          <li>Coburn, A., Vartanian, O. &amp; Chatterjee, A. (2017). Buildings, beauty, and the brain: A neuroscience of architectural experience. <em>Journal of Cognitive Neuroscience, 29</em>(9), 1521–1531.</li>
+          <li>Coburn, A., Vartanian, O., Kenett, Y.N., Nadal, M., Hartung, F., Hayn-Leichsenring, G., Navarrete, G., González-Mora, J.L. &amp; Chatterjee, A. (2020). Psychological and neural responses to architectural interiors. <em>Cortex, 126</em>, 217–241.</li>
+          <li>Berlyne, D.E. (1971). <em>Aesthetics and Psychobiology.</em> Appleton-Century-Crofts.</li>
+          <li>Hagerhall, C.M., Purcell, T. &amp; Taylor, R.P. (2004). Fractal dimension of landscape silhouette outlines as a predictor of landscape preference. <em>Journal of Environmental Psychology, 24</em>(2), 247–255.</li>
+          <li>Huynh, D.C. et al. (2026). Moving beyond environmental categories in environmental psychology. <em>Journal of Environmental Psychology, 111</em>, 103016.</li>
+        </ol>
+      </section>
+
+      <!-- Image processing -->
+      <section class="section">
+        <h2>Image processing primitives</h2>
+        <p class="section-intro">
+          Standard references for the algorithms Fractune uses for edge
+          detection, thresholding, perspective handling, and FFT-based
+          spectral analysis.
+        </p>
+        <ol class="references" start="47">
+          <li>Canny, J. (1986). A computational approach to edge detection. <em>IEEE Transactions on Pattern Analysis and Machine Intelligence, 8</em>(6), 679–698.</li>
+          <li>Otsu, N. (1979). A threshold selection method from gray-level histograms. <em>IEEE Transactions on Systems, Man, and Cybernetics, 9</em>(1), 62–66.</li>
+          <li>Hartley, R. &amp; Zisserman, A. (2004). <em>Multiple View Geometry in Computer Vision</em> (2nd ed.). Cambridge University Press.</li>
+          <li>Wiener, N. (1949). <em>Extrapolation, Interpolation, and Smoothing of Stationary Time Series.</em> MIT Press.</li>
+          <li>Shannon, C.E. (1948). A mathematical theory of communication. <em>Bell System Technical Journal, 27</em>(3), 379–423.</li>
+          <li>Karjus, A., Solà, M.C., Ohm, T., Ahnert, S.E. &amp; Schich, M. (2023). Compression ensembles quantify aesthetic complexity and the evolution of visual art. <em>EPJ Data Science, 12</em>, 21.</li>
+        </ol>
+      </section>
+
+      <!-- Citing Fractune -->
+      <section class="section citation-section">
+        <p class="citation-label">Cite Fractune</p>
+        <blockquote>
+          Fractune (2026). Architectural Fluency Analysis.<br />
+          <a href="https://fractune.dk/architectural-fluency">https://fractune.dk/architectural-fluency</a>
+        </blockquote>
+        <p class="muted">
+          Or cite the science page directly:
+          <a href="https://fractune.dk/science">fractune.dk/science</a>
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero-area {
+    text-align: center;
+    padding: 5rem 2rem 3rem;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+  }
+  h1 {
+    font-size: clamp(2.4rem, 5.5vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  .subtitle {
+    font-size: 1.125rem;
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Content */
+  .content { max-width: 760px; margin: 0 auto; padding: 0 2rem 4rem; }
+  .section { margin-bottom: 3.5rem; }
+
+  h2 {
+    font-size: 1.4375rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.625rem;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  p {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+  }
+  .section-intro {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+  .kicker {
+    color: var(--color-text);
+    font-weight: 500;
+    border-left: 3px solid var(--color-accent);
+    padding: 0.25rem 0 0.25rem 1rem;
+    margin-top: 1.5rem;
+  }
+
+  /* References */
+  .references {
+    padding-left: 2rem;
+    margin: 0;
+  }
+  .references li {
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.625rem;
+    padding-left: 0.25rem;
+  }
+  .references li::marker {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+  em { font-style: italic; color: var(--color-text); }
+
+  /* Citation */
+  .citation-section { text-align: center; margin-top: 5rem; }
+  .citation-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.5rem;
+  }
+  blockquote {
+    display: inline-block;
+    text-align: left;
+    padding: 1rem 1.5rem;
+    border-left: 3px solid var(--color-accent);
+    background: var(--color-bg-secondary);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+  .muted { font-size: 0.8125rem; color: var(--color-text-secondary); margin-top: 1rem; }
+
+  @media (max-width: 600px) {
+    .references { padding-left: 1.5rem; }
+  }
+
+  sup { font-size: 0.75em; }
+</style>

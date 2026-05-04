@@ -1,149 +1,205 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 ---
 
-<BaseLayout title="Privacy Policy — Fractune">
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
-    </div>
-  </nav>
+<BaseLayout
+  title="Privacy Policy · Fractune"
+  description="Learn how Fractune, the architectural fluency analysis tool, processes and protects your personal data."
+>
+  <SiteHeader />
 
   <main class="page">
     <div class="page-inner">
-      <h1>Privacy Policy</h1>
-      <p class="last-updated">Version 1.0 — April 2026</p>
+      <h1>Privacy Policy for Fractune</h1>
+      <p class="caption">Last updated: May 2026</p>
 
-      <h2>1. Data Controller</h2>
+      <h2>1. Who We Are</h2>
       <p>
-        Fractune is operated by Colours by Barslund (Anders Barslund), Abildgaardsvej 51,
-        2830 Virum, Denmark. Phone: (+45) 60 63 40 24. For privacy inquiries, contact
-        <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a>.
+        This privacy policy describes how Fractune (developed by Colours by
+        Barslund, Denmark) processes your personal data when you use our app or
+        website, contribute facade readings to the public dataset, or contact
+        us for support.
+      </p>
+      <address>
+        Fractune (Colours by Barslund)<br />
+        c/o Anders Barslund<br />
+        Abildgaardsvej 51<br />
+        2830 Virum, Denmark<br />
+        Tel: (+45) 60 63 40 24<br />
+        Email: <a href="mailto:legal@fractune.dk">legal@fractune.dk</a>
+      </address>
+
+      <h2>2. What Data Do We Collect?</h2>
+      <p>When you use Fractune, we collect and process the following types of data:</p>
+      <ul>
+        <li>
+          <strong>Image analysis (on-device only):</strong> Photographs of
+          facades you analyse are processed entirely on your iPhone and never
+          leave the device unless you explicitly choose to contribute the
+          analysis to the public dataset.
+        </li>
+        <li>
+          <strong>Anonymous reading metrics (opt-in):</strong> If you accept
+          research data sharing, we collect the computed values from each
+          analysis: Architectural Fluency F, fractal dimension D, the four
+          dimension sub-scores, lacunarity, edge-orientation entropy, spectral
+          slope, balance, hierarchical scaling, solid/void ratio, curvature
+          ratio, value contrast, the chromatic palette and harmony type, plus
+          a contributor ID (a randomly generated UUID stored on your device).
+          No data can be linked to your personal identity.
+        </li>
+        <li>
+          <strong>Optional location and orientation:</strong> Latitude,
+          longitude, camera heading, and pitch, only when you explicitly
+          enable location sharing for a reading. You can toggle this per
+          reading and revoke it in app settings at any time.
+        </li>
+        <li>
+          <strong>Optional building metadata:</strong> If you enrich a reading
+          with a building's name, address, architect, style, or construction
+          year, this metadata is published with the reading.
+        </li>
+        <li>
+          <strong>Optional redacted training images:</strong> If you separately
+          consent to image donation, a face-redacted JPEG of the facade is
+          included with the reading. Faces are detected and blurred on your
+          device before upload.
+        </li>
+        <li>
+          <strong>Queries and support:</strong> If you contact us, we process
+          your name, contact details, and query to provide assistance.
+        </li>
+      </ul>
+
+      <h2>3. Legal Basis and Storage Periods</h2>
+      <ul>
+        <li>
+          Anonymous reading metrics: our legitimate interest (GDPR art. 6(1)(f))
+          in researching architectural fluency, validating the F formula, and
+          improving the analysis pipeline. Data is published as part of an open
+          dataset and cannot be used to identify individuals.
+        </li>
+        <li>
+          Location, orientation, building metadata, and redacted images: your
+          explicit consent (GDPR art. 6(1)(a)). You can withdraw consent at any
+          time in app settings, after which future readings will not include
+          these fields.
+        </li>
+        <li>
+          Erasure requests: you may request deletion of all readings linked to
+          your contributor ID at any time. We process erasure requests within
+          30 days and log the action for accountability (GDPR art. 30).
+        </li>
+        <li>
+          Queries/support: stored for up to 3 months after last contact unless
+          required for dispute or legal documentation.
+        </li>
+      </ul>
+
+      <h2>4. Purpose of Processing</h2>
+      <p>We use your data to:</p>
+      <ul>
+        <li>Analyse facades on-device and present results to you</li>
+        <li>Build and maintain the public Fractune dataset at <a href="https://sites.fractune.dk">sites.fractune.dk</a></li>
+        <li>Calibrate and validate the Architectural Fluency F formula against real-world readings</li>
+        <li>Support scientific research into fractal geometry, perceptual aesthetics, and architectural composition</li>
+        <li>Comply with legal obligations (accounting, documentation)</li>
+        <li>Defend our rights in case of disputes or regulatory investigations</li>
+      </ul>
+      <p>
+        Aggregated, anonymised dataset readings may be shared with or sold to
+        third parties, such as architecture firms, research institutions, or
+        urban planning bodies, for research and product development.
+        <strong>No data is ever shared that can identify you as an individual.</strong>
       </p>
 
-      <h2>2. Data We Collect</h2>
+      <h2>5. Storage, Security &amp; International Transfers</h2>
+      <ul>
+        <li>Anonymous dataset readings are stored in Apple's CloudKit (public database) under our developer container.</li>
+        <li>Your local session history (the readings shown on your device's history view) is stored locally on your iPhone and is not synced to any cloud service.</li>
+        <li>Support inquiries are stored securely with access limited to authorised personnel.</li>
+        <li>Data is not transferred outside the EU/EEA except as required for secure processing by Apple, who complies with GDPR requirements as a data processor.</li>
+      </ul>
+
+      <h2>6. Cookies and Tracking</h2>
       <p>
-        Fractune collects three categories of data:
+        Fractune does not use cookies or tracking technologies to collect data
+        about your use of the app or website. We do not use analytics for
+        advertising or profiling purposes. The website serves a short-lived
+        Apple MapKit JS token to render the public sites map; this token does
+        not identify you.
       </p>
 
-      <h3>a. Analysis Data</h3>
+      <h2>7. Disclosure to Third Parties</h2>
+      <ul>
+        <li>Service providers and IT suppliers who help us deliver our services (Apple for CloudKit and MapKit; hosting providers for the Astro/Vercel website).</li>
+        <li>External advisors (e.g. accountants, legal counsel).</li>
+        <li>Other third parties with your consent, or in the case of mergers or legal requirements.</li>
+        <li>Anonymised reading metrics, including F, D, and dimension sub-scores, are publicly available via <a href="https://sites.fractune.dk">sites.fractune.dk</a>.</li>
+      </ul>
+
+      <h2>8. App Attest and Device Authentication</h2>
       <p>
-        When you analyse a building, the app collects the following data points and
-        submits them to the public dataset: D-value (fractal dimension), stability score,
-        lacunarity, multi-scale profile, building selection mode, camera metadata (focal
-        length, heading, pitch), and mask data. This data is anonymised and cannot be
-        linked to you personally. All image processing takes place locally on your
-        device — images are never uploaded to our servers.
+        To prevent abuse of our public dataset, the app uses Apple's
+        <strong>App Attest</strong> framework to prove that submissions come
+        from a legitimate Fractune install on a real Apple device. App Attest
+        does not transmit your Apple ID, device serial number, or any
+        personally identifiable data, only a cryptographic attestation that
+        the submission originates from an authentic copy of the app. See
+        <a href="https://developer.apple.com/documentation/devicecheck/establishing_your_app_s_integrity" rel="noopener">Apple's documentation</a>
+        for details.
       </p>
 
-      <h3>b. Location Data (Optional)</h3>
+      <h2>9. Your Rights</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Request access to or a copy of your data (provide your contributor ID, found in app settings)</li>
+        <li>Request correction, erasure, or restriction of your data</li>
+        <li>Object to our processing or to data used for research</li>
+        <li>Withdraw your consent at any time (for location, image donation, building metadata)</li>
+        <li>Complain to the Danish Data Protection Agency at <a href="https://www.datatilsynet.dk" rel="noopener">www.datatilsynet.dk</a></li>
+      </ul>
       <p>
-        GPS coordinates (latitude and longitude) and camera heading are collected only
-        when you explicitly enable "Del position og retning" (Share position and
-        direction) in the app. This data is attached to your analysis and published as
-        part of the public dataset. You may disable location sharing at any time in the
-        app settings.
+        To exercise your rights, contact us at
+        <a href="mailto:legal@fractune.dk">legal@fractune.dk</a> or by mail/phone (see above).
       </p>
 
-      <h3>c. Communications</h3>
+      <h2>10. Children</h2>
       <p>
-        If you contact us via email, we collect the information you provide, including
-        your name and email address. This data is used solely to respond to your inquiry.
+        Fractune is not directed at children under the age of 13. We do not
+        knowingly collect personal data from children. If you believe a child
+        has contributed data through Fractune, please contact us so we can
+        promptly delete the affected readings.
       </p>
 
-      <h2>3. How We Use Data</h2>
-      <p>We use the collected data for the following purposes:</p>
-      <ol>
-        <li>To improve the accuracy and reliability of the fractal analysis algorithms.</li>
-        <li>To build and maintain the public fractal fluence map at <a href="https://sites.fractune.dk">sites.fractune.dk</a>.</li>
-        <li>To support scientific research into the relationship between fractal geometry and architectural perception.</li>
-      </ol>
-
-      <h2>4. Data Retention</h2>
-      <ol>
-        <li><strong>Analysis data</strong> is retained indefinitely as part of the public dataset.</li>
-        <li><strong>Support inquiries</strong> are retained for 3 months after resolution, then deleted.</li>
-        <li><strong>Contributor ID</strong> — you may request deletion of your contributor ID and all associated contributions at any time. We will process your request within 30 days.</li>
-      </ol>
-
-      <h2>5. Third-Party Services</h2>
-      <p>Fractune relies on the following third-party services:</p>
-      <ol>
-        <li><strong>Apple CloudKit</strong> — used to store and synchronise the public dataset. Subject to <a href="https://www.apple.com/legal/privacy/" rel="noopener">Apple's privacy policy</a>.</li>
-        <li><strong>Apple MapKit JS</strong> — used to display the map at sites.fractune.dk. Subject to <a href="https://www.apple.com/legal/privacy/" rel="noopener">Apple's privacy policy</a>.</li>
-      </ol>
+      <h2>11. Changes to this Privacy Policy</h2>
       <p>
-        We may share anonymised and aggregated analysis data with academic researchers
-        for the purpose of scientific study.
+        We may update this privacy policy as our services evolve or as required
+        by law. Significant changes will be communicated via the app or
+        website, and the consent flow will request renewed agreement when the
+        scope of data collection materially changes. Your continued use after
+        changes means you accept the updated policy.
       </p>
 
-      <h2>6. Data Sharing</h2>
-      <p>
-        Anonymised analysis data is public by design. By contributing to the dataset,
-        you acknowledge that your analysis results will be publicly accessible. We may
-        share aggregated statistics with architecture researchers, urban planners, and
-        academic institutions. We will never sell personal data to third parties.
-      </p>
-
-      <h2>7. Your Rights</h2>
-      <p>
-        Under applicable data protection law (including the GDPR), you have the right to:
-      </p>
-      <ol>
-        <li>Access the data we hold about you.</li>
-        <li>Request correction of inaccurate data.</li>
-        <li>Request deletion of your data (including your contributor ID and all associated contributions).</li>
-        <li>Request restriction of processing.</li>
-        <li>Lodge a complaint with the Danish Data Protection Agency (Datatilsynet) at <a href="https://www.datatilsynet.dk" rel="noopener">datatilsynet.dk</a>.</li>
-      </ol>
-      <p>
-        To exercise any of these rights, contact us at
-        <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a> with your
-        contributor ID (found under Settings in the app).
-      </p>
-
-      <h2>8. Children</h2>
-      <p>
-        Fractune is not directed at children under the age of 13. We do not knowingly
-        collect personal data from children. If you believe a child has provided us with
-        personal data, please contact us so we can take appropriate action.
-      </p>
-
-      <h2>9. Changes to This Policy</h2>
-      <p>
-        We may update this privacy policy from time to time. Significant changes will be
-        announced in the app. The "Version" date at the top of this page indicates when
-        this policy was last revised.
-      </p>
-
-      <h2>10. Contact</h2>
-      <p>
-        For all privacy-related questions, contact us at
-        <a href="mailto:privacy@fractune.dk">privacy@fractune.dk</a>.
-      </p>
+      <p class="caption">Fractune – developed by Colours by Barslund</p>
     </div>
   </main>
+
+  <SiteFooter />
 </BaseLayout>
 
 <style>
-  .nav { border-bottom: 1px solid var(--color-border); }
-  .nav-inner {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 2rem;
-    height: 52px;
-    display: flex;
-    align-items: center;
-  }
-  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 0.375rem; }
-  .nav-logo-icon { height: 1.0em; width: auto; vertical-align: middle; transform: translateY(-1px); }
-  .page { padding: 4rem 0; }
-  .page-inner { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
-  h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
-  .last-updated { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 2.5rem; }
-  h2 { font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
-  h3 { font-size: 1.0625rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; }
-  p { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; }
-  ol { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; padding-left: 1.5rem; }
-  li { margin-bottom: 0.5rem; }
+  .page { padding: 4rem 0 6rem; }
+  .page-inner { max-width: 700px; margin: 0 auto; padding: 0 2rem; }
+  h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.25rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; }
+  p, li { line-height: 1.65; color: var(--color-text-secondary); }
+  p { font-size: 1rem; margin-bottom: 1rem; }
+  ul, ol { margin-left: 1.25rem; padding-left: 0; margin-bottom: 1rem; }
+  li { font-size: 1rem; margin-bottom: 0.5rem; }
+  .caption { color: var(--color-text-secondary); font-size: 0.93rem; margin-top: 3rem; opacity: 0.85; }
+  address { font-style: normal; color: var(--color-text); margin-bottom: 1.5rem; line-height: 1.65; }
+  strong { color: var(--color-text); font-weight: 600; }
 </style>

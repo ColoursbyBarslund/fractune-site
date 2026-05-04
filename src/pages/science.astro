@@ -1,134 +1,221 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 ---
 
-<BaseLayout title="The Science — Fractune">
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
-    </div>
-  </nav>
+<BaseLayout title="The Science · Fractune">
+  <SiteHeader />
 
   <main class="page">
 
     <!-- Hero -->
     <section class="hero-area">
       <h1>Why some spaces<br />feel like home.</h1>
-      <p class="subtitle">The science of fractal fluence — and what your buildings are saying.</p>
+      <p class="subtitle">The science of architectural fluence, and what your buildings are saying.</p>
     </section>
 
     <div class="content">
 
       <!-- 1. The big insight -->
       <section class="section">
-        <h2>Your brain expects fractals.</h2>
+        <h2>Your brain expects structure.</h2>
         <p>
           Your visual system is a prediction machine. Every moment, it anticipates
-          the next shape, the next curve, the next rhythm. Natural environments —
-          trees, clouds, coastlines — follow fractal patterns that your brain
-          processes effortlessly.
+          the next shape, the next rhythm, the next colour transition. Natural
+          environments, trees, clouds, coastlines, carry the kind of statistical
+          regularity your brain processes effortlessly.
         </p>
         <p>
-          When a building follows these same patterns, something clicks. You feel
+          When a building shares those regularities, something clicks. You feel
           calm, engaged, at ease. When it doesn't, something feels off. Not wrong,
           exactly. Just harder to be in.
         </p>
-        <p class="kicker">This isn't a metaphor. It's measurable.</p>
+        <p class="kicker">This isn't a metaphor. It's measurable across four
+        dimensions: fractal complexity, rhythm, colour, and structure.</p>
       </section>
 
-      <!-- 2. The D-value — visual scale -->
+      <!-- 2. The F-value, Architectural Fluency -->
       <section class="section">
-        <h2>The D-value.</h2>
+        <h2>The F-value.</h2>
         <p>
-          Fractal dimension — D — is a single number that captures how much
-          detail a surface carries across scales. Think of it as a complexity
-          score for what your eye sees.
+          Architectural Fluency, F, is a single number between 0 and 1 that
+          captures how visually fluent a facade is overall. It's a weighted
+          composite of four dimensions, each with its own perceptual sweet
+          spot. By construction, no one dimension can dominate the score, so
+          a uniformly repetitive surface (a tile roof, plain brickwork) cannot
+          score high simply by carrying many edges.
         </p>
 
         <div class="scale">
           <div class="scale-bar">
             <div class="scale-zone scale-low">
-              <span class="scale-label">Simple</span>
+              <span class="scale-label">Monotone</span>
             </div>
             <div class="scale-zone scale-sweet">
               <span class="scale-label">Sweet spot</span>
             </div>
             <div class="scale-zone scale-high">
-              <span class="scale-label">Complex</span>
+              <span class="scale-label">Near chaos</span>
             </div>
           </div>
           <div class="scale-numbers">
+            <span>0.0</span>
+            <span>0.55</span>
+            <span>0.75</span>
             <span>1.0</span>
-            <span>1.3</span>
-            <span>1.5</span>
-            <span>2.0</span>
           </div>
           <div class="scale-examples">
-            <span>Glass wall</span>
-            <span class="scale-examples-sweet">Trees &middot; Coastlines &middot; Beloved buildings</span>
-            <span>Gothic cathedral</span>
+            <span>Plain glass wall</span>
+            <span class="scale-examples-sweet">Coherent, fluent composition</span>
+            <span>Visually overwhelming</span>
           </div>
         </div>
 
         <p>
-          Physicist Richard Taylor discovered that people measurably prefer fractal
-          patterns around D&nbsp;=&nbsp;1.3&ndash;1.5. Stress drops. Attention sharpens.
-          The effect is consistent across cultures.
+          Empirical work by Stamps (2000) found that surface complexity is the
+          strongest single predictor of facade preference (β&nbsp;=&nbsp;0.72).
+          Spehar &amp; Taylor's research on fractal aesthetics shows a robust
+          peak in human preference at intermediate amplitude-spectrum slopes
+          (β&nbsp;≈&nbsp;1.2). And Vartanian's fMRI studies confirm that
+          well-composed architectural rooms drive measurable activity in
+          reward-related cortical areas. F brings these strands into one
+          per-facade reading.
         </p>
         <p>
-          Architects Ostwald &amp; Vaughan measured 85 canonical buildings — from
-          Le&nbsp;Corbusier to Frank Lloyd Wright — and found an average D of 1.41.
-          Right in the sweet spot.
+          The headline F is calibrated against Ostwald &amp; Vaughan's
+          measurements across 85 canonical buildings. Their average fractal
+          dimension was D&nbsp;=&nbsp;1.41, which contributes to the high end
+          of the fractal sub-score; combined with their typical balance,
+          rhythm, and colour structure, those buildings cluster in the F
+          sweet spot 0.55–0.75.
         </p>
 
         <details class="disclosure">
-          <summary>How D is measured</summary>
+          <summary>How F is composed</summary>
           <div class="disclosure-content">
-            <ol>
-              <li><strong>Edge detection.</strong> The image passes through a Canny pipeline: Gaussian blur (5&times;5), Sobel gradients, non-maximum suppression, Otsu threshold, and hysteretic thresholding.</li>
-              <li><strong>Box-counting.</strong> Boxes from &frac14; image size down to 2px are laid over the edges, at 12 offset grid positions per scale (FracLac methodology).</li>
-              <li><strong>Log-log regression.</strong> D = slope of log(count) vs. log(1/box_size). R&sup2; measures goodness-of-fit.</li>
-              <li><strong>Robust analysis.</strong> Repeated at 9 sensitivity levels (0.5&ndash;2.5 &times; Otsu). Plateau detection picks the most stable region. Final D = median of plateau.</li>
-              <li><strong>Stability score</strong> (1&ndash;5) reflects total variation across thresholds.</li>
-            </ol>
+            <p>F is a weighted sum of four dimension scores, each itself an inverted-U function peaking at its own sweet spot:</p>
+            <ul>
+              <li><strong>F_fractal</strong> (weight 0.30), D moderated by lacunarity (Λ) and edge-orientation entropy (H<sub>θ</sub>). Penalises uniform repetitive textures.</li>
+              <li><strong>F_rhythm</strong> (weight 0.25), autocorrelation peak strength (R), spectral slope (β), fenestration regularity (R<sub>w</sub>).</li>
+              <li><strong>F_chromatic</strong> (weight 0.20), palette coherence (C, see below) and value contrast (Δ_L).</li>
+              <li><strong>F_structure</strong> (weight 0.25), visual balance (B), hierarchical scaling (Σ_h), solid/void ratio (V), curvature ratio (κ).</li>
+            </ul>
+            <p>The weights are empirical initial estimates and can be calibrated against reference facades.</p>
+          </div>
+        </details>
+
+        <details class="disclosure">
+          <summary>Confidence and quality</summary>
+          <div class="disclosure-content">
+            <p>F is annotated with a confidence score in [0, 1] derived from image quality (exposure, focus, edge energy, coverage) and perspective severity:</p>
+            <ul>
+              <li><strong>Quality &ge; 0.55, perspective ok:</strong> confidence = 1.0, F shown plainly.</li>
+              <li><strong>Mild perspective skew:</strong> confidence × 0.85.</li>
+              <li><strong>Severe skew:</strong> confidence × 0.50, F shown with "?".</li>
+              <li><strong>Critical quality issue:</strong> confidence × 0.60.</li>
+            </ul>
+            <p>The pipeline does not block on poor input, it produces F with a clear uncertainty marker so the reader knows how much to trust the reading.</p>
           </div>
         </details>
       </section>
 
-      <!-- 3. Chromatic fluence -->
+      <!-- 3. The four dimensions -->
       <section class="section">
-        <h2>Colour matters too.</h2>
+        <h2>Four dimensions.</h2>
         <p>
-          Just as geometry has a sweet spot, so does colour. Fractune measures
-          three properties and combines them into a single score — the C-value:
-        </p>
-        <div class="trio">
-          <div class="trio-item">
-            <h3>Entropy</h3>
-            <p>How varied the colours are. Too little is monotonous. Too much is chaotic.</p>
-          </div>
-          <div class="trio-item">
-            <h3>Coherence</h3>
-            <p>Whether the colours relate to each other in a structured, harmonious way.</p>
-          </div>
-          <div class="trio-item">
-            <h3>Ecological fit</h3>
-            <p>How close the palette is to natural colour statistics. Your visual system is calibrated to nature.</p>
-          </div>
-        </div>
-        <p>
-          The best buildings score well on both D and C. The geometry and the
-          colour work together.
+          F is built from four sub-scores, each grounded in a separate strand of
+          empirical research. A facade can be strong on some dimensions and
+          weak on others, and the breakdown often tells you more than the
+          headline.
         </p>
 
+        <h3 class="dimension-heading">Fractal complexity</h3>
+        <p>
+          How rich the facade is across scales. A glass curtain wall has very
+          little detail; a Gothic cathedral has detail at five or six different
+          magnifications. Built on the classical fractal dimension D, but
+          modulated by lacunarity Λ (how clumped the detail is) and
+          edge-orientation entropy H<sub>θ</sub> (how many directions edges
+          point in). This is what catches the tile-roof problem: high D, but
+          low Λ and low H<sub>θ</sub>, so F_fractal correctly stays low.
+        </p>
         <details class="disclosure">
-          <summary>How C is measured</summary>
+          <summary>How D, Λ, H<sub>θ</sub>, κ are measured</summary>
+          <div class="disclosure-content">
+            <ol>
+              <li><strong>Edge detection.</strong> Canny pipeline: 5&times;5 Gaussian blur, Sobel gradients, non-maximum suppression, Otsu threshold, hysteretic thresholding.</li>
+              <li><strong>Box-counting.</strong> Boxes from &frac14; image size down to 2px, at 12 systematically offset grid positions per scale (Karperien 2013, FracLac).</li>
+              <li><strong>D = slope</strong> of log(count) vs. log(1/box_size). R&sup2; reports goodness-of-fit. Robust median across 9 sensitivity thresholds, with stability score 1–5.</li>
+              <li><strong>Λ (lacunarity)</strong> = 1 + σ²/μ² of pixel-density distribution at each scale (Allain &amp; Cloitre 1991). Distinguishes textures with the same D.</li>
+              <li><strong>H<sub>θ</sub></strong> = Shannon entropy of gradient orientations over 18 bins (10° each), only counting pixels with Sobel magnitude above 30. Stanischewski et al. (2020) found H<sub>θ</sub> alone explains ~50% of variance in facade preference.</li>
+              <li><strong>κ (curvature ratio)</strong> = fraction of edge pixels with local direction-change above 15° to a 4-neighbour. Vartanian et al. (2013) showed curvilinear architectural rooms drive stronger anterior cingulate activity than rectilinear ones.</li>
+            </ol>
+          </div>
+        </details>
+
+        <h3 class="dimension-heading">Rhythm</h3>
+        <p>
+          How clearly the facade carries repeating patterns, window rows,
+          colonnades, courses of brick. Both too little rhythm (random) and
+          too much (robotic) lower preference; the sweet spot is moderate.
+          Computed from 2D autocorrelation peaks (R), spectral slope (β,
+          peaking at the 1/f<sup>1.2</sup> distribution Spehar found
+          preferred), and fenestration regularity (R<sub>w</sub>) when
+          windows can be detected.
+        </p>
+        <details class="disclosure">
+          <summary>How R, β, R<sub>w</sub> are measured</summary>
           <div class="disclosure-content">
             <ul>
-              <li><strong>H<sub>c</sub></strong> (entropy): Shannon entropy of hue distribution in CIELAB, quantised to 36 bins (10&deg;). Normalised 0&ndash;1.</li>
-              <li><strong>K</strong> (coherence): k-means clustering (5&ndash;8 clusters) in CIELAB. Angular distribution scored against harmonic schemes (analogous, complementary, triadic).</li>
-              <li><strong>E</strong> (ecological deviation): Wasserstein distance between facade chromaticity and natural scene reference (Long &amp; Purves 2003).</li>
-              <li><strong>Composite:</strong> C = 0.35 &times; H<sub>c</sub>_score + 0.35 &times; K + 0.30 &times; (1 &minus; E)</li>
+              <li><strong>2D FFT.</strong> Image is Hann-windowed, resampled to 256×256, transformed via Apple Accelerate's <code>vDSP_fft2d_zip</code>. Power spectrum |F|² is radially averaged.</li>
+              <li><strong>β (spectral slope)</strong> = slope of log–log fit on radial spectrum within frequency range 4–40% of Nyquist. Natural scenes ≈ 1.2 (van der Schaaf &amp; van Hateren 1996); tile roofs typically &gt; 2.</li>
+              <li><strong>R (rhythm strength)</strong> = peak height in 2D autocorrelation (computed via Wiener–Khinchin: IFFT of |F|²) along horizontal and vertical axes. Combined as geometric mean.</li>
+              <li><strong>R<sub>w</sub> (fenestration regularity)</strong> = 1 − coefficient of variation of inter-window distances after projecting blob centroids on x and y axes. Windows detected via connected components on Otsu-thresholded L* channel; reported as nil when fewer than 4 plausible windows are found.</li>
+            </ul>
+          </div>
+        </details>
+
+        <h3 class="dimension-heading">Colour</h3>
+        <p>
+          How harmonious the palette is, plus how naturalistic and how much
+          luminance contrast it carries. Built on the existing Chromatic
+          Fluence C value plus a value-contrast term Δ_L. Evolutionary
+          biologists like Joye argue our colour preferences are biophilic
+         , calibrated to natural scene statistics, and Stamps' empirical
+          regression confirms colour structure is a measurable preference
+          driver alongside geometric complexity.
+        </p>
+        <details class="disclosure">
+          <summary>How C and Δ_L are measured</summary>
+          <div class="disclosure-content">
+            <ul>
+              <li><strong>H<sub>c</sub></strong> (chromatic entropy): Shannon entropy of hue distribution in CIELAB, quantised to 36 bins (10°). Normalised 0–1.</li>
+              <li><strong>K</strong> (palette coherence): adaptive k-means (4–8 clusters) in CIELAB. Angular distribution scored against analogous, complementary, triadic harmonic schemes; chaotic if none match.</li>
+              <li><strong>E</strong> (ecological deviation): distance in a*b* space from a natural-scene reference (Long &amp; Purves 2003), modulated by chroma spread.</li>
+              <li><strong>C</strong> = 0.35 × H<sub>c</sub>_score + 0.35 × K + 0.30 × (1 − E).</li>
+              <li><strong>Δ_L</strong> = standard deviation of CIELAB lightness L*, normalised by 30. Captures shadow/highlight composition that pure hue analysis misses.</li>
+            </ul>
+            <p>F_chromatic = 0.70 × C + 0.30 × value-contrast-score.</p>
+          </div>
+        </details>
+
+        <h3 class="dimension-heading">Structure</h3>
+        <p>
+          The compositional bones of the facade: visual balance B, hierarchical
+          scaling Σ_h (Salingaros' "hierarchical cooperation": good architecture
+          shows detail at multiple scales, related by 2–4× ratios), solid/void
+          ratio V (window-to-wall proportion), and curvature κ. Stamps' empirical
+          weight of β = 0.72 for surface complexity makes B and Σ_h the heaviest
+          terms here.
+        </p>
+        <details class="disclosure">
+          <summary>How B, Σ_h, V are measured</summary>
+          <div class="disclosure-content">
+            <ul>
+              <li><strong>B (visual balance)</strong> = 1 − distance(visual-centroid, geometric-centre) / (½·diagonal). Visual centroid is Sobel-magnitude-weighted. Bounding box from segmentation mask when present (Arnheim 1974; Wilson &amp; Chatterjee 2005).</li>
+              <li><strong>Σ_h (hierarchical scaling)</strong> = combined count + log-spread of "active" scale bands (D &gt; 1.1) in the multi-scale D profile. High when detail is present at three or more well-separated scales.</li>
+              <li><strong>V (solid/void)</strong> = fraction of pixels below Otsu-threshold of L* histogram inside the facade mask. Approximate but parameter-free; captures aperture proportion. Sweet spot ≈ 0.30 per Stamps' regression.</li>
             </ul>
           </div>
         </details>
@@ -142,11 +229,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <tr><th>Metric</th><th>What it tells you</th></tr>
           </thead>
           <tbody>
-            <tr><td><strong>D</strong></td><td>Geometric complexity. Sweet spot: 1.3&ndash;1.5.</td></tr>
-            <tr><td><strong>C</strong></td><td>Colour harmony and naturalness. Higher is more balanced.</td></tr>
+            <tr><td><strong>F</strong></td><td>Architectural Fluency. Sweet spot: 0.55&ndash;0.75.</td></tr>
+            <tr><td><strong>F_fractal</strong></td><td>Fractal complexity sub-score (0&ndash;1). Built on D, modulated by Λ and H<sub>θ</sub>.</td></tr>
+            <tr><td><strong>F_rhythm</strong></td><td>Rhythm sub-score (0&ndash;1). From R, β, R<sub>w</sub>.</td></tr>
+            <tr><td><strong>F_chromatic</strong></td><td>Colour sub-score (0&ndash;1). C plus value-contrast term.</td></tr>
+            <tr><td><strong>F_structure</strong></td><td>Structural composition sub-score (0&ndash;1). B, Σ_h, V, κ.</td></tr>
+            <tr><td><strong>Confidence</strong></td><td>How much to trust F (0&ndash;1). Lower with bad quality or perspective skew.</td></tr>
+            <tr><td><strong>D</strong></td><td>Fractal dimension. Geometric complexity. Sweet spot: 1.3&ndash;1.5.</td></tr>
+            <tr><td><strong>C</strong></td><td>Chromatic Fluence. Higher = more balanced palette.</td></tr>
+            <tr><td><strong>&Lambda;</strong></td><td>Lacunarity. How evenly the detail is distributed. Low = uniform.</td></tr>
+            <tr><td><strong>H<sub>&theta;</sub></strong></td><td>Edge-orientation entropy. How many directions edges point in.</td></tr>
+            <tr><td><strong>&kappa;</strong></td><td>Curvature ratio. Fraction of edges that bend rather than run straight.</td></tr>
+            <tr><td><strong>&beta;</strong></td><td>Spectral slope. Natural scenes ≈ 1.2; tile roofs &gt; 2.</td></tr>
+            <tr><td><strong>R, R<sub>w</sub></strong></td><td>Rhythm strength and fenestration regularity.</td></tr>
+            <tr><td><strong>B, Σ_h, V</strong></td><td>Visual balance, hierarchical scaling, solid/void ratio.</td></tr>
             <tr><td><strong>Stability</strong></td><td>How consistent D is across sensitivity levels. 5 = rock solid.</td></tr>
-            <tr><td><strong>&Lambda;</strong></td><td>How evenly the detail is distributed. Low = uniform.</td></tr>
-            <tr><td><strong>R&sup2;</strong></td><td>How well the data fits a true fractal. Above 0.99 is excellent.</td></tr>
+            <tr><td><strong>R&sup2;</strong></td><td>How well the box-counting fits a true fractal. Above 0.99 is excellent.</td></tr>
           </tbody>
         </table>
       </section>
@@ -220,7 +318,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </details>
 
         <details class="disclosure">
-          <summary>Quality assessment</summary>
+          <summary>Quality assessment and perspective detection</summary>
           <div class="disclosure-content">
             <p>Quality score computed from:</p>
             <ul>
@@ -230,6 +328,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <li><strong>Edge energy:</strong> signal-to-noise in gradient domain</li>
             </ul>
             <p>Issues classified as critical (unreliable) or warnings (suboptimal).</p>
+            <p>Perspective skew is detected by a Hough-style search for vertical lines. Per-line convergence angles are estimated from top-vs-bottom x-coordinates; severity is reported as ok (&lt; 1°), mild (1–3°), or severe (&ge; 3°). Severe skew is propagated to the F-confidence multiplier so users see "?" when rhythm and symmetry measurements become unreliable.</p>
+          </div>
+        </details>
+
+        <details class="disclosure">
+          <summary>Architectural Fluency composition</summary>
+          <div class="disclosure-content">
+            <p>F = w<sub>fractal</sub>·F_fractal + w<sub>rhythm</sub>·F_rhythm + w<sub>chromatic</sub>·F_chromatic + w<sub>structure</sub>·F_structure</p>
+            <p>Default weights: 0.30 / 0.25 / 0.20 / 0.25. Each sub-score is an inverted-U function peaking at its own sweet spot, so high values on a single dimension cannot dominate F.</p>
+            <ul>
+              <li><strong>F_fractal</strong> peaks near D = 1.4, modulated downward when Λ &lt; 0.30 and H<sub>θ</sub> &lt; 0.30 (uniform-texture penalty).</li>
+              <li><strong>F_rhythm</strong> blends the rhythm strength score (sweet spot 0.4–0.7), the β-fit score (peak at β = 1.2, weighted by R²), and the optional fenestration regularity.</li>
+              <li><strong>F_chromatic</strong> = 0.70 × C + 0.30 × value-contrast-score (peak at moderate Δ_L).</li>
+              <li><strong>F_structure</strong> = 0.35 × B + 0.30 × Σ_h + 0.25 × V_score (peak at V ≈ 0.30) + 0.10 × κ_score.</li>
+            </ul>
+            <p>F-confidence = quality.score × perspective_factor × critical_issue_factor, clamped to [0, 1]. F is flagged uncertain when confidence &lt; 0.7.</p>
           </div>
         </details>
 
@@ -239,17 +353,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <table>
               <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
               <tbody>
+                <tr><td>F</td><td>Float</td><td>Architectural Fluency (composite)</td></tr>
+                <tr><td>F_fractal</td><td>Float</td><td>Fractal sub-score (0–1)</td></tr>
+                <tr><td>F_rhythm</td><td>Float</td><td>Rhythm sub-score (0–1)</td></tr>
+                <tr><td>F_chromatic</td><td>Float</td><td>Chromatic sub-score (0–1)</td></tr>
+                <tr><td>F_structure</td><td>Float</td><td>Structure sub-score (0–1)</td></tr>
+                <tr><td>F_confidence</td><td>Float</td><td>F reliability (0–1)</td></tr>
                 <tr><td>D</td><td>Float</td><td>Fractal dimension (robust median)</td></tr>
-                <tr><td>R&sup2;</td><td>Float</td><td>Regression goodness-of-fit</td></tr>
+                <tr><td>R&sup2;</td><td>Float</td><td>Box-counting regression goodness-of-fit</td></tr>
                 <tr><td>&sigma;</td><td>Float</td><td>Std. deviation of D across thresholds</td></tr>
                 <tr><td>&Lambda;</td><td>Float</td><td>Mean lacunarity</td></tr>
-                <tr><td>stability</td><td>Int</td><td>D consistency (1&ndash;5)</td></tr>
+                <tr><td>H<sub>θ</sub></td><td>Float</td><td>Edge-orientation entropy (0–1)</td></tr>
+                <tr><td>κ</td><td>Float</td><td>Curvature ratio (0–1)</td></tr>
+                <tr><td>Δ_L</td><td>Float</td><td>Value contrast (normalised L* std)</td></tr>
+                <tr><td>B</td><td>Float</td><td>Visual balance (0–1)</td></tr>
+                <tr><td>Σ_h</td><td>Float</td><td>Hierarchical scaling (0–1)</td></tr>
+                <tr><td>V</td><td>Float</td><td>Solid/void ratio</td></tr>
+                <tr><td>β, R²<sub>β</sub></td><td>Float</td><td>Spectral slope and fit quality</td></tr>
+                <tr><td>R<sub>h</sub>, R<sub>v</sub></td><td>Float</td><td>Horizontal and vertical rhythm strengths</td></tr>
+                <tr><td>R<sub>w</sub></td><td>Float?</td><td>Fenestration regularity (nullable)</td></tr>
+                <tr><td>stability</td><td>Int</td><td>D consistency (1–5)</td></tr>
                 <tr><td>C</td><td>Float</td><td>Composite chromatic fluence</td></tr>
                 <tr><td>H<sub>c</sub></td><td>Float</td><td>Normalised chromatic entropy</td></tr>
                 <tr><td>K</td><td>Float</td><td>Palette coherence</td></tr>
                 <tr><td>E</td><td>Float</td><td>Ecological deviation</td></tr>
                 <tr><td>harmonyType</td><td>String</td><td>Palette harmony type</td></tr>
-                <tr><td>qualityScore</td><td>Float</td><td>Measurement quality (0&ndash;1)</td></tr>
+                <tr><td>qualityScore</td><td>Float</td><td>Image quality (0–1)</td></tr>
+                <tr><td>perspectiveSeverity</td><td>String</td><td>ok / mild / severe</td></tr>
               </tbody>
             </table>
           </div>
@@ -260,16 +390,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="disclosure-content">
             <h4>Limitations</h4>
             <ul>
-              <li>Input capped at 800px (mobile constraint)</li>
-              <li>No perspective correction (planned: AI facade segmentation)</li>
-              <li>D sensitive to framing/lighting; robust analysis mitigates but does not eliminate</li>
-              <li>Chromatic analysis assumes daylight; artificial lighting may skew</li>
-              <li>C-value weighting preliminary; perceptual calibration ongoing</li>
+              <li>Input capped at 800 px (mobile constraint).</li>
+              <li>Perspective is detected and propagated to F-confidence, but not corrected. Severe keystone skew should be re-shot perpendicular to the facade.</li>
+              <li>Window detection for R<sub>w</sub> is heuristic (Otsu threshold + connected components); sun shadows or very dark materials can be misread as openings.</li>
+              <li>Chromatic analysis assumes daylight; artificial lighting may skew the ecological-deviation term.</li>
+              <li>F sub-score weights (0.30 / 0.25 / 0.20 / 0.25) and individual sweet spots are empirical initial estimates, calibrated against a small reference set; broader perceptual calibration is ongoing.</li>
+              <li>The headline F replaces D as the primary metric, but D, C, Λ, H<sub>θ</sub>, κ, Δ_L, B, Σ_h, V, β, R<sub>h</sub>, R<sub>v</sub>, R<sub>w</sub> are all preserved in the output for independent analysis.</li>
             </ul>
             <h4>Reproducibility</h4>
             <ul>
-              <li>Fully deterministic — no random seeds</li>
-              <li>Results may vary between app versions; <code>appVersion</code> recorded per analysis</li>
+              <li>Fully deterministic, no random seeds.</li>
+              <li>2D FFT runs on Apple Accelerate (vDSP); the rest of the pipeline is pure Swift.</li>
+              <li>Results may vary between app versions; <code>appVersion</code> and <code>modelVersion</code> are recorded per analysis. Older records that pre-date Sprint 7 carry only D and C, the website tolerates this and falls back gracefully.</li>
             </ul>
           </div>
         </details>
@@ -277,18 +409,62 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <details class="disclosure">
           <summary>References</summary>
           <div class="disclosure-content">
+            <h4>Fractal complexity</h4>
             <ol class="references">
+              <li>Mandelbrot, B.B. (1982). <em>The Fractal Geometry of Nature.</em> W. H. Freeman.</li>
+              <li>Ostwald, M.J. &amp; Vaughan, J. (2016). <em>The Fractal Dimension of Architecture.</em> Birkhäuser.</li>
+              <li>Spehar, B., Clifford, C.W.G., Newell, B.R. &amp; Taylor, R.P. (2003). Universal aesthetic of fractals. <em>Computers &amp; Graphics, 27</em>(5), 813&ndash;820.</li>
+              <li>Spehar, B., Walker, N. &amp; Taylor, R.P. (2016). Taxonomy of individual variations in aesthetic responses to fractal patterns. <em>Frontiers in Human Neuroscience, 10</em>, 350.</li>
               <li>Taylor, R.P. et al. (2005). Perceptual and physiological responses to fractal patterns. <em>Nonlinear Dynamics, Psychology, and Life Sciences, 9</em>(1), 89&ndash;114.</li>
-              <li>Ostwald, M.J. &amp; Vaughan, J. (2016). <em>The Fractal Dimension of Architecture.</em> Birkh&auml;user.</li>
-              <li>Salingaros, N.A. (2012). Fractal Art and Architecture Reduce Physiological Stress. <em>J. Biourbanism, 2</em>(2), 11&ndash;28.</li>
+              <li>Allain, C. &amp; Cloitre, M. (1991). Characterizing the lacunarity of random and deterministic fractal sets. <em>Physical Review A, 44</em>(6), 3552&ndash;3558.</li>
               <li>Karperien, A. (2013). <em>FracLac for ImageJ.</em> Charles Sturt University.</li>
+            </ol>
+
+            <h4>Edge orientation, curvature, structure</h4>
+            <ol class="references" start="8">
+              <li>Stanischewski, S., Altmann, C.S., Brachmann, A. &amp; Redies, C. (2020). Aesthetic perception of line patterns: Effect of edge-orientation entropy and curvilinear shape. <em>i-Perception, 11</em>(5).</li>
+              <li>Brachmann, A. &amp; Redies, C. (2017). High entropy of edge orientations characterizes visual artworks from diverse cultural backgrounds. <em>Vision Research, 133</em>, 130&ndash;144.</li>
+              <li>Redies, C. (2015). Combining universal beauty and cultural context in a unifying model of visual aesthetic experience. <em>Frontiers in Human Neuroscience, 9</em>, 218.</li>
+              <li>Vartanian, O. et al. (2013). Impact of contour on aesthetic judgments and approach-avoidance decisions in architecture. <em>PNAS, 110</em>(Suppl 2), 10446&ndash;10453.</li>
+              <li>Bar, M. &amp; Neta, M. (2006). Humans prefer curved visual objects. <em>Psychological Science, 17</em>(8), 645&ndash;648.</li>
+              <li>Arnheim, R. (1974). <em>Art and Visual Perception: A Psychology of the Creative Eye.</em> University of California Press.</li>
+              <li>Wilson, A. &amp; Chatterjee, A. (2005). The assessment of preference for balance: Introducing a new test. <em>Empirical Studies of the Arts, 23</em>(2), 165&ndash;180.</li>
+              <li>Salingaros, N.A. (2006). <em>A Theory of Architecture.</em> Umbau-Verlag.</li>
+              <li>Stamps, A.E. (1999). Sex, complexity, and preferences for residential facades. <em>Perceptual and Motor Skills, 88</em>(3c), 1301&ndash;1312.</li>
+              <li>Stamps, A.E. (2000). <em>Psychology and the Aesthetics of the Built Environment.</em> Springer.</li>
+            </ol>
+
+            <h4>Spectral and rhythm</h4>
+            <ol class="references" start="18">
+              <li>van der Schaaf, A. &amp; van Hateren, J.H. (1996). Modelling the power spectra of natural images: Statistics and information. <em>Vision Research, 36</em>(17), 2759&ndash;2770.</li>
+              <li>Field, D.J. (1987). Relations between the statistics of natural images and the response properties of cortical cells. <em>Journal of the Optical Society of America A, 4</em>(12), 2379&ndash;2394.</li>
+              <li>Penacchio, O. &amp; Wilkins, A.J. (2015). Visual discomfort and the spatial distribution of Fourier energy. <em>Vision Research, 108</em>, 1&ndash;8.</li>
+              <li>Liu, Y. et al. (2010). <em>Computational Symmetry in Computer Vision and Computer Graphics.</em> Now Publishers.</li>
+            </ol>
+
+            <h4>Colour and naturalness</h4>
+            <ol class="references" start="22">
+              <li>Joye, Y. (2007). Architectural lessons from environmental psychology: The case of biophilic architecture. <em>Review of General Psychology, 11</em>(4), 305&ndash;328.</li>
+              <li>Long, F. &amp; Purves, D. (2003). Natural scene statistics as the universal basis of color context effects. <em>PNAS, 100</em>(25), 15190&ndash;15193.</li>
               <li>Palmer, S.E. &amp; Schloss, K.B. (2010). An ecological valence theory of human color preferences. <em>PNAS, 107</em>(19), 8877&ndash;8882.</li>
               <li>Schloss, K.B. (2024). Color preferences and color harmony. <em>Annual Review of Vision Science, 10</em>, 323&ndash;349.</li>
-              <li>Long, F. &amp; Purves, D. (2003). Natural scene statistics as the universal basis of color context effects. <em>PNAS, 100</em>(25), 15190&ndash;15193.</li>
-              <li>Penacchio, O. &amp; Wilkins, A.J. (2015). Visual discomfort and the spatial distribution of Fourier energy. <em>Vision Research, 108</em>, 1&ndash;8.</li>
-              <li>Canny, J. (1986). A Computational Approach to Edge Detection. <em>IEEE TPAMI, 8</em>(6), 679&ndash;698.</li>
-              <li>Otsu, N. (1979). A Threshold Selection Method from Gray-Level Histograms. <em>IEEE Trans. Sys. Man. Cyber., 9</em>(1), 62&ndash;66.</li>
-              <li>Huynh, D.C. et al. (2026). Moving beyond environmental categories in environmental psychology. <em>J. Environmental Psychology, 111</em>, 103016.</li>
+              <li>Itten, J. (1970). <em>The Elements of Color.</em> Van Nostrand Reinhold.</li>
+              <li>Albers, J. (1963). <em>Interaction of Color.</em> Yale University Press.</li>
+            </ol>
+
+            <h4>Architecture and the brain</h4>
+            <ol class="references" start="29">
+              <li>Coburn, A., Vartanian, O. &amp; Chatterjee, A. (2017). Buildings, beauty, and the brain: A neuroscience of architectural experience. <em>Journal of Cognitive Neuroscience, 29</em>(9), 1521&ndash;1531.</li>
+              <li>Salingaros, N.A. (2012). Fractal art and architecture reduce physiological stress. <em>Journal of Biourbanism, 2</em>(2), 11&ndash;28.</li>
+              <li>Alexander, C. (2002). <em>The Nature of Order, Book 1: The Phenomenon of Life.</em> Center for Environmental Structure.</li>
+              <li>Huynh, D.C. et al. (2026). Moving beyond environmental categories in environmental psychology. <em>Journal of Environmental Psychology, 111</em>, 103016.</li>
+            </ol>
+
+            <h4>Image processing</h4>
+            <ol class="references" start="33">
+              <li>Canny, J. (1986). A computational approach to edge detection. <em>IEEE TPAMI, 8</em>(6), 679&ndash;698.</li>
+              <li>Otsu, N. (1979). A threshold selection method from gray-level histograms. <em>IEEE Trans. Systems, Man, and Cybernetics, 9</em>(1), 62&ndash;66.</li>
+              <li>Hartley, R. &amp; Zisserman, A. (2004). <em>Multiple View Geometry in Computer Vision, 2nd ed.</em> Cambridge University Press.</li>
             </ol>
           </div>
         </details>
@@ -298,22 +474,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <section class="section citation-section">
         <p class="citation-label">Cite this work</p>
         <blockquote>
-          Fractune (2026). Fractal Fluence Analysis.<br />
+          Fractune (2026). Architectural Fluency Analysis.<br />
           <a href="https://fractune.dk/science">https://fractune.dk/science</a>
         </blockquote>
       </section>
 
     </div>
   </main>
+
+  <SiteFooter />
 </BaseLayout>
 
 <style>
-  /* Nav */
-  .nav { border-bottom: 1px solid var(--color-border); }
-  .nav-inner { max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; height: 52px; display: flex; align-items: center; }
-  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 0.375rem; }
-  .nav-logo-icon { height: 1.0em; width: auto; vertical-align: middle; transform: translateY(-1px); }
-
   /* Hero */
   .hero-area {
     text-align: center;
@@ -350,7 +522,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   p { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; }
   .kicker { color: var(--color-text); font-weight: 500; }
 
-  /* D-value scale */
+  /* F-value sweet-spot scale */
   .scale { margin: 2rem 0; }
   .scale-bar {
     display: flex;
@@ -370,16 +542,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     letter-spacing: 0.05em;
   }
   .scale-low {
-    flex: 3;
-    background: linear-gradient(90deg, #d94040, #c89030);
+    /* 0.0 – 0.55 (55% of bar) */
+    flex: 11;
+    background: linear-gradient(90deg, #8a8a8a, #b0b0b0);
     color: #fff;
   }
   .scale-sweet {
-    flex: 2;
+    /* 0.55 – 0.75 (20% of bar) */
+    flex: 4;
     background: linear-gradient(90deg, #4a9a4a, #4a9a4a);
     color: #fff;
   }
   .scale-high {
+    /* 0.75 – 1.0 (25% of bar) */
     flex: 5;
     background: linear-gradient(90deg, #c89030, #d94040);
     color: #fff;
@@ -400,20 +575,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
   .scale-examples-sweet { color: #3a8a3a; font-weight: 500; }
 
-  /* C-value trio */
-  .trio {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin: 1.5rem 0 2rem;
+  /* Dimension headings inside the four-dimensions section */
+  .dimension-heading {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    margin-top: 2.25rem;
+    margin-bottom: 0.625rem;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
   }
-  .trio-item {
-    padding: 1.25rem;
-    background: var(--color-bg-secondary);
-    border-radius: var(--radius);
-  }
-  .trio-item h3 { margin-bottom: 0.375rem; }
-  .trio-item p { font-size: 0.875rem; margin-bottom: 0; }
+  .dimension-heading:first-of-type { margin-top: 1.25rem; }
 
   /* Metrics table */
   table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
@@ -491,7 +662,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   @media (max-width: 600px) {
-    .trio { grid-template-columns: 1fr; }
     .scale-examples { flex-direction: column; gap: 0.25rem; align-items: center; }
   }
 </style>

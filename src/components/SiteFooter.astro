@@ -1,0 +1,133 @@
+---
+// Canonical site footer, Direction 1 ("Instrument") style.
+// Mirrors the layout used on the index page so all sub-pages match.
+const year = new Date().getFullYear();
+---
+
+<footer class="ft-footer">
+  <div class="ft-footer-inner">
+    <div class="ft-footer-grid ft-footer-top">
+      <div class="ft-footer-brand">
+        <img src="/logo.png" alt="" class="ft-logo" />
+        <span class="ft-brand-name">Fractune</span>
+      </div>
+      <div class="ft-footer-cols">
+        <div>
+          <div class="ft-footer-h">LEGAL</div>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/license">Dataset Licence</a>
+        </div>
+        <div>
+          <div class="ft-footer-h">SUPPORT</div>
+          <a href="/support">Help</a>
+          <a href="mailto:legal@fractune.dk">Contact</a>
+        </div>
+        <div>
+          <div class="ft-footer-h">EXPLORE</div>
+          <a href="/architectural-fluency">Fluency</a>
+          <a href="/science">Science</a>
+          <a href="/research">Research</a>
+          <a href="https://sites.fractune.dk">Map</a>
+        </div>
+        <div>
+          <div class="ft-footer-h">CONNECT</div>
+          <a href="/research">Researchers</a>
+          <a href="mailto:research@fractune.dk">Partnerships</a>
+        </div>
+      </div>
+    </div>
+    <div class="ft-footer-grid ft-footer-bottom">
+      <div class="ft-footer-spine"></div>
+      <div class="ft-footer-bottom-row">
+        <span>© {year} Fractune · Copenhagen</span>
+        <span>Colours by Barslund</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft-footer {
+    padding: 72px 64px 40px;
+    background: var(--ft-bg);
+    border-top: 1px solid var(--ft-border);
+  }
+  .ft-footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .ft-footer-grid {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 48px;
+    max-width: 1168px;
+    margin: 0 auto;
+  }
+  .ft-footer-top {
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--ft-border);
+  }
+  .ft-footer-bottom { padding-top: 32px; }
+  .ft-footer-spine {}
+
+  .ft-footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ft-logo {
+    width: 28px;
+    height: 28px;
+    display: block;
+  }
+  .ft-brand-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ft-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .ft-footer-cols {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+  .ft-footer-h {
+    font-family: var(--ft-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--ft-text-dim);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .ft-footer-cols a {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: var(--ft-text);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .ft-footer-cols a:hover { color: var(--ft-primary); }
+
+  .ft-footer-bottom-row {
+    font-family: var(--ft-mono);
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--ft-text-dim);
+    letter-spacing: 0.12em;
+  }
+
+  @media (max-width: 900px) {
+    .ft-footer { padding: 48px 24px 24px; }
+    .ft-footer-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .ft-footer-spine { display: none; }
+    .ft-footer-cols { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .ft-footer-bottom-row { flex-direction: column; gap: 8px; }
+  }
+</style>

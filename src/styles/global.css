@@ -1,5 +1,7 @@
 /* Fractune — Design system */
 
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @font-face {
   font-family: 'Myriad Pro';
   src: url('/fonts/myriadpro-light.otf') format('opentype');
@@ -43,6 +45,18 @@
   --max-width: 980px;
   --radius: 12px;
   --transition: 0.2s ease;
+
+  /* Direction 1 (Instrument) tokens — used by header, footer and index */
+  --ft-primary: #12283E;
+  --ft-primary-hover: #1A3A57;
+  --ft-bg: #FFFFFF;
+  --ft-surface: #FAFAF9;
+  --ft-text: #1D1D1F;
+  --ft-text-dim: #6E6E73;
+  --ft-border: #D2D2D7;
+  --ft-sweet: #2A7D3F;
+  --ft-warm: #C85A4A;
+  --ft-mono: 'JetBrains Mono', 'SF Mono', 'Roboto Mono', ui-monospace, monospace;
 }
 
 *,

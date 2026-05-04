@@ -1,0 +1,138 @@
+---
+/**
+ * PhoneMockup, a reusable iPhone bezel + screen mockup.
+ *
+ * If `screen` is provided, the image is composited inside the bezel.
+ * Otherwise, an editorial placeholder is rendered (gradient surface +
+ * mono label) so layouts can be designed before final screenshots
+ * exist.
+ */
+interface Props {
+  /** Path to the screen image, or omit for a placeholder. */
+  screen?: string;
+  /** Alt text for the screen image. */
+  alt?: string;
+  /** Optional small caption beneath the phone. */
+  caption?: string;
+  /** Visual size, sm = 160px, md = 260px, lg = 320px wide. */
+  size?: 'sm' | 'md' | 'lg';
+  /** Optional placeholder label, defaults to "SCREEN · TBD". */
+  placeholderLabel?: string;
+  /** Optional class hook on the outer figure. */
+  class?: string;
+}
+
+const {
+  screen,
+  alt = '',
+  caption,
+  size = 'md',
+  placeholderLabel = 'SCREEN · TBD',
+  class: classHook,
+} = Astro.props;
+---
+
+<figure class:list={['phone-mockup', `phone-mockup--${size}`, classHook]}>
+  <div class="phone-mockup-frame">
+    {screen ? (
+      <img src={screen} alt={alt} class="phone-mockup-screen-img" />
+    ) : (
+      <div class="phone-mockup-placeholder" aria-label={placeholderLabel}>
+        <span class="phone-mockup-placeholder-label">{placeholderLabel}</span>
+      </div>
+    )}
+    <img
+      src="/iphone-bezel.png"
+      alt=""
+      aria-hidden="true"
+      class="phone-mockup-bezel"
+    />
+  </div>
+  {caption && <figcaption class="phone-mockup-caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .phone-mockup {
+    display: inline-block;
+    margin: 0;
+  }
+  .phone-mockup-frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    /* iphone-bezel.png asset proportions, iPhone 16 Pro Natural Titanium */
+    aspect-ratio: 1350 / 2760;
+    filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.18));
+  }
+  .phone-mockup-bezel {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+  .phone-mockup-screen-img,
+  .phone-mockup-placeholder {
+    position: absolute;
+    /* Screen cavity inside the iPhone 16 Pro bezel */
+    inset: 3.2% 6.3% 3% 6.3%;
+    border-radius: 12% / 5.7%;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .phone-mockup-screen-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .phone-mockup-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      linear-gradient(180deg, #f6f6f3 0%, #ececea 100%);
+    overflow: hidden;
+  }
+  .phone-mockup-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(0deg, rgba(18, 40, 62, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(18, 40, 62, 0.04) 1px, transparent 1px);
+    background-size: 16px 16px;
+    pointer-events: none;
+  }
+  .phone-mockup-placeholder-label {
+    position: relative;
+    z-index: 1;
+    font-family: var(--ft-mono, 'JetBrains Mono', ui-monospace, monospace);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    color: rgba(18, 40, 62, 0.4);
+    text-transform: uppercase;
+  }
+
+  /* Sizes set on the frame width via the figure */
+  .phone-mockup--sm { width: 160px; }
+  .phone-mockup--md { width: 260px; }
+  .phone-mockup--lg { width: 320px; }
+
+  .phone-mockup-caption {
+    margin-top: 12px;
+    font-family: var(--ft-mono, 'JetBrains Mono', ui-monospace, monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    color: rgba(18, 40, 62, 0.55);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  @media (max-width: 720px) {
+    .phone-mockup--lg { width: 240px; }
+    .phone-mockup--md { width: 200px; }
+    .phone-mockup--sm { width: 130px; }
+  }
+</style>

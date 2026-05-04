@@ -1,160 +1,319 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 ---
 
-<BaseLayout title="Terms of Use — Fractune">
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
-    </div>
-  </nav>
+<BaseLayout
+  title="Terms &amp; Conditions · Fractune"
+  description="Read the terms and conditions for Fractune, the architectural fluency analysis tool for architects and researchers."
+>
+  <SiteHeader />
 
   <main class="page">
     <div class="page-inner">
-      <h1>Terms of Use</h1>
-      <p class="last-updated">Version 1.0 — April 2026</p>
+      <h1>Terms and Conditions for Fractune</h1>
+      <p class="caption">Version 2.0 – May 2026</p>
 
-      <h2>1. Scope</h2>
+      <h2>1. Scope of These Terms and Licence</h2>
       <p>
-        These terms apply to your use of the Fractune mobile application ("the App")
-        and the website at fractune.dk ("the Website"), collectively referred to as
-        "the Service". The App is available on the Apple App Store. The agreement for
-        the App is between you and Fractune (Colours by Barslund), not Apple. The App
-        is licensed, not sold, to you.
+        These Terms of Use ("Terms" or "EULA") apply to all use of the Fractune
+        app and the website fractune.dk, including the public sites map at
+        sites.fractune.dk, the Architectural Fluency analysis pipeline, and any
+        digital content or research data provided through the service
+        (the "Services"). By downloading, installing, accessing or using
+        Fractune, you accept these Terms.
       </p>
+      <p>
+        For apps obtained through the Apple App Store, you acknowledge that
+        this EULA is concluded between you and Fractune only, and not with
+        Apple. Fractune, not Apple, is solely responsible for the Fractune app
+        and its content.
+      </p>
+      <p>
+        The Fractune app and all digital content are
+        <strong>licensed, not sold</strong>, to you. You obtain a limited right
+        to use Fractune as described below; you do not obtain ownership of the
+        app, the analysis algorithms, or the underlying public dataset.
+      </p>
+      <p>
+        If you obtained Fractune through the Apple App Store, these Terms
+        supplement Apple's Media Services Terms and Usage Rules. Where
+        mandatory App Store terms conflict with these Terms, Apple's terms
+        prevail.
+      </p>
+      <p>
+        Agreements regarding any purchases or subscriptions are entered with:
+      </p>
+      <address>
+        Fractune (Colours by Barslund)<br />
+        c/o Anders Barslund<br />
+        Abildgaardsvej 51<br />
+        2830 Virum, Denmark<br />
+        Tel: (+45) 60 63 40 24<br />
+        Email: <a href="mailto:legal@fractune.dk">legal@fractune.dk</a>
+      </address>
 
       <h2>2. The Service</h2>
+      <ul>
+        <li>
+          <strong>Architectural Fluency analysis:</strong> Fractune calculates
+          a composite Architectural Fluency value F (0–1) plus four sub-scores
+          (fractal complexity, rhythm, colour, structure) and supporting
+          metrics (D, Λ, H<sub>θ</sub>, β, R<sub>w</sub>, B, Σ_h, V, κ, Δ_L)
+          from photographs you take of building facades. All image analysis
+          runs locally on your iPhone.
+        </li>
+        <li>
+          <strong>Public sites map:</strong> Anonymised readings you choose to
+          contribute are published at sites.fractune.dk for browsing,
+          filtering, and academic citation.
+        </li>
+        <li>
+          <strong>Research dataset:</strong> The aggregated readings are made
+          available under the separate <a href="/license">Dataset Licence</a>
+          for academic, educational, and journalistic use.
+        </li>
+        <li>
+          <strong>Free of charge:</strong> Fractune is currently provided free
+          of charge. We may introduce subscription features in the future; if
+          we do, this section will be amended and you will be notified before
+          any charge takes effect.
+        </li>
+      </ul>
+
+      <h2>3. User Accounts and Eligibility</h2>
       <p>
-        Fractune is a fractal fluence analysis tool for building facades. The App
-        calculates a fractal dimension (D-value) using the box-counting method and
-        contributes analysis results to a publicly accessible dataset.
+        Fractune does not require an account. The app generates a random
+        contributor ID locally on your device for the purpose of attributing
+        readings to a single source (anonymously) and so you can request
+        erasure later. There is no minimum age restriction; we recommend that
+        users under the age of 13 obtain parental or guardian consent before
+        contributing readings.
+      </p>
+      <p>
+        For details on how we process personal data, please see our
+        <a href="/privacy">Privacy Policy</a>.
       </p>
 
-      <h2>3. Contributions to the Public Dataset</h2>
+      <h2>4. Licence and Use of App and Content</h2>
       <p>
-        By analysing a building with location sharing enabled, you agree that the
-        analysis results — including D-value, metadata, and coordinates — will be
-        published as part of the public dataset and made available at
-        <a href="https://sites.fractune.dk">sites.fractune.dk</a>.
+        All intellectual property rights in the Fractune app, the analysis
+        algorithms, the F formula, the website, the science and research
+        content, and all other materials belong to Fractune / Anders Barslund
+        or our licensors. Subject to your continuous compliance with these
+        Terms, you are granted a
+        <strong>limited, non-exclusive, non-transferable, revocable licence</strong>
+        to:
       </p>
+      <ul>
+        <li>download and use the Fractune app on Apple-branded devices that you own or control; and</li>
+        <li>access and use the public sites map and the website's editorial content (Science, Architectural Fluency, Research) for personal and educational reference.</li>
+      </ul>
       <p>
-        Analysis results are factual measurements and as such are not subject to
-        copyright. By contributing, you grant Fractune a perpetual, worldwide,
-        royalty-free, non-exclusive licence to use, display, distribute, and sublicence
-        your contributions as part of the public dataset.
-      </p>
-
-      <h2>4. User Eligibility</h2>
-      <p>
-        There is no minimum age restriction for using Fractune. However, we recommend
-        that users under the age of 13 obtain parental or guardian consent before using
-        the Service.
-      </p>
-
-      <h2>5. Acceptable Use</h2>
-      <p>You agree not to:</p>
-      <ol>
-        <li>Submit false, fabricated, or deliberately manipulated analysis data.</li>
-        <li>Overload or abuse the API or backend infrastructure.</li>
-        <li>Attempt to identify, de-anonymise, or contact other contributors.</li>
-        <li>Scrape or bulk-download the public dataset without permission.</li>
-        <li>Use the dataset to train AI or machine learning models without prior written permission from Fractune.</li>
-      </ol>
-
-      <h2>6. Intellectual Property</h2>
-      <p>
-        The App, Website, algorithms, design, and all associated intellectual property
-        are owned by Fractune / Anders Barslund. Analysis results (D-values and
-        associated metadata) are factual measurements and are considered to be in the
-        public domain.
+        This licence is for personal, non-commercial use unless otherwise
+        stated. Use of the public dataset is governed by the separate
+        <a href="/license">Dataset Licence</a>.
       </p>
 
-      <h2>7. Dataset Licence</h2>
+      <h2>5. Restrictions</h2>
+      <p>Except where permitted under mandatory law, you may not:</p>
+      <ul>
+        <li>copy, translate, modify, reverse-engineer, decompile, disassemble or attempt to derive the source code of Fractune;</li>
+        <li>create derivative works based on the app, the F formula, or the analysis algorithms;</li>
+        <li>circumvent security or technical protection measures, including the App Attest verification used to authenticate dataset submissions;</li>
+        <li>make the app available over a network for simultaneous use on multiple devices;</li>
+        <li>rent, lease, lend, sell, sublicense, distribute or transfer the app on a standalone basis or as part of a collection;</li>
+        <li>submit false, fabricated, or deliberately manipulated readings to the public dataset;</li>
+        <li>extract, scrape, bulk-download, or stockpile data from the public dataset for the purpose of building competing products or services;</li>
+        <li>use Fractune readings, the F formula, or any output of the analysis pipeline to train, refine, or generate artificial intelligence (AI) models or competing services.</li>
+      </ul>
       <p>
-        Analysis data in the public dataset is made available under the terms of the
-        separate <a href="/license">Dataset Licence</a>. By using data from the dataset,
-        you agree to the terms set forth in that licence.
+        When using Fractune, you must also comply with any applicable
+        third-party terms of agreement, including wireless data service
+        agreements and platform-specific policies for services integrated into
+        the app (Apple, MapKit JS).
       </p>
 
-      <h2>8. Disclaimer</h2>
+      <h2>6. Contributions to the Public Dataset</h2>
       <p>
-        The Service is provided "as is" and "as available" without warranty of any kind,
-        whether express or implied, including but not limited to warranties of
-        merchantability, fitness for a particular purpose, and non-infringement. D-values
-        are mathematical approximations and should not be used as the sole basis for
-        professional, scientific, or regulatory decisions. Apple Inc. expressly disclaims
-        all warranties with respect to the App.
+        By contributing a reading with the relevant consent toggles enabled,
+        you agree that the anonymised reading metrics, including F, D, the
+        four dimension sub-scores, supporting raw metrics, optional location,
+        optional building metadata, and optionally a face-redacted thumbnail,
+        will be published as part of the public Fractune dataset and made
+        available at <a href="https://sites.fractune.dk">sites.fractune.dk</a>.
+      </p>
+      <p>
+        Reading metrics are factual measurements derived from your own
+        photographs and as such are not subject to copyright. By contributing,
+        you grant Fractune a perpetual, worldwide, royalty-free,
+        non-exclusive licence to use, display, distribute, and sublicense your
+        contributions as part of the public dataset under the
+        <a href="/license">Dataset Licence</a>.
+      </p>
+      <p>
+        You may request erasure of all readings tied to your contributor ID at
+        any time. We process erasure requests within 30 days.
       </p>
 
-      <h2>9. Limitation of Liability</h2>
+      <h2>7. Disclaimer (No Warranty)</h2>
       <p>
-        To the maximum extent permitted by applicable law, Fractune shall not be liable
-        for any indirect, incidental, special, consequential, or punitive damages arising
-        out of or in connection with your use of the Service. Apple Inc. is not
-        responsible for the App or its content and shall have no obligation to address
-        any claims relating to the App. Fractune is solely responsible for handling all
-        product claims and end-user support.
+        Fractune and all Services, including the F value, the four dimension
+        sub-scores, the public dataset, and any editorial content, are provided
+        <strong>"as is" and "as available"</strong>, without warranties of any
+        kind, express or implied.
+      </p>
+      <p>
+        Fractune disclaims all warranties regarding merchantability, fitness
+        for a particular purpose, non-infringement, accuracy, quiet enjoyment,
+        or availability. F is a calibrated empirical measure, not a final
+        judgement on a building, and should not be used as the sole basis for
+        professional, scientific, or regulatory decisions. You assume all risk
+        associated with the use of Fractune.
+      </p>
+      <p>
+        If you obtained Fractune via the Apple App Store and the app fails to
+        conform to any applicable warranty, you may notify Apple and Apple will
+        refund the purchase price (if any) paid for the app. To the maximum
+        extent permitted by law, Apple has no further warranty obligations with
+        respect to Fractune, and any other claims, losses, liabilities,
+        damages, costs or expenses attributable to a failure to conform to any
+        warranty will be Fractune's sole responsibility.
       </p>
 
-      <h2>10. Apple Provisions</h2>
+      <h2>8. Limitation of Liability</h2>
       <p>
-        You acknowledge that Apple Inc. is a third-party beneficiary of these Terms and
-        may enforce them against you. The App Store Terms of Service supplement these
-        Terms. Apple disclaims any obligation to furnish maintenance or support services
-        with respect to the App.
+        To the maximum extent permitted by law, Fractune and Colours by
+        Barslund are not liable for any indirect, incidental, special or
+        consequential damages, including loss of profits, data, business
+        opportunities or goodwill, arising out of or in connection with your
+        use of Fractune.
+      </p>
+      <p>
+        Where liability cannot be excluded, it is limited to the amount you
+        have paid for access to the Services during the 12 months preceding
+        the claim. As Fractune is currently provided free of charge, this
+        amount is zero unless and until paid features are introduced. These
+        limitations do not affect rights that cannot be waived under Danish
+        consumer law.
+      </p>
+      <p>
+        Fractune, not Apple, is responsible for addressing any claims from
+        you or any third party relating to the app or your possession and/or
+        use of the app, including but not limited to product liability claims,
+        claims that the app fails to conform to any applicable legal or
+        regulatory requirement, and claims arising under consumer protection,
+        privacy or similar legislation.
+      </p>
+      <p>
+        In the event of any third-party claim that the app or your possession
+        and use of the app infringes that third party's intellectual property
+        rights, Fractune, not Apple, will be solely responsible for the
+        investigation, defence, settlement and discharge of any such claim.
       </p>
 
-      <h2>11. Termination</h2>
+      <h2>9. External Services and Technical Data</h2>
       <p>
-        Your rights under these Terms terminate automatically if you breach any
-        provision. Upon termination, you must cease all use of the Service. We reserve
-        the right to block your contributor ID and remove your contributions from the
-        dataset in the event of a breach.
+        Fractune may enable access to external services or websites
+        (e.g. links to academic references). Use of such services is at your
+        sole risk. Fractune is not responsible for third-party content,
+        availability or security.
+      </p>
+      <p>
+        Fractune may collect non-personal technical information (such as device
+        model, OS version and crash logs) to provide updates, security, support
+        and improvements. No personally identifiable data is collected without
+        your consent. For more details, see our
+        <a href="/privacy">Privacy Policy</a>.
+      </p>
+      <p>
+        Fractune is solely responsible for providing maintenance and support
+        for the Fractune app. Apple has no obligation whatsoever to furnish any
+        maintenance or support services with respect to the app.
+      </p>
+      <p>
+        By using Fractune, you represent and warrant that you are not located
+        in a country that is subject to a U.S. Government embargo or designated
+        as "terrorist supporting", and that you are not listed on any U.S.
+        Government list of prohibited or restricted parties.
       </p>
 
-      <h2>12. Governing Law</h2>
+      <h2>10. Termination</h2>
       <p>
-        These Terms are governed by the laws of Denmark. Any dispute arising out of or
-        in connection with the Service shall be submitted to the courts of Lyngby,
-        Denmark. If you are a consumer in the EU, you may also use the European
-        Commission's Online Dispute Resolution platform at
-        <a href="https://ec.europa.eu/consumers/odr" rel="noopener">ec.europa.eu/consumers/odr</a>.
+        This EULA remains in effect until terminated. Your rights terminate
+        automatically without notice if you:
+      </p>
+      <ul>
+        <li>breach these Terms or the <a href="/license">Dataset Licence</a>;</li>
+        <li>submit fabricated or deliberately manipulated readings to the public dataset;</li>
+        <li>attempt to reverse-engineer, scrape, or stockpile Fractune's data; or</li>
+        <li>misuse the app to identify, de-anonymise, or contact other contributors.</li>
+      </ul>
+      <p>
+        Upon termination, you must stop using Fractune and delete any local
+        copies of the app and its data. Fractune may suspend or restrict your
+        access, including blocking your contributor ID and removing your
+        contributions from the dataset, to protect our services, users or
+        licensors.
       </p>
 
-      <h2>13. Changes</h2>
+      <h2>11. Disputes and Governing Law</h2>
       <p>
-        We may update these Terms from time to time. Significant changes will be
-        announced in the App. Continued use of the Service after changes have been
-        published constitutes acceptance of the revised Terms.
+        These Terms are governed by Danish law. Disputes can be brought before
+        the Court in Lyngby or the court where you reside, to the extent
+        permitted by applicable consumer law.
+      </p>
+      <p>
+        We aim to resolve disputes amicably. You can file complaints using the
+        contact details above, or through:
+        <br />
+        The Danish Appeals Board Authority, Toldboden 2, 8800 Viborg, Denmark,
+        <a href="https://www.forbrug.dk" rel="noopener">www.forbrug.dk</a>.
+        <br />
+        For EU residents: you can use the EU Commission's complaints portal:
+        <a href="http://ec.europa.eu/odr" rel="noopener">ec.europa.eu/odr</a>
+        (email for complaints: legal@fractune.dk).
       </p>
 
-      <h2>14. Contact</h2>
+      <h2>12. Dataset Licence (Annex)</h2>
       <p>
-        Questions about these Terms? Contact us at
-        <a href="mailto:legal@fractune.dk">legal@fractune.dk</a>.
+        Use of the Fractune public dataset, both browsing it via
+        sites.fractune.dk and accessing the underlying data, is further
+        governed by our <a href="/license">Dataset Licence</a>, which forms an
+        integral part of these Terms. The Dataset Licence specifies permitted
+        academic and journalistic uses, restrictions on redistribution,
+        scraping, and AI training.
       </p>
+      <p>
+        In case of conflict between these Terms and the Dataset Licence,
+        these Terms prevail.
+      </p>
+      <p>
+        You and Fractune acknowledge and agree that Apple and Apple's
+        subsidiaries are third-party beneficiaries of these Terms, and that,
+        upon your acceptance of these Terms, Apple will have the right, and
+        will be deemed to have accepted the right, to enforce these Terms
+        against you as a third-party beneficiary.
+      </p>
+
+      <p class="caption">Fractune – developed by Colours by Barslund</p>
     </div>
   </main>
+
+  <SiteFooter />
 </BaseLayout>
 
 <style>
-  .nav { border-bottom: 1px solid var(--color-border); }
-  .nav-inner {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 2rem;
-    height: 52px;
-    display: flex;
-    align-items: center;
-  }
-  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 0.375rem; }
-  .nav-logo-icon { height: 1.0em; width: auto; vertical-align: middle; transform: translateY(-1px); }
-  .page { padding: 4rem 0; }
-  .page-inner { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
-  h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
-  .last-updated { color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 2.5rem; }
-  h2 { font-size: 1.25rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; }
-  p { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; }
-  ol { font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; padding-left: 1.5rem; }
-  li { margin-bottom: 0.5rem; }
+  .page { padding: 4rem 0 6rem; }
+  .page-inner { max-width: 700px; margin: 0 auto; padding: 0 2rem; }
+  h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.25rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; }
+  p, li { line-height: 1.65; color: var(--color-text-secondary); }
+  p { font-size: 1rem; margin-bottom: 1rem; }
+  ul, ol { margin-left: 1.25rem; padding-left: 0; margin-bottom: 1rem; }
+  li { font-size: 1rem; margin-bottom: 0.5rem; }
+  .caption { color: var(--color-text-secondary); font-size: 0.93rem; margin-top: 3rem; opacity: 0.85; }
+  address { font-style: normal; color: var(--color-text); margin-bottom: 1.5rem; line-height: 1.65; }
+  strong { color: var(--color-text); font-weight: 600; }
 </style>

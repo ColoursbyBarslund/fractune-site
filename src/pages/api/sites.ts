@@ -35,6 +35,14 @@ interface SiteRecord {
   latitude: number;
   longitude: number;
   dValue: number;
+  // Fractune 2.0: Architectural Fluency. Optional — records analyzed before
+  // iOS Sprint 7 lack these fields. Map UI should fall back to dValue.
+  fValue?: number;
+  confidence?: number;
+  fFractal?: number;
+  fRhythm?: number;
+  fChromatic?: number;
+  fStructure?: number;
   analyzedAt?: string;
   buildingSelectionMode?: string;
   buildingGate?: string;
@@ -77,13 +85,28 @@ async function fetchSitesFromCloudKit(): Promise<SiteRecord[]> {
       if (lat === 0 && lon === 0) continue;
 
       let dValue: number | null = null;
+      let fValue: number | undefined;
+      let confidence: number | undefined;
+      let fFractal: number | undefined;
+      let fRhythm: number | undefined;
+      let fChromatic: number | undefined;
+      let fStructure: number | undefined;
       let buildingGate: string | undefined;
       let buildingSelectionMode: string | undefined;
 
       if (fields.metricsJSON?.value) {
         try {
           const json = JSON.parse(fields.metricsJSON.value);
-          dValue = json.metrics?.D ?? json.D ?? json.dValue ?? null;
+          const m = json.metrics ?? {};
+          dValue = m.D ?? json.D ?? json.dValue ?? null;
+          // Fractune 2.0 fields — all optional. Numeric guard: must be finite
+          // numbers; anything else (null, string, NaN) becomes undefined.
+          fValue = numericOrUndefined(m.F);
+          confidence = numericOrUndefined(m.F_confidence);
+          fFractal = numericOrUndefined(m.F_fractal);
+          fRhythm = numericOrUndefined(m.F_rhythm);
+          fChromatic = numericOrUndefined(m.F_chromatic);
+          fStructure = numericOrUndefined(m.F_structure);
           buildingGate = json.building?.gate;
           buildingSelectionMode = json.building?.selectionMode;
         } catch {
@@ -105,6 +128,12 @@ async function fetchSitesFromCloudKit(): Promise<SiteRecord[]> {
         latitude: lat,
         longitude: lon,
         dValue,
+        fValue,
+        confidence,
+        fFractal,
+        fRhythm,
+        fChromatic,
+        fStructure,
         analyzedAt,
         buildingSelectionMode,
         buildingGate,
@@ -123,6 +152,16 @@ async function fetchSitesFromCloudKit(): Promise<SiteRecord[]> {
   }
 
   const noLocation = records.length - sites.length;
-  console.log(`CloudKit (${CLOUDKIT_ENV}): ${records.length} total, ${sites.length} with location+D, ${noLocation} skipped`);
+  const withF = sites.filter(s => s.fValue != null).length;
+  console.log(`CloudKit (${CLOUDKIT_ENV}): ${records.length} total, ${sites.length} with location+D (${withF} also with F), ${noLocation} skipped`);
   return sites;
+}
+
+/**
+ * Returns the value if it's a finite number; otherwise undefined.
+ * Defends against missing fields, nulls, NaN, or stringly-typed numbers
+ * coming from older CloudKit records or hand-edited metricsJSON blobs.
+ */
+function numericOrUndefined(value: unknown): number | undefined {
+  return typeof value === 'number' && Number.isFinite(value) ? value : undefined;
 }

@@ -24,3 +24,7 @@ pnpm-debug.log*
 .idea/
 .vercel
 .env*.local
+
+# Working folders, source assets used to compose mockups, not for production
+Bezels with content/
+public/Uploads/

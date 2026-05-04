@@ -1,0 +1,108 @@
+---
+// Canonical site header, Direction 1 ("Instrument") style.
+// Use across all pages except the sites map (which has a specialised
+// fullscreen header) and the admin (which is gated and self-contained).
+---
+
+<header class="ft-header">
+  <div class="ft-header-inner">
+    <a href="/" class="ft-brand" aria-label="Fractune home">
+      <img src="/logo.png" alt="" class="ft-logo" />
+      <span class="ft-brand-name">Fractune</span>
+      <span class="ft-brand-tag">FIELD INSTRUMENT FOR iOS</span>
+    </a>
+    <nav class="ft-nav">
+      <a href="/architectural-fluency">Fluency</a>
+      <a href="/science">Science</a>
+      <a href="/research">Research</a>
+      <a href="https://sites.fractune.dk">Map</a>
+      <a href="/support">Support</a>
+      <a
+        href="https://apps.apple.com/app/fractune/idXXXXXXXXXX"
+        class="ft-nav-cta"
+        aria-label="Download Fractune on the App Store"
+      >
+        <img src="/app-store-badge-white.svg" alt="Download on the App Store" class="ft-nav-badge" />
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .ft-header {
+    border-bottom: 1px solid var(--ft-border);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .ft-header-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 22px 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+  }
+  .ft-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+  .ft-logo {
+    width: 34px;
+    height: 34px;
+    display: block;
+    flex-shrink: 0;
+  }
+  .ft-brand-name {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ft-primary);
+  }
+  .ft-brand-tag {
+    font-family: var(--ft-mono);
+    font-size: 10px;
+    color: var(--ft-text-dim);
+    letter-spacing: 0.15em;
+    margin-left: 12px;
+    padding-left: 14px;
+    border-left: 1px solid var(--ft-border);
+    white-space: nowrap;
+  }
+  .ft-nav {
+    display: flex;
+    gap: 28px;
+    font-size: 14px;
+  }
+  .ft-nav a {
+    color: var(--ft-text-dim);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .ft-nav a:hover { color: var(--ft-text); }
+  .ft-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+  }
+  .ft-nav-badge {
+    height: 36px;
+    width: auto;
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .ft-header-inner { padding: 16px 24px; }
+    .ft-brand-tag { display: none; }
+    .ft-nav { gap: 14px; font-size: 13px; }
+    .ft-nav a:not(.ft-nav-cta) { display: none; }
+  }
+</style>

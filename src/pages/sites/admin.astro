@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Fractune Admin — Sites"
+  title="Fractune Admin · Sites"
   description="Admin view of the Fractune sites map."
 >
   <div class="map-page">
@@ -87,7 +87,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     var dragAnnotation = null;
 
     // ─── Login ───
-    // Restore session from sessionStorage — validate token first
+    // Restore session from sessionStorage, validate token first
     (async function() {
       var saved = sessionStorage.getItem('fractune_admin_token');
       if (saved) {
@@ -102,7 +102,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             return;
           }
         } catch (e) {}
-        // Token invalid or expired — clear and show login
+        // Token invalid or expired, clear and show login
         sessionStorage.removeItem('fractune_admin_token');
       }
     })();

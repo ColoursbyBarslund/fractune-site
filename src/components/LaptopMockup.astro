@@ -1,0 +1,157 @@
+---
+/**
+ * LaptopMockup, a reusable MacBook bezel + screen mockup.
+ *
+ * Pairs with `/public/macbook-bezel.png` (transparent PNG of the chassis).
+ * If `screen` is provided, the image fills the screen cavity. Otherwise,
+ * an editorial placeholder is rendered.
+ *
+ * Bezel insets are calibrated to a 2600×1710 chassis where the screen
+ * cavity sits at ~9.4% left/right, 9% top, 12% bottom (the bottom is
+ * larger because the hinge is visible below the screen). Adjust the
+ * --inset-* CSS variables on the figure if a different bezel image is
+ * dropped in.
+ */
+interface Props {
+  /** Path to the screen image, or omit for a placeholder. */
+  screen?: string;
+  /** Alt text for the screen image. */
+  alt?: string;
+  /** Optional small caption beneath the laptop. */
+  caption?: string;
+  /** Visual size, sm = 480px, md = 640px, lg = 800px, full = 100% wide. */
+  size?: 'sm' | 'md' | 'lg' | 'full';
+  /** Optional placeholder label, defaults to "SCREEN · TBD". */
+  placeholderLabel?: string;
+  /** Optional class hook on the outer figure. */
+  class?: string;
+}
+
+const {
+  screen,
+  alt = '',
+  caption,
+  size = 'md',
+  placeholderLabel = 'SCREEN · TBD',
+  class: classHook,
+} = Astro.props;
+---
+
+<figure class:list={['laptop-mockup', `laptop-mockup--${size}`, classHook]}>
+  <div class="laptop-mockup-frame">
+    <div class="laptop-mockup-screen-cavity">
+      {screen ? (
+        <img src={screen} alt={alt} class="laptop-mockup-screen-img" />
+      ) : (
+        <div class="laptop-mockup-placeholder" aria-label={placeholderLabel}>
+          <span class="laptop-mockup-placeholder-label">{placeholderLabel}</span>
+        </div>
+      )}
+    </div>
+    <img
+      src="/macbook-bezel.png"
+      alt=""
+      aria-hidden="true"
+      class="laptop-mockup-bezel"
+    />
+  </div>
+  {caption && <figcaption class="laptop-mockup-caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .laptop-mockup {
+    display: block;
+    margin: 0;
+    /* Insets calibrated to macbook-bezel.png (MacBook Pro M5 14" Silver, 3860×2540) */
+    --inset-top: 2.8%;
+    --inset-bottom: 20.5%;
+    --inset-left: 2.9%;
+    --inset-right: 2.9%;
+    --screen-radius: 0.4%;
+  }
+  .laptop-mockup-frame {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 3860 / 2540;
+    filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.22));
+  }
+  .laptop-mockup-bezel {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+  .laptop-mockup-screen-cavity {
+    position: absolute;
+    top: var(--inset-top);
+    bottom: var(--inset-bottom);
+    left: var(--inset-left);
+    right: var(--inset-right);
+    z-index: 1;
+    overflow: hidden;
+    background: #000;
+    border-radius: var(--screen-radius);
+  }
+  .laptop-mockup-screen-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+  .laptop-mockup-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      linear-gradient(180deg, #f6f6f3 0%, #ececea 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .laptop-mockup-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(0deg, rgba(18, 40, 62, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(18, 40, 62, 0.04) 1px, transparent 1px);
+    background-size: 16px 16px;
+    pointer-events: none;
+  }
+  .laptop-mockup-placeholder-label {
+    position: relative;
+    z-index: 1;
+    font-family: var(--ft-mono, 'JetBrains Mono', ui-monospace, monospace);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    color: rgba(18, 40, 62, 0.4);
+    text-transform: uppercase;
+  }
+
+  /* Sizes */
+  .laptop-mockup--sm { width: 480px; max-width: 100%; }
+  .laptop-mockup--md { width: 640px; max-width: 100%; }
+  .laptop-mockup--lg { width: 800px; max-width: 100%; }
+  .laptop-mockup--full { width: 100%; }
+
+  .laptop-mockup-caption {
+    margin-top: 14px;
+    font-family: var(--ft-mono, 'JetBrains Mono', ui-monospace, monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.16em;
+    color: rgba(18, 40, 62, 0.55);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  @media (max-width: 720px) {
+    .laptop-mockup--lg,
+    .laptop-mockup--md { width: 100%; }
+    .laptop-mockup--sm { width: 100%; }
+  }
+</style>

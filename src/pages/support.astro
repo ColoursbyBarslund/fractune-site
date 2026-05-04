@@ -1,13 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 ---
 
-<BaseLayout title="Support — Fractune">
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo"><img src="/logo.png" alt="" class="nav-logo-icon" />Fractune</a>
-    </div>
-  </nav>
+<BaseLayout title="Support · Fractune">
+  <SiteHeader />
 
   <main class="page">
     <div class="page-inner">
@@ -36,7 +34,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         delete all your contributions within 30 days.
       </p>
 
-      <h2>The app isn't working — what do I do?</h2>
+      <h2>The app isn't working, what do I do?</h2>
       <p>
         Try restarting the app and make sure you have the latest version from
         the App Store. If the problem persists, contact us at
@@ -50,20 +48,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </p>
     </div>
   </main>
+
+  <SiteFooter />
 </BaseLayout>
 
 <style>
-  .nav { border-bottom: 1px solid var(--color-border); }
-  .nav-inner {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 0 2rem;
-    height: 52px;
-    display: flex;
-    align-items: center;
-  }
-  .nav-logo { font-size: 1.25rem; font-weight: 600; color: var(--color-text); display: flex; align-items: center; gap: 0.375rem; }
-  .nav-logo-icon { height: 1.0em; width: auto; vertical-align: middle; transform: translateY(-1px); }
   .page { padding: 4rem 0; }
   .page-inner { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
   h1 { font-size: 2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.5rem; }

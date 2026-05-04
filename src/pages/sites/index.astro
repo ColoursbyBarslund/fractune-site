@@ -3,8 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Fractune Sites — Map"
-  description="Explore buildings analysed with Fractune. View fractal fluence values (D-values) on an interactive map."
+  title="Fractune Sites · Map"
+  description="Explore buildings analysed with Fractune. View Architectural Fluency (F) values on an interactive map."
 >
   <div class="map-page">
     <header class="map-header">
@@ -25,25 +25,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <div id="map-container"></div>
 
     <div id="map-legend" class="map-legend">
-      <h3>D-value range</h3>
+      <h3>F-value range</h3>
       <div class="range-wrap">
-        <span class="range-label">1.0</span>
+        <span class="range-label">0.0</span>
         <div class="range-track" id="range-track">
           <div class="range-gradient"></div>
           <div class="range-selected" id="range-selected"></div>
-          <div class="range-handle range-handle-left" id="handle-left" tabindex="0" role="slider" aria-label="Minimum D-value" aria-valuemin="1.0" aria-valuemax="2.0"></div>
-          <div class="range-handle range-handle-right" id="handle-right" tabindex="0" role="slider" aria-label="Maximum D-value" aria-valuemin="1.0" aria-valuemax="2.0"></div>
+          <div class="range-handle range-handle-left" id="handle-left" tabindex="0" role="slider" aria-label="Minimum F-value" aria-valuemin="0.0" aria-valuemax="1.0"></div>
+          <div class="range-handle range-handle-right" id="handle-right" tabindex="0" role="slider" aria-label="Maximum F-value" aria-valuemin="0.0" aria-valuemax="1.0"></div>
         </div>
-        <span class="range-label">2.0</span>
+        <span class="range-label">1.0</span>
       </div>
-      <p class="range-values" id="range-values">D 1.0 – 2.0</p>
-      <p class="range-hint">Drag brackets to filter</p>
+      <p class="range-values" id="range-values">F 0.00 – 1.00</p>
+      <p class="range-hint">Sweet spot: 0.55 – 0.75 · Drag brackets to filter</p>
     </div>
 
     <div id="site-detail" class="site-detail hidden">
       <button id="close-detail" class="close-btn" aria-label="Close">&times;</button>
       <h3 id="detail-title"></h3>
-      <p class="detail-d-value">D-value: <strong id="detail-d"></strong></p>
+      <p class="detail-f-value" id="detail-f-row">F: <strong id="detail-f"></strong> <span id="detail-f-confidence" class="detail-confidence"></span></p>
+      <p class="detail-secondary" id="detail-secondary"></p>
       <p id="detail-address" class="detail-address"></p>
       <p id="detail-style" class="detail-style"></p>
       <p id="detail-date" class="detail-date"></p>
@@ -58,8 +59,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     var allAnnotations = [];
     var currentMap = null;
     var currentSearch = '';
-    var rangeMin = 1.0;
-    var rangeMax = 2.0;
+    var rangeMin = 0.0;
+    var rangeMax = 1.0;
 
     function initMap() {
       if (typeof mapkit === 'undefined') {
@@ -116,10 +117,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         currentMap.removeAnnotations(allAnnotations);
       }
 
+      var rangeIsDefault = rangeMin <= 0.0 && rangeMax >= 1.0;
+
       // Filter sites
       var filtered = allSites.filter(function (site) {
-        // D-value range filter
-        if (site.dValue < rangeMin || site.dValue > rangeMax) return false;
+        // F-value range filter. Records without F (legacy, pre-Sprint 7) are
+        // included only when the range is at default (full 0–1), narrowing
+        // the range hides records we cannot evaluate.
+        if (site.fValue == null) {
+          if (!rangeIsDefault) return false;
+        } else {
+          if (site.fValue < rangeMin || site.fValue > rangeMax) return false;
+        }
 
         // Search filter
         if (currentSearch) {
@@ -130,7 +139,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             site.architect,
             site.buildingStyle,
             site.buildingType,
-            site.dValue.toFixed(3),
+            site.fValue != null ? site.fValue.toFixed(2) : '',
+            site.dValue != null ? site.dValue.toFixed(3) : '',
           ].filter(Boolean).join(' ').toLowerCase();
           if (!searchable.includes(q)) return false;
         }
@@ -140,7 +150,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
       // Update count
       var countEl = document.getElementById('search-count');
-      var isFiltered = currentSearch || rangeMin > 1.0 || rangeMax < 2.0;
+      var isFiltered = currentSearch || !rangeIsDefault;
       if (isFiltered) {
         countEl.textContent = filtered.length + ' of ' + allSites.length;
       } else {
@@ -150,15 +160,31 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       // Create annotations
       allAnnotations = filtered.map(function (site) {
         var coord = new mapkit.Coordinate(site.latitude, site.longitude);
-        var color = dValueToColor(site.dValue);
-        var title = site.buildingName || 'D = ' + site.dValue.toFixed(3);
-        var subtitle = site.buildingName ? 'D = ' + site.dValue.toFixed(3) : '';
+        var hasF = site.fValue != null;
+        var color = fValueToColor(site.fValue);
+        var glyph = hasF ? site.fValue.toFixed(1).replace('0.', '.') : '—';
+        var title;
+        if (site.buildingName) {
+          title = site.buildingName;
+        } else if (hasF) {
+          title = 'F = ' + site.fValue.toFixed(2);
+        } else if (site.dValue != null) {
+          title = 'D = ' + site.dValue.toFixed(2);
+        } else {
+          title = 'Site';
+        }
+        var subtitle = '';
+        if (site.buildingName && hasF) {
+          subtitle = 'F = ' + site.fValue.toFixed(2);
+        } else if (site.buildingName && site.dValue != null) {
+          subtitle = 'D = ' + site.dValue.toFixed(2);
+        }
 
         var annotation = new mapkit.MarkerAnnotation(coord, {
           color: color,
           title: title,
           subtitle: subtitle,
-          glyphText: site.dValue.toFixed(1),
+          glyphText: glyph,
         });
 
         annotation.addEventListener('select', function () {
@@ -181,21 +207,60 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       }
     }
 
-    function dValueToColor(d) {
-      var t = Math.max(0, Math.min(1, (d - 1.0) / 1.0));
-      var sweet = 0.4;
-      var dist = Math.abs(t - sweet) / Math.max(sweet, 1 - sweet);
-      dist = Math.min(1, dist);
-      var r = Math.round(50 + dist * 180);
-      var g = Math.round(160 - dist * 120);
-      var b = Math.round(50 - dist * 20);
-      return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+    function fValueToColor(f) {
+      // Legacy records or unparseable F → muted grey
+      if (f == null || isNaN(f)) return 'rgb(140, 140, 140)';
+      // Inverted-U around the sweet spot (0.55–0.75). Sub-monotone is grey,
+      // sweet spot is green, near-chaos is red.
+      if (f < 0.35) return 'rgb(140, 140, 140)';
+      if (f < 0.55) {
+        var t = (f - 0.35) / 0.20;
+        return 'rgb(' + Math.round(140 - t * 90) + ', ' + Math.round(140 + t * 35) + ', ' + Math.round(140 - t * 75) + ')';
+      }
+      if (f <= 0.75) return 'rgb(50, 175, 65)';
+      if (f < 0.85) {
+        var t2 = (f - 0.75) / 0.10;
+        return 'rgb(' + Math.round(50 + t2 * 180) + ', ' + Math.round(175 - t2 * 30) + ', ' + Math.round(65 - t2 * 5) + ')';
+      }
+      return 'rgb(230, 80, 60)';
     }
 
     function showDetail(site) {
       var panel = document.getElementById('site-detail');
-      document.getElementById('detail-title').textContent = site.buildingName || 'D = ' + site.dValue.toFixed(3);
-      document.getElementById('detail-d').textContent = site.dValue.toFixed(4);
+      var hasF = site.fValue != null;
+      var fallbackTitle;
+      if (hasF) {
+        fallbackTitle = 'F = ' + site.fValue.toFixed(2);
+      } else if (site.dValue != null) {
+        fallbackTitle = 'D = ' + site.dValue.toFixed(2);
+      } else {
+        fallbackTitle = 'Site';
+      }
+      document.getElementById('detail-title').textContent = site.buildingName || fallbackTitle;
+
+      // F primary
+      var fEl = document.getElementById('detail-f');
+      var confEl = document.getElementById('detail-f-confidence');
+      if (hasF) {
+        fEl.textContent = site.fValue.toFixed(2);
+        if (site.confidence != null && site.confidence < 0.7) {
+          confEl.textContent = '(uncertain · ' + site.confidence.toFixed(2) + ')';
+        } else {
+          confEl.textContent = '';
+        }
+      } else {
+        fEl.textContent = '—';
+        confEl.textContent = '(legacy record · pre-Fractune 2.0)';
+      }
+
+      // D and dimension breakdown (secondary)
+      var secondary = [];
+      if (site.dValue != null) secondary.push('D = ' + site.dValue.toFixed(3));
+      if (site.fFractal != null) secondary.push('Fractal ' + site.fFractal.toFixed(2));
+      if (site.fRhythm != null) secondary.push('Rhythm ' + site.fRhythm.toFixed(2));
+      if (site.fChromatic != null) secondary.push('Colour ' + site.fChromatic.toFixed(2));
+      if (site.fStructure != null) secondary.push('Structure ' + site.fStructure.toFixed(2));
+      document.getElementById('detail-secondary').textContent = secondary.join(' · ');
 
       var details = [];
       if (site.buildingAddress) details.push(site.buildingAddress);
@@ -256,20 +321,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       var selected = document.getElementById('range-selected');
       var valuesEl = document.getElementById('range-values');
 
-      var D_MIN = 1.0;
-      var D_MAX = 2.0;
+      var F_MIN = 0.0;
+      var F_MAX = 1.0;
+      var STEP = 0.01;
 
-      function dToPercent(d) { return ((d - D_MIN) / (D_MAX - D_MIN)) * 100; }
-      function percentToD(p) { return D_MIN + (p / 100) * (D_MAX - D_MIN); }
+      function fToPercent(f) { return ((f - F_MIN) / (F_MAX - F_MIN)) * 100; }
+      function percentToF(p) { return F_MIN + (p / 100) * (F_MAX - F_MIN); }
 
       function updateVisuals() {
-        var leftPct = dToPercent(rangeMin);
-        var rightPct = dToPercent(rangeMax);
+        var leftPct = fToPercent(rangeMin);
+        var rightPct = fToPercent(rangeMax);
         handleLeft.style.left = leftPct + '%';
         handleRight.style.left = rightPct + '%';
         selected.style.left = leftPct + '%';
         selected.style.width = (rightPct - leftPct) + '%';
-        valuesEl.textContent = 'D ' + rangeMin.toFixed(1) + ' – ' + rangeMax.toFixed(1);
+        valuesEl.textContent = 'F ' + rangeMin.toFixed(2) + ' – ' + rangeMax.toFixed(2);
         handleLeft.setAttribute('aria-valuenow', rangeMin.toFixed(2));
         handleRight.setAttribute('aria-valuenow', rangeMax.toFixed(2));
       }
@@ -282,16 +348,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           var rect = track.getBoundingClientRect();
           var clientX = e.touches ? e.touches[0].clientX : e.clientX;
           var pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
-          var d = percentToD(pct);
+          var f = percentToF(pct);
 
-          // Snap to 0.05 increments
-          d = Math.round(d * 20) / 20;
-          d = Math.max(D_MIN, Math.min(D_MAX, d));
+          // Snap to 0.01 increments
+          f = Math.round(f * 100) / 100;
+          f = Math.max(F_MIN, Math.min(F_MAX, f));
 
           if (isLeft) {
-            rangeMin = Math.min(d, rangeMax - 0.05);
+            rangeMin = Math.min(f, rangeMax - STEP);
           } else {
-            rangeMax = Math.max(d, rangeMin + 0.05);
+            rangeMax = Math.max(f, rangeMin + STEP);
           }
 
           updateVisuals();
@@ -323,13 +389,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         if (e.target === handleLeft || e.target === handleRight) return;
         var rect = track.getBoundingClientRect();
         var pct = ((e.clientX - rect.left) / rect.width) * 100;
-        var d = Math.round(percentToD(pct) * 20) / 20;
-        var distLeft = Math.abs(d - rangeMin);
-        var distRight = Math.abs(d - rangeMax);
+        var f = Math.round(percentToF(pct) * 100) / 100;
+        var distLeft = Math.abs(f - rangeMin);
+        var distRight = Math.abs(f - rangeMax);
         if (distLeft < distRight) {
-          rangeMin = Math.min(d, rangeMax - 0.05);
+          rangeMin = Math.min(f, rangeMax - STEP);
         } else {
-          rangeMax = Math.max(d, rangeMin + 0.05);
+          rangeMax = Math.max(f, rangeMin + STEP);
         }
         updateVisuals();
         applyFilters();
@@ -337,8 +403,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
       // Double-click to reset
       track.addEventListener('dblclick', function () {
-        rangeMin = D_MIN;
-        rangeMax = D_MAX;
+        rangeMin = F_MIN;
+        rangeMax = F_MAX;
         updateVisuals();
         applyFilters();
       });
@@ -489,7 +555,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     position: absolute;
     inset: 0;
     border-radius: 4px;
-    background: linear-gradient(to right, #e63232, #d4a030 20%, #32a032 35%, #32a032 45%, #d4a030 65%, #e63232);
+    background: linear-gradient(to right,
+      #b0b0b0 0%, #b0b0b0 35%,
+      #6e8f3a 45%,
+      #2A7D3F 55%, #2A7D3F 75%,
+      #6e8f3a 80%,
+      #c85a4a 100%);
     opacity: 0.3;
   }
 
@@ -498,7 +569,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     top: 0;
     height: 100%;
     border-radius: 4px;
-    background: linear-gradient(to right, #e63232, #d4a030 20%, #32a032 35%, #32a032 45%, #d4a030 65%, #e63232);
+    background: linear-gradient(to right,
+      #b0b0b0 0%, #b0b0b0 35%,
+      #6e8f3a 45%,
+      #2A7D3F 55%, #2A7D3F 75%,
+      #6e8f3a 80%,
+      #c85a4a 100%);
     background-size: 220px 100%;
     pointer-events: none;
   }
@@ -585,10 +661,30 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     padding-right: 1.5rem;
   }
 
-  .detail-d-value {
-    font-size: 0.9375rem;
+  .detail-f-value {
+    font-size: 1rem;
     margin-bottom: 0.25rem;
+    color: var(--color-text);
   }
+  .detail-f-value strong {
+    font-weight: 600;
+    font-size: 1.0625rem;
+  }
+  .detail-confidence {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    margin-left: 0.375rem;
+  }
+
+  .detail-secondary {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.625rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    line-height: 1.55;
+  }
+  .detail-secondary:empty { display: none; }
 
   .detail-address,
   .detail-style,
